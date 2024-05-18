@@ -5,9 +5,9 @@
 
 class MainFrame:public wxFrame
 {
+public:
     //Constructor toma el nombre de la ventana como parametro
     MainFrame(const wxString& title);
-    
 };
 
 #endif // MAINFRAME_HH
