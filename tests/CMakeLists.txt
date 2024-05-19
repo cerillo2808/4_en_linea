@@ -1,4 +1,5 @@
 enable_testing()
+
 find_package(GTest REQUIRED)
 
 add_executable(unit_tests
