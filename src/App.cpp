@@ -4,11 +4,11 @@
 
 
 bool App::OnInit(){
-    MainFrame* mainFrame=new MainFrame ("C++ GUI");
+    MainFrame* mainFrame=new MainFrame ("Hello world");
     //cambiar tamaño y que la ventana este centrada:
     mainFrame->SetClientSize (800,600);
-    mainFrame->Show();
-    //por default el frame está ocukto así que hay que llamar al método show
+    mainFrame->CenterOnScreen();
+    //por default el frame está oculto así que hay que llamar al método show
     mainFrame->Show();
     return true;
 }

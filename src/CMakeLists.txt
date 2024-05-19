@@ -20,6 +20,12 @@ set(SRCS
 # TODO: Agregar aquí los archivos fuente de su proyecto
     MainFrame.cpp
     App.cpp
+    Ijugador.cpp
+    JugadorHumano.cpp
+    JugadorDificil.cpp
+    JugadorFacil.cpp
+    Tablero.cpp
+
 )
 
 if(APPLE)
@@ -43,4 +49,3 @@ target_link_libraries(${TARGET_NAME} ${wxWidgets_LIBRARIES})
 # target_include_directories(NOMBRE_EJECUTABLE PUBLIC ${INCLUDE_DIR})
 # La siguiente línea solamente la necesitan si usan wxWidgets, sino no la agreguen:
 # target_link_libraries(NOMBRE_EJECUTABLE ${wxWidgets_LIBRARIES})
-
