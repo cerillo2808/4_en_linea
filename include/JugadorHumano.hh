@@ -1,0 +1,6 @@
+#ifndef JUGADORHUMANO_HH
+#define JUGADORHUMANO_HH
+
+
+
+#endif
