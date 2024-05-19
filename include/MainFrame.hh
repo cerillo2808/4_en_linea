@@ -10,4 +10,4 @@ public:
     MainFrame(const wxString& title);
 };
 
-#endif // MAINFRAME_HH
+#endif 

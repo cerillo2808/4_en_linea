@@ -4,7 +4,7 @@
 
 
 bool App::OnInit(){
-    MainFrame* mainFrame=new MainFrame ("Hello world");
+    MainFrame* mainFrame=new MainFrame ("Frame principal");
     //cambiar tamaño y que la ventana este centrada:
     mainFrame->SetClientSize (800,600);
     mainFrame->CenterOnScreen();
