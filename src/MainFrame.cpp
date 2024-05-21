@@ -17,3 +17,7 @@ MainFrame::MainFrame (const wxString&title):wxFrame(nullptr,wxID_ANY,title){
     CreateStatusBar();
 
 }
+
+void MainFrame::OnBottonClicked(wxCommandEvent & evt){
+    wxLogStatus("Se presiono el boton");
+}
