@@ -14,4 +14,4 @@ private:
     wxDECLARE_EVENT_TABLE();
 };
 
-#endif // MAINFRAME_HH
+#endif 
