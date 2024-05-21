@@ -10,7 +10,7 @@ JugadorFacil:: JugadorFacil (string nombre, Color ficha):
 {}
 
 
-void JugadorFacil:: jugar(){
+void JugadorFacil:: jugar  (){
 
     std::random_device rd;
     std::mt19937 engine(rd());
