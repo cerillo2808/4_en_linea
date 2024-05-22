@@ -1,16 +1,13 @@
-#include <Tablero.hh>
 #include <IJugador.hh>
+#include <Tablero.hh>
+#include <vector>
 
-Tablero :: Tablero (int filas, int columnas) {
-    tablero = new Color* [filas];
-
-    for (int i; i < filas; i++) {
-        tablero [i] = new Color [columnas];
-    } 
+Tablero ::Tablero(int filas, int columnas) {
+  std::vector<std::vector<Color>> tablero(filas, std::vector<Color>(columnas));
+  // el vector tablero está hecho de otro vector hecho de colores. Es una matriz
+  // de colores, de tamaño inicializado por los parámetros.
 }
 
-Color ** Tablero :: getTablero () {
-    return tablero;
-}
+std::vector<std::vector<Color>> Tablero ::getTablero() { return tablero; }
 
-// metodos de analizarFicha e insertarFicha están en proceso de desarrollo  
+// metodos de analizarFicha e insertarFicha están en proceso de desarrollo
