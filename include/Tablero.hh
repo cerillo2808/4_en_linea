@@ -10,17 +10,16 @@ class Tablero {
     public:
     
     //Constructor
-    Tablero (int filas, int columnas) {}
+    Tablero (int filas, int columnas);
     
-    std::vector<std::vector<Color>> getTablero () {}
+    std::vector<std::vector<Color>> getTablero ();
 
-    bool analizarFichaJugadir (Color ficha) {}
+    bool analizarFichaJugadir (Color ficha);
 
-    void insertarFicha (Color Ficha) {} 
+    void insertarFicha (Color Ficha);
 
     private: 
 
-    Color ** tablero;
     std::vector<std::vector<Color>> tablero;
 };
 #endif
