@@ -1,25 +1,23 @@
 #ifndef TABLERO_HH
 #define TABLERO_HH
-#include <iostream>
 #include <IJugador.hh>
+#include <iostream>
 #include <vector>
 
 using namespace std;
 
 class Tablero {
-    public:
-    
-    //Constructor
-    Tablero (int filas, int columnas);
-    
-    std::vector<std::vector<Color>> getTablero ();
+ public:
+  // Constructor
+  Tablero(int filas, int columnas);
 
-    bool analizarFichaJugadir (Color ficha);
+  std::vector<std::vector<Color>> getTablero();
 
-    void insertarFicha (Color Ficha);
+  bool analizarFichaJugadir(Color ficha);
 
-    private: 
+  void insertarFicha(Color Ficha);
 
-    std::vector<std::vector<Color>> tablero;
+ private:
+  std::vector<std::vector<Color>> tablero;
 };
 #endif
