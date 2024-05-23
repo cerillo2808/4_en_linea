@@ -10,14 +10,11 @@ Tablero ::Tablero(int filas, int columnas) {
 
 std::vector<std::vector<Color>> Tablero ::getTablero() { return tablero; }
 
-// metodos de analizarFicha e insertarFicha están en proceso de desarrollo
-
 bool Tablero ::analizarJugada(Color ficha, int fila, int columna) {
   // En el siguiente vector se guardaran las coordenadas de la ficha extrema a
   // la ficha insertada por el jugador en la posici+on cero se hallará la fila y
   // en la uno, la columna
   int extremos[2] = {fila, columna};
-  bool ganador = false;
 
   // este contador funionará para registrar la cantidad de fichas que se han
   // contabilizado en una cierta dirección de análisis
@@ -32,55 +29,59 @@ bool Tablero ::analizarJugada(Color ficha, int fila, int columna) {
       (tablero[fila + 1][columna] == ficha)) {
     // en caso de poseerla, se inicia un recorrido vertical hacia abajo de la
     // ficha para buscar 4 del mismo color
-    ganador = recorridoVertical(ficha, contador, fila + 1, columna);
+    if (recorridoVertical(ficha, contador, fila + 1, columna)) {
+      return true;
+    }
   }
 
   // se verifica si la ficha del usuario posee una ficha del mismo color a su
   // izquierda o derecha
-  else if ((((columna - 1) >= 0) && (tablero[fila][columna - 1] == ficha)) ||
-           (((columna + 1) <= (tablero[fila].size() - 1)) &&
-            (tablero[fila][columna + 1] == ficha))) {
+  if ((((columna - 1) >= 0) && (tablero[fila][columna - 1] == ficha)) ||
+      (((columna + 1) <= (tablero[fila].size() - 1)) &&
+       (tablero[fila][columna + 1] == ficha))) {
     // en caso de poseerla, busca la ficha más extrema en la izquierda
     extremoIzq(ficha, fila, columna, extremos);
 
     // tomando la ficha más extrema a la izquierda, recorre hacia la derecha
     // para buscar si hay 4 fichas del mismo color
-    ganador =
-        recorridoHorizontalDer(ficha, contador, extremos[0], extremos[1] + 1);
+    if (recorridoHorizontalDer(ficha, contador, extremos[0], extremos[1] + 1)) {
+      return true;
+    }
   }
 
   // se verifica si la ficha del usuario posee una ficha del mismo color en
   // dirección diagonal superior-izquierda o diagonal inferior-derecha
-  else if ((((fila + 1) <= (tablero.size() - 1)) &&
-            ((columna + 1) <= (tablero[fila].size() - 1)) &&
-            (tablero[fila + 1][columna + 1] == ficha)) ||
-           (((fila - 1) >= 0) && ((columna - 1) >= 0) &&
-            (tablero[fila - 1][columna - 1] == ficha))) {
+  if ((((fila + 1) <= (tablero.size() - 1)) &&
+       ((columna + 1) <= (tablero[fila].size() - 1)) &&
+       (tablero[fila + 1][columna + 1] == ficha)) ||
+      (((fila - 1) >= 0) && ((columna - 1) >= 0) &&
+       (tablero[fila - 1][columna - 1] == ficha))) {
     // en caso de poseerla se busca la ficha extrema en la diagonal
     // superior-izquierda
     extremoArribaIzq(ficha, fila, columna, extremos);
     // tomando dicha ficha, se recorre la diagonal inferior-derecha para hallar
     // 4 fichas del mismo color
-    ganador =
-        recorridoAbajoDer(ficha, contador, extremos[0] + 1, extremos[1] + 1);
+    if (recorridoAbajoDer(ficha, contador, extremos[0] + 1, extremos[1] + 1)) {
+      return true;
+    }
   }
 
   // se verifica si la ficha del usuario posee una ficha del mismo color en
   // dirección diagonal inferior-izquierda o diagonal superior-derecha
-  else if ((((fila - 1) >= 0) &&
-            ((columna + 1) <= (tablero[fila].size() - 1)) &&
-            (tablero[fila - 1][columna + 1] == ficha)) ||
-           (((fila + 1) <= (tablero.size() - 1)) && ((columna - 1) >= 0) &&
-            (tablero[fila + 1][columna - 1] == ficha))) {
+  if ((((fila - 1) >= 0) && ((columna + 1) <= (tablero[fila].size() - 1)) &&
+       (tablero[fila - 1][columna + 1] == ficha)) ||
+      (((fila + 1) <= (tablero.size() - 1)) && ((columna - 1) >= 0) &&
+       (tablero[fila + 1][columna - 1] == ficha))) {
     // en caso de poseerla se busca la ficha extrema en la diagonal
     // inferior-izquierda
     extremoAbajoIzq(ficha, fila, columna, extremos);
     // tomando dicha ficha, se recorre la diagonal superior-derecha
-    ganador =
-        recorridoArribaDer(ficha, contador, extremos[0] - 1, extremos[1] + 1);
+    if (recorridoArribaDer(ficha, contador, extremos[0] - 1, extremos[1] + 1)) {
+      return true;
+    }
   }
 
-  return ganador;
+  return false;
 }
 
 void Tablero ::extremoArribaIzq(Color ficha, int fila, int columna,
@@ -205,3 +206,5 @@ bool Tablero ::recorridoArribaDer(Color ficha, int contador, int fila,
 
   return true;
 }
+
+// metodo insertarFicha está en proceso de desarrollo
