@@ -207,4 +207,34 @@ bool Tablero ::recorridoArribaDer(Color ficha, int contador, int fila,
   return true;
 }
 
-// metodo insertarFicha está en proceso de desarrollo
+int Tablero::getFilas() { return tablero.size(); }
+
+int Tablero::getColumnas() {
+  if (!tablero.empty()) {
+    return tablero[0].size();
+  }
+  return 0;
+}
+
+bool Tablero::insertarFicha(Color ficha, int columna) {
+  if (tablero[0][columna] != NULL) {
+    // verifica que la columna a la que se quiere insertar la ficha no esté
+    // llena.
+
+    for (int i = getFilas(); i <= 0; i++) {
+      // recorre la columna de abajo para arriba
+
+      if (tablero[i][columna] == NULL) {
+        // la fila de la columna en la que se encuentre vacío es NULL
+        tablero[i][columna] == ficha;
+        // se procede a asignarle el color a ese campo vacío
+        return true;
+        // se para el for aquí para que no asigne más fichas.
+      }
+    }
+  } else {
+    return false;
+    // se retorna falso, para que la GUI sepa que no se logró insertar la ficha
+    // en esa columna y deje que el usuario haga otro click.
+  }
+}

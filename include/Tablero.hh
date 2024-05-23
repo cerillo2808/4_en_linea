@@ -41,7 +41,15 @@ class Tablero {
   // método que busca si hay 4 fichas en dirección diagonal superior-derecha
   bool recorridoArribaDer(Color ficha, int contador, int fila, int columna);
 
-  void insertarFicha(Color Ficha);
+  // método que inserta la ficha, devuelve falso si la columna ya estaba llena,
+  // devuelve verdadero si se logró insertar la ficha
+  bool insertarFicha(Color Ficha, int columna);
+
+  // método que devuelve la cantidad de filas
+  int getFilas();
+
+  // método que devuelve la cantidad de columnas
+  int getColumnas();
 
  private:
   std::vector<std::vector<Color>> tablero;
