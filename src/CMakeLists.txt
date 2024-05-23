@@ -25,6 +25,7 @@ set(SRCS
     JugadorDificil.cpp
     JugadorFacil.cpp
     Tablero.cpp
+    ConfNuevoJuego.cpp
 
 )
 
