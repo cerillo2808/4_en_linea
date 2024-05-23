@@ -1,54 +1,54 @@
-#include <MainFrame.hh>
-#include <ConfNuevoJuego.hh>
 #include <wx/wx.h>
 
+#include <ConfNuevoJuego.hh>
+#include <MainFrame.hh>
 
 MainFrame::MainFrame(const wxString& title)
-    : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)
-{   
-    wxPanel* panelPrincipal= new wxPanel(this);
+    : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
+              wxDEFAULT_FRAME_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX |
+                  wxMINIMIZE_BOX) {
+  wxPanel* panelPrincipal = new wxPanel(this);
 
-    //creando fuente para el texto de los botones
-    wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
-    
-    wxBoxSizer* panelVertical= new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* panelHorizontal=new wxBoxSizer(wxHORIZONTAL);
+  // creando fuente para el texto de los botones
+  wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
 
-    //botones de las opciones
-    wxButton*  nuevoJuegoBoton= new wxButton(panelPrincipal, wxID_ANY, "NUEVO JUEGO", wxDefaultPosition, wxSize(550, 120));
-    wxButton* salirBoton = new wxButton(panelPrincipal, wxID_ANY, "SALIR", wxDefaultPosition, wxSize(550, 120));
+  wxBoxSizer* panelVertical = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer* panelHorizontal = new wxBoxSizer(wxHORIZONTAL);
 
-    nuevoJuegoBoton->SetFont(fuenteBotones);
-    salirBoton->SetFont(fuenteBotones);
+  // botones de las opciones
+  wxButton* nuevoJuegoBoton =
+      new wxButton(panelPrincipal, wxID_ANY, "NUEVO JUEGO", wxDefaultPosition,
+                   wxSize(550, 120));
+  wxButton* salirBoton = new wxButton(panelPrincipal, wxID_ANY, "SALIR",
+                                      wxDefaultPosition, wxSize(550, 120));
 
-    nuevoJuegoBoton->Bind(wxEVT_BUTTON,&MainFrame::nuevoJuego,this);
-    salirBoton->Bind(wxEVT_BUTTON,&MainFrame::salir,this);
+  nuevoJuegoBoton->SetFont(fuenteBotones);
+  salirBoton->SetFont(fuenteBotones);
 
-    panelVertical->AddStretchSpacer(); 
-    panelVertical->Add(nuevoJuegoBoton, 0, wxALL | wxEXPAND, 10);
-    panelVertical->Add(salirBoton, 0, wxALL | wxEXPAND, 10);
-    panelVertical->AddStretchSpacer(); 
-    
-    //agregamos espacio al lado izquierdo
-    panelHorizontal->AddStretchSpacer(); 
-    panelHorizontal->Add(panelVertical, 0, wxALL | wxEXPAND, 10); 
-    //agregamos espacio al lado derecho
-    panelHorizontal->AddStretchSpacer(); 
+  nuevoJuegoBoton->Bind(wxEVT_BUTTON, &MainFrame::nuevoJuego, this);
+  salirBoton->Bind(wxEVT_BUTTON, &MainFrame::salir, this);
 
-    panelPrincipal->SetSizer(panelHorizontal);
+  panelVertical->AddStretchSpacer();
+  panelVertical->Add(nuevoJuegoBoton, 0, wxALL | wxEXPAND, 10);
+  panelVertical->Add(salirBoton, 0, wxALL | wxEXPAND, 10);
+  panelVertical->AddStretchSpacer();
 
+  // agregamos espacio al lado izquierdo
+  panelHorizontal->AddStretchSpacer();
+  panelHorizontal->Add(panelVertical, 0, wxALL | wxEXPAND, 10);
+  // agregamos espacio al lado derecho
+  panelHorizontal->AddStretchSpacer();
 
-    //que inicialmente este maximizado
-    Maximize(true);
+  panelPrincipal->SetSizer(panelHorizontal);
+
+  // que inicialmente este maximizado
+  Maximize(true);
 }
 
-void MainFrame::nuevoJuego(wxCommandEvent& event){
-    ConfNuevoJuego* ventanaConf = new ConfNuevoJuego("Ventana de configuración para el nuevo juego");
-    ventanaConf->Show();
+void MainFrame::nuevoJuego(wxCommandEvent& event) {
+  ConfNuevoJuego* ventanaConf =
+      new ConfNuevoJuego("Ventana de configuración para el nuevo juego");
+  ventanaConf->Show();
 }
 
-void MainFrame::salir(wxCommandEvent& event){
-    Close(true);
-}
-
-
+void MainFrame::salir(wxCommandEvent& event) { Close(true); }
