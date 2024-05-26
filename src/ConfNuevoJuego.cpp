@@ -1,7 +1,7 @@
 #include <wx/spinctrl.h>
 #include <wx/wx.h>
-
 #include <ConfNuevoJuego.hh>
+#include <TableroGUI.hh>
 
 ConfNuevoJuego::ConfNuevoJuego(const wxString& title)
     : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)) {
@@ -94,6 +94,8 @@ ConfNuevoJuego::ConfNuevoJuego(const wxString& title)
   Maximize(true);
 }
 
+//manejo de eventos 
+
 void ConfNuevoJuego::jugadorUno(wxCommandEvent& event) {
   // obtener puntero al radiobox
   wxRadioBox* radioBox1 = dynamic_cast<wxRadioBox*>(event.GetEventObject());
@@ -139,4 +141,8 @@ void ConfNuevoJuego::columnasTablero(wxCommandEvent& event) {
   }
 }
 void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
-void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {}
+
+void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
+   //la idea de está parte era que de aquí se abriera la ventana como tal del juego 
+  
+}
