@@ -1,12 +1,12 @@
 #include <IJugador.hh>
 #include <Tablero.hh>
 #include <vector>
+#include <iostream>
+using namespace std;
 
-Tablero ::Tablero(int filas, int columnas) {
-  std::vector<std::vector<Color>> tablero(filas, std::vector<Color>(columnas));
   // el vector tablero está hecho de otro vector hecho de colores. Es una matriz
-  // de colores, de tamaño inicializado por los parámetros.
-}
+  // de colores, de tamaño inicializado por los parámetros. Además, siempre se inicializan las celdad en non_color
+Tablero ::Tablero(int filas, int columnas) : tablero (filas, std::vector<Color>(columnas,non_color)) {}
 
 std::vector<std::vector<Color>> Tablero ::getTablero() { return tablero; }
 
@@ -92,8 +92,8 @@ void Tablero ::extremoArribaIzq(Color ficha, int fila, int columna,
       (tablero[fila - 1][columna - 1] == ficha)) {
     // como tal ficha es más extrema, entonces sus coordenadas pasan a ser las
     // nuevas del vector de extremos
-    coordenadas[0] = fila--;
-    coordenadas[1] = columna--;
+    coordenadas[0] = --fila;
+    coordenadas[1] = --columna;
 
     // se vuelve a llamar el mismo método para continuar con la búsqueda
     extremoArribaIzq(ficha, coordenadas[0], coordenadas[1], coordenadas);
@@ -106,8 +106,8 @@ void Tablero ::extremoAbajoIzq(Color ficha, int fila, int columna,
   // inferior-izquierda
   if (((fila + 1) <= (tablero.size() - 1)) && ((columna - 1) >= 0) &&
       (tablero[fila + 1][columna - 1] == ficha)) {
-    coordenadas[0] = fila++;
-    coordenadas[1] = columna--;
+    coordenadas[0] = ++fila;
+    coordenadas[1] = --columna;
     extremoAbajoIzq(ficha, coordenadas[0], coordenadas[1], coordenadas);
   }
 }
@@ -116,7 +116,7 @@ void Tablero ::extremoIzq(Color ficha, int fila, int columna,
                           int coordenadas[]) {
   // se verifica que la ficha posea una ficha del mismo color a la izquierda
   if (((columna - 1) >= 0) && (tablero[fila][columna - 1] == ficha)) {
-    coordenadas[1] = columna--;
+    coordenadas[1] = --columna;
     extremoIzq(ficha, coordenadas[0], coordenadas[1], coordenadas);
   }
 }
@@ -147,7 +147,7 @@ bool Tablero ::recorridoVertical(Color ficha, int contador, int fila,
 bool Tablero ::recorridoHorizontalDer(Color ficha, int contador, int fila,
                                       int columna) {
   contador++;
-
+  cout <<contador<<endl;
   if (contador < 4) {
     // se verifica que existe una ficha del mismo color a la derecha de la fila
     // de interes
@@ -217,16 +217,16 @@ int Tablero::getColumnas() {
 }
 
 bool Tablero::insertarFicha(Color ficha, int columna) {
-  if (tablero[0][columna] != 0) {
+  if (tablero[0][columna] == non_color) {
     // verifica que la columna a la que se quiere insertar la ficha no esté
     // llena.
 
-    for (int i = getFilas(); i <= 0; i++) {
+    for (int i = (getFilas() - 1) ; i >= 0; i--) {
       // recorre la columna de abajo para arriba
 
-      if (tablero[i][columna] == 0) {
-        // la fila de la columna en la que se encuentre vacío es NULL
-        tablero[i][columna] == ficha;
+      if (tablero[i][columna] == non_color) {
+        // la fila de la columna en la que se encuentre vacío es non_color
+        tablero[i][columna] = ficha;
         // se procede a asignarle el color a ese campo vacío
         return true;
         // se para el for aquí para que no asigne más fichas.
