@@ -1,16 +1,16 @@
 #include <wx/spinctrl.h>
 #include <wx/wx.h>
+
 #include <ConfNuevoJuego.hh>
 #include <TableroGUI.hh>
 #include <VistaJuego.hh>
 
-ConfNuevoJuego::ConfNuevoJuego(const wxString& title) 
-: wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)) {
+ConfNuevoJuego::ConfNuevoJuego(const wxString& title)
+    : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)) {
+  // luego se va a sobreescribir pero es para evitar errores:
 
-  //luego se va a sobreescribir pero es para evitar errores:
+  numFilasTablero = numColumnasTablero = 4;
 
-  numFilasTablero=numColumnasTablero=4;
-  
   wxPanel* panelPrincipal = new wxPanel(this);
 
   wxBoxSizer* panelVertical = new wxBoxSizer(wxVERTICAL);
@@ -100,7 +100,7 @@ ConfNuevoJuego::ConfNuevoJuego(const wxString& title)
   Maximize(true);
 }
 
-//manejo de eventos 
+// manejo de eventos
 
 void ConfNuevoJuego::jugadorUno(wxCommandEvent& event) {
   // obtener puntero al radiobox
@@ -149,7 +149,9 @@ void ConfNuevoJuego::columnasTablero(wxCommandEvent& event) {
 void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
 
 void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
-   //la idea de está parte era que de aquí se abriera la ventana como tal del juego 
-    VistaJuego* juego = new VistaJuego("Connect 4",numFilasTablero,numColumnasTablero);
-    juego->Show(true);
+  // la idea de está parte era que de aquí se abriera la ventana como tal del
+  // juego
+  VistaJuego* juego =
+      new VistaJuego("Connect 4", numFilasTablero, numColumnasTablero);
+  juego->Show(true);
 }
