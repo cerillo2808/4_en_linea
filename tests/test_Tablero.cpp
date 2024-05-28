@@ -69,3 +69,44 @@ TEST (TableroTest, AnalisisGaneDiagonal) {
   EXPECT_EQ(tablero.getTablero()[0][3],2);
   EXPECT_TRUE(tablero.analizarJugada(rojo,0,3));
 }
+
+TEST (TableroTest, InsertarFichaVacio) {
+  Tablero tablero (2,2);
+  EXPECT_EQ (tablero.getTablero().size(),2);
+
+  tablero.insertarFicha(rojo, 1);
+  EXPECT_EQ (tablero.getTablero().size(),2);
+
+  EXPECT_EQ(tablero.getTablero()[0][0],0);
+  EXPECT_EQ(tablero.getTablero()[0][1],0);
+  EXPECT_EQ(tablero.getTablero()[1][0],0);
+  EXPECT_EQ(tablero.getTablero()[1][1],2);
+}
+
+TEST (TableroTest, InsertarFichaNoVacio) {
+  Tablero tablero (2,2);
+  EXPECT_EQ (tablero.getTablero().size(),2);
+
+  tablero.insertarFicha(rojo, 1);
+  tablero.insertarFicha(azul, 1);
+  
+
+  EXPECT_EQ(tablero.getTablero()[0][0],0);
+  EXPECT_EQ(tablero.getTablero()[0][1],1);
+  EXPECT_EQ(tablero.getTablero()[1][0],0);
+  EXPECT_EQ(tablero.getTablero()[1][1],2);
+}
+
+TEST (TableroTest, InsertarFichaLleno) {
+  Tablero tablero (2,2);
+  EXPECT_EQ (tablero.getTablero().size(),2);
+
+  tablero.insertarFicha(rojo, 1);
+  tablero.insertarFicha(azul, 1);
+  tablero.insertarFicha(rojo, 1);
+
+  EXPECT_EQ(tablero.getTablero()[0][0],0);
+  EXPECT_EQ(tablero.getTablero()[0][1],1);
+  EXPECT_EQ(tablero.getTablero()[1][0],0);
+  EXPECT_EQ(tablero.getTablero()[1][1],2);
+}
