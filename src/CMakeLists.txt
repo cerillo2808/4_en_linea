@@ -27,7 +27,9 @@ set(SRCS
     Tablero.cpp
     ConfNuevoJuego.cpp
     TableroGUI.cpp
-
+    EstadoJuego.cpp
+    Controlador.cpp
+    VistaJuego.cpp
 )
 
 if(APPLE)

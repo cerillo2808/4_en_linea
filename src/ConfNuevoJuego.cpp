@@ -2,9 +2,15 @@
 #include <wx/wx.h>
 #include <ConfNuevoJuego.hh>
 #include <TableroGUI.hh>
+#include <VistaJuego.hh>
 
-ConfNuevoJuego::ConfNuevoJuego(const wxString& title)
-    : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)) {
+ConfNuevoJuego::ConfNuevoJuego(const wxString& title) 
+: wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)) {
+
+  //luego se va a sobreescribir pero es para evitar errores:
+
+  numFilasTablero=numColumnasTablero=4;
+  
   wxPanel* panelPrincipal = new wxPanel(this);
 
   wxBoxSizer* panelVertical = new wxBoxSizer(wxVERTICAL);
@@ -144,5 +150,6 @@ void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
 
 void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
    //la idea de está parte era que de aquí se abriera la ventana como tal del juego 
-  
+    VistaJuego* juego = new VistaJuego("Connect 4",numFilasTablero,numColumnasTablero);
+    juego->Show(true);
 }
