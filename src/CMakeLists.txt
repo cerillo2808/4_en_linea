@@ -25,7 +25,6 @@ set(SRCS
     JugadorDificil.cpp
     JugadorFacil.cpp
     Tablero.cpp
-    ConfNuevoJuego.cpp
     EstadoJuego.cpp
     Controlador.cpp
     VistaJuego.cpp
