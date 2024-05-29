@@ -13,6 +13,9 @@ class Tablero {
 
   std::vector<std::vector<Color>> getTablero();
 
+  // constructor de copias
+  Tablero(const Tablero& other);
+
   // método para verificar si alguno de los jugadores ya completo una línea de 4
   // fichas
   bool analizarJugada(Color ficha, int fila, int columna);

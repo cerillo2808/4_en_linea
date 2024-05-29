@@ -111,18 +111,7 @@ TEST(TableroTest, InsertarFichaLleno) {
   EXPECT_EQ(tablero.getTablero()[1][1], 2);
 }
 
-TEST(TableroTest, copiaTablero) {
-  Tablero tablero(2, 2);
-
-  std::vector<std::vector<Color>> tableroCopia = tablero.getTablero();
-
-  EXPECT_EQ(tableroCopia[0][0], 0);
-  EXPECT_EQ(tableroCopia[0][1], 0);
-  EXPECT_EQ(tableroCopia[1][0], 0);
-  EXPECT_EQ(tableroCopia[1][1], 0);
-}
-
-TEST(TableroTest, manipularCopiaTablero) {
+TEST(TableroTest, copiaConConstructor) {
   Tablero tablero(2, 2);
 
   tablero.insertarFicha(rojo, 1);
@@ -132,60 +121,34 @@ TEST(TableroTest, manipularCopiaTablero) {
   EXPECT_EQ(tablero.getTablero()[1][0], 0);
   EXPECT_EQ(tablero.getTablero()[1][1], 2);
 
-  std::vector<std::vector<Color>> tableroCopia = tablero.getTablero();
-
-  EXPECT_EQ(tableroCopia[0][0], 0);
-  EXPECT_EQ(tableroCopia[0][1], 0);
-  EXPECT_EQ(tableroCopia[1][0], 0);
-  EXPECT_EQ(tableroCopia[1][1], 2);
-}
-
-TEST(TableroTest, objetoTableroIgualadoATablero) {
-  Tablero tablero(2, 2);
-
-  int filas = tablero.getFilas();
-  int columnas = tablero.getColumnas();
-
-  Tablero copia(filas, columnas);
-
-  copia.getTablero() = tablero.getTablero();
-
-  copia.insertarFicha(rojo, 1);
+  Tablero copia = tablero;
+  // la copia se iguala al tablero
 
   EXPECT_EQ(copia.getTablero()[0][0], 0);
   EXPECT_EQ(copia.getTablero()[0][1], 0);
   EXPECT_EQ(copia.getTablero()[1][0], 0);
   EXPECT_EQ(copia.getTablero()[1][1], 2);
-
-  EXPECT_EQ(tablero.getTablero()[0][0], 0);
-  EXPECT_EQ(tablero.getTablero()[0][1], 0);
-  EXPECT_EQ(tablero.getTablero()[1][0], 0);
-  EXPECT_EQ(tablero.getTablero()[1][1], 0);
+  // nótese que copia se ve igual al tablero original
 }
 
-TEST(TableroTest, objetoTableroIgualadoATableroConFichas) {
+TEST(TableroTest, copiaEditada) {
   Tablero tablero(2, 2);
 
-  int filas = tablero.getFilas();
-  int columnas = tablero.getColumnas();
-
-  Tablero copia(filas, columnas);
-
   tablero.insertarFicha(rojo, 1);
+
+  Tablero copia = tablero;
+
+  copia.insertarFicha(rojo, 1);
+
+  EXPECT_EQ(copia.getTablero()[0][0], 0);
+  EXPECT_EQ(copia.getTablero()[0][1], 2);
+  EXPECT_EQ(copia.getTablero()[1][0], 0);
+  EXPECT_EQ(copia.getTablero()[1][1], 2);
+  // nótese que la copia tiene la ficha del original mas la que se le insertó
 
   EXPECT_EQ(tablero.getTablero()[0][0], 0);
   EXPECT_EQ(tablero.getTablero()[0][1], 0);
   EXPECT_EQ(tablero.getTablero()[1][0], 0);
   EXPECT_EQ(tablero.getTablero()[1][1], 2);
-
-  for (int i = 0; i < filas; i++) {
-    for (int j = 0; j < columnas; j++) {
-      copia.getTablero()[i][j] = tablero.getTablero()[i][j];
-    }
-  }
-
-  EXPECT_EQ(copia.getTablero()[0][0], 0);
-  EXPECT_EQ(copia.getTablero()[0][1], 0);
-  EXPECT_EQ(copia.getTablero()[1][0], 0);
-  EXPECT_EQ(copia.getTablero()[1][1], 0);
+  // aunque se le haya insertado otra ficha a la copia, la original no cambió
 }

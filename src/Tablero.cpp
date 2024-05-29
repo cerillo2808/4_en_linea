@@ -1,14 +1,19 @@
 #include <IJugador.hh>
 #include <Tablero.hh>
-#include <vector>
 #include <iostream>
+#include <vector>
 using namespace std;
 
-  // el vector tablero está hecho de otro vector hecho de colores. Es una matriz
-  // de colores, de tamaño inicializado por los parámetros. Además, siempre se inicializan las celdad en non_color
-Tablero ::Tablero(int filas, int columnas) : tablero (filas, std::vector<Color>(columnas,non_color)) {}
+// el vector tablero está hecho de otro vector hecho de colores. Es una matriz
+// de colores, de tamaño inicializado por los parámetros. Además, siempre se
+// inicializan las celdad en non_color
+Tablero ::Tablero(int filas, int columnas)
+    : tablero(filas, std::vector<Color>(columnas, non_color)) {}
 
 std::vector<std::vector<Color>> Tablero ::getTablero() { return tablero; }
+
+// constructor de copias del tablero
+Tablero::Tablero(const Tablero& other) { tablero = other.tablero; }
 
 bool Tablero ::analizarJugada(Color ficha, int fila, int columna) {
   // En el siguiente vector se guardaran las coordenadas de la ficha extrema a
@@ -147,7 +152,7 @@ bool Tablero ::recorridoVertical(Color ficha, int contador, int fila,
 bool Tablero ::recorridoHorizontalDer(Color ficha, int contador, int fila,
                                       int columna) {
   contador++;
-  cout <<contador<<endl;
+  cout << contador << endl;
   if (contador < 4) {
     // se verifica que existe una ficha del mismo color a la derecha de la fila
     // de interes
@@ -221,7 +226,7 @@ bool Tablero::insertarFicha(Color ficha, int columna) {
     // verifica que la columna a la que se quiere insertar la ficha no esté
     // llena.
 
-    for (int i = (getFilas() - 1) ; i >= 0; i--) {
+    for (int i = (getFilas() - 1); i >= 0; i--) {
       // recorre la columna de abajo para arriba
 
       if (tablero[i][columna] == non_color) {
