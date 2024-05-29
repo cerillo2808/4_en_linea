@@ -242,3 +242,12 @@ bool Tablero::insertarFicha(Color ficha, int columna) {
   // se retorna falso, para que la GUI sepa que no se logró insertar la ficha
   // en esa columna y deje que el usuario haga otro click.
 }
+
+bool Tablero::empate() {
+  for (int i = 0; i < tablero.size(); i++) {
+    if (tablero[0][i] == 0) {
+      return false;
+    }
+  }
+  return true;
+}

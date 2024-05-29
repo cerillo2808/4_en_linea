@@ -54,6 +54,8 @@ class Tablero {
   // método que devuelve la cantidad de columnas
   int getColumnas();
 
+  bool empate();
+
  private:
   std::vector<std::vector<Color>> tablero;
 };

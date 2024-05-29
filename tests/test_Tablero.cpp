@@ -152,3 +152,36 @@ TEST(TableroTest, copiaEditada) {
   EXPECT_EQ(tablero.getTablero()[1][1], 2);
   // aunque se le haya insertado otra ficha a la copia, la original no cambió
 }
+
+TEST(TableroTest, empateVerdadero) {
+  Tablero tablero(2, 2);
+
+  tablero.insertarFicha(rojo, 1);
+  tablero.insertarFicha(azul, 1);
+  tablero.insertarFicha(rojo, 0);
+  tablero.insertarFicha(azul, 0);
+
+  EXPECT_EQ(tablero.getTablero()[0][0], 1);
+  EXPECT_EQ(tablero.getTablero()[0][1], 1);
+  EXPECT_EQ(tablero.getTablero()[1][0], 2);
+  EXPECT_EQ(tablero.getTablero()[1][1], 2);
+
+  bool respuesta = tablero.empate();
+  EXPECT_TRUE(respuesta);
+}
+
+TEST(TableroTest, empateFalso) {
+  Tablero tablero(2, 2);
+
+  tablero.insertarFicha(rojo, 1);
+  tablero.insertarFicha(azul, 1);
+  tablero.insertarFicha(rojo, 0);
+
+  EXPECT_EQ(tablero.getTablero()[0][0], 0);
+  EXPECT_EQ(tablero.getTablero()[0][1], 1);
+  EXPECT_EQ(tablero.getTablero()[1][0], 2);
+  EXPECT_EQ(tablero.getTablero()[1][1], 2);
+
+  bool respuesta = tablero.empate();
+  EXPECT_FALSE(respuesta);
+}
