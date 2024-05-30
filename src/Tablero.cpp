@@ -8,9 +8,9 @@ using namespace std;
 // de colores, de tamaño inicializado por los parámetros. Además, siempre se
 // inicializan las celdad en non_color
 Tablero ::Tablero(int filas, int columnas)
-    : tablero(filas, std::vector<Color>(columnas, non_color)) {}
+    : tablero(filas, vector<Color>(columnas, non_color)) {}
 
-std::vector<std::vector<Color>> Tablero ::getTablero() { return tablero; }
+vector<vector<Color>> Tablero ::getTablero() { return tablero; }
 
 // constructor de copias del tablero
 Tablero::Tablero(const Tablero& other) { tablero = other.tablero; }

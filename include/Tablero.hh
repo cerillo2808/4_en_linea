@@ -11,7 +11,7 @@ class Tablero {
   // Constructor
   Tablero(int filas, int columnas);
 
-  std::vector<std::vector<Color>> getTablero();
+  vector<vector<Color>> getTablero();
 
   // constructor de copias
   Tablero(const Tablero& other);
@@ -57,6 +57,6 @@ class Tablero {
   bool empate();
 
  private:
-  std::vector<std::vector<Color>> tablero;
+  vector<vector<Color>> tablero;
 };
 #endif
