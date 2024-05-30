@@ -8,9 +8,9 @@ using namespace std;
 // de colores, de tamaño inicializado por los parámetros. Además, siempre se
 // inicializan las celdad en non_color
 Tablero ::Tablero(int filas, int columnas)
-    : tablero(filas, std::vector<Color>(columnas, non_color)) {}
+    : tablero(filas, vector<Color>(columnas, non_color)) {}
 
-std::vector<std::vector<Color>> Tablero ::getTablero() { return tablero; }
+vector<vector<Color>> Tablero ::getTablero() { return tablero; }
 
 // constructor de copias del tablero
 Tablero::Tablero(const Tablero& other) { tablero = other.tablero; }
@@ -241,4 +241,13 @@ bool Tablero::insertarFicha(Color ficha, int columna) {
   return false;
   // se retorna falso, para que la GUI sepa que no se logró insertar la ficha
   // en esa columna y deje que el usuario haga otro click.
+}
+
+bool Tablero::empate() {
+  for (int i = 0; i < tablero.size(); i++) {
+    if (tablero[0][i] == 0) {
+      return false;
+    }
+  }
+  return true;
 }
