@@ -1,14 +1,12 @@
-#include <JugadorHumano.hh>
 #include <IJugador.hh>
+#include <JugadorHumano.hh>
 #include <iostream>
 
 using namespace std;
 
-JugadorHumano:: JugadorHumano (string nombre, Color ficha):
-    IJugador (nombre,ficha)
-{}
+JugadorHumano::JugadorHumano(string nombre, Color ficha)
+    : IJugador(nombre, ficha) {}
 
+Color JugadorHumano ::getFicha() { return ficha; }
 
-void JugadorHumano:: jugar(){
-    cout<<"humano"<<endl;
-}
+void JugadorHumano::jugar() { cout << "humano" << endl; }

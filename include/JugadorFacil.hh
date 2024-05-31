@@ -5,13 +5,11 @@
 
 using namespace std;
 
-
-class JugadorFacil: public IJugador{
-
-    public:
-        JugadorFacil (string nombre, Color ficha);
-        void jugar() override;
-
+class JugadorFacil : public IJugador {
+ public:
+  JugadorFacil(string nombre, Color ficha);
+  void jugar() override;
+  Color getFicha();
 };
 
 #endif
