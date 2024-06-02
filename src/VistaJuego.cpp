@@ -43,8 +43,9 @@ VistaJuego::VistaJuego(const wxString& title,unique_ptr<EstadoJuego> estado)
 
   panelHorizontal->Add(tablaPuntaje, 0, wxALIGN_RIGHT | wxALL, 10);
 
+  int margenLados = 60;
   panelVertical->Add(panelHorizontal, 0, wxEXPAND | wxTOP | wxRIGHT, 10);
-  panelVertical->Add(espacioTablero, 1, wxEXPAND | wxALL, 10);
+  panelVertical->Add(espacioTablero, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxBOTTOM, margenLados);
 
   this->SetSizerAndFit(panelVertical);
 
@@ -60,6 +61,9 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
   // fuera de la pantalla, cuando ya está se copia en la pantalla esto ayuda a
   // reducir el parpadeo
   wxBufferedPaintDC bufferDibujo(espacioTablero);
+
+   // Establece el color de fondo a azul
+  bufferDibujo.SetBackground(*wxBLUE);
   // limpia el area del dibujo:
   bufferDibujo.Clear();
 
@@ -102,17 +106,31 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
 
 void VistaJuego::onClick(wxMouseEvent& event){
 
-    int alturaPanel, anchoPanel;
-    // obtiene el tamaño del panel y lo guarda en las variables altura y ancho del
-    // panel
-     espacioTablero->GetClientSize(&anchoPanel, &alturaPanel);
-    // para calcular el ancho y largo de las celdas dividimos el ancho por la
-    // cantidad de columnas y el largo por la cantidad de filas
+    int anchoPanel=espacioTablero->GetClientSize().GetWidth();
+    
     int anchoCelda = anchoPanel / estadoActual->columnas;
     //obtenemos la coordenada del eje X del evento del click, coordenada relativa al tamaño de espacioTablero
     int coordX=event.GetX();
     //covertimos coordenada en columna
     int columnaClick= coordX/anchoCelda;
     wxLogMessage("Clic en la columna %d", columnaClick);
+
+    if(estadoActual->insertarFicha(columnaClick)){
+      //Sí pudimos insertar ficha, así que con refresh encolamos evento de dibujar
+      Refresh();
+    }
+    //luego de que se pone un ficha verificamo si empate, si ganador y si no cambiamos de turno
+    if(estadoActual->verificarGanador()){
+    
+      }else if(estadoActual->empate()){
+
+      }else{
+        estadoActual->cambiarTurno();
+        //TODO:control para indicar de quien es el turno en base al jugador actual en estado
+      }
+
+
+
+
 
 }

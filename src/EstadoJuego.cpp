@@ -18,7 +18,7 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1, int tipoJuga
  }
 
  int EstadoJuego::estadoCelda (int fila, int columna){
-    
+    return 1;
  }
 
 bool EstadoJuego::insertarFicha(int columna){
@@ -38,4 +38,12 @@ int EstadoJuego::verificarGanador(){
 bool EstadoJuego::empate(){
 
     return false;
+}
+
+void EstadoJuego::cambiarTurno(){
+    if(jugadorActual==jugadorUno){
+        jugadorActual=jugadorDos;
+    }else{
+        jugadorActual=jugadorUno;
+    }
 }
