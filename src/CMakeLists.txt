@@ -18,7 +18,13 @@ endif()
 
 set(SRCS
 # TODO: Agregar aquí los archivos fuente de su proyecto
-    main.cpp
+    MainFrame.cpp
+    App.cpp
+    JugadorHumano.cpp
+    JugadorDificil.cpp
+    JugadorFacil.cpp
+    Tablero.cpp
+
 )
 
 if(APPLE)
