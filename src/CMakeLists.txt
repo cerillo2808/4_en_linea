@@ -26,8 +26,8 @@ set(SRCS
     JugadorFacil.cpp
     Tablero.cpp
     EstadoJuego.cpp
-    Controlador.cpp
     VistaJuego.cpp
+    ConfNuevoJuego.cpp
 )
 
 if(APPLE)

@@ -2,7 +2,7 @@
 #include <wx/wx.h>
 
 #include <ConfNuevoJuego.hh>
-#include <TableroGUI.hh>
+
 #include <VistaJuego.hh>
 
 ConfNuevoJuego::ConfNuevoJuego(const wxString& title)
