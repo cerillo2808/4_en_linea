@@ -3,11 +3,9 @@
 
 #include <wx/wx.h>
 
-class App: public wxApp
-{
-    public:
-        bool OnInit();
+class App : public wxApp {
+ public:
+  bool OnInit();
 };
 
-
-#endif // APP_HH
+#endif  // APP_HH
