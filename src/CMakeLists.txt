@@ -20,7 +20,6 @@ set(SRCS
 # TODO: Agregar aquí los archivos fuente de su proyecto
     MainFrame.cpp
     App.cpp
-    Ijugador.cpp
     JugadorHumano.cpp
     JugadorDificil.cpp
     JugadorFacil.cpp
