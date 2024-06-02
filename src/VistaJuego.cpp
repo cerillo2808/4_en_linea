@@ -1,16 +1,18 @@
 #include <wx/dcbuffer.h>
 #include <wx/wx.h>
-
+#include <EstadoJuego.hh>
+#include <memory>
 #include <VistaJuego.hh>
 
-VistaJuego::VistaJuego(const wxString& title, int filas, int columnas)
+VistaJuego::VistaJuego(const wxString& title,unique_ptr<EstadoJuego> estado)
     : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxDefaultSize),
-      numFilas(filas),
-      numColumnas(columnas) {
+      estadoActual(move(estado)) {
+
   // crear el espacio, panel, para el tablero
   espacioTablero = new wxPanel(this);
 
   espacioTablero->Bind(wxEVT_PAINT, &VistaJuego::onPaint, this);
+  espacioTablero->Bind(wxEVT_LEFT_DOWN, &VistaJuego::onClick,this);
 
   // creando fuente para el texto de los botones
   wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
@@ -44,6 +46,8 @@ VistaJuego::VistaJuego(const wxString& title, int filas, int columnas)
 
   this->SetSizerAndFit(panelVertical);
 
+  
+
   Maximize(true);
 }
 
@@ -67,8 +71,8 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
   // para calcular el ancho y largo de las celdas dividimos el ancho por la
   // cantidad de columnas y el largo por la cantidad de filas
 
-  int anchoCelda = anchoPanel / numColumnas;
-  int alturaCelda = alturaPanel / numFilas;
+  int anchoCelda = anchoPanel / estadoActual->columnas;
+  int alturaCelda = alturaPanel / estadoActual->filas;
 
   // entre el ancho y la altura tomamos el menor valor para asegurar que no se
   // nos salga el circulo de área de la casilla
@@ -84,12 +88,28 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
   // vamos a ir iterando para dibujar los circulos en cada celda del tablero
   // vamos rellenando por filas
 
-  for (int i = 0; i < numColumnas; i++) {
-    for (int j = 0; j < numFilas; j++) {
+  for (int i = 0; i < estadoActual->columnas; i++) {
+    for (int j = 0; j < estadoActual->filas; j++) {
       // calculamos el eje x del centro del circulo
       int ejeX = i * anchoCelda + anchoCelda / 2;
       int ejeY = j * alturaCelda + alturaCelda / 2;
       bufferDibujo.DrawCircle(ejeX, ejeY, radio);
     }
   }
+}
+
+void VistaJuego::onClick(wxMouseEvent& event){
+
+    int alturaPanel, anchoPanel;
+    // obtiene el tamaño del panel y lo guarda en las variables altura y ancho del
+    // panel
+     espacioTablero->GetClientSize(&anchoPanel, &alturaPanel);
+    // para calcular el ancho y largo de las celdas dividimos el ancho por la
+    // cantidad de columnas y el largo por la cantidad de filas
+    int anchoCelda = anchoPanel / estadoActual->columnas;
+    //obtenemos la coordenada del eje X del evento del click, coordenada relativa al tamaño de espacioTablero
+    int coordX=event.GetX();
+    //covertimos coordenada en columna
+    int columnaClick= coordX/anchoCelda;
+    wxLogMessage("Clic en la columna %d", columnaClick);
 }

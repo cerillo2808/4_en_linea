@@ -1,8 +1,8 @@
 #include <wx/spinctrl.h>
 #include <wx/wx.h>
-
+#include <memory>
+#include <EstadoJuego.hh>
 #include <ConfNuevoJuego.hh>
-
 #include <VistaJuego.hh>
 
 ConfNuevoJuego::ConfNuevoJuego(const wxString& title)
@@ -29,8 +29,11 @@ ConfNuevoJuego::ConfNuevoJuego(const wxString& title)
   staticText->SetFont(fuente);
 
   wxArrayString choices;
+  //radioBox nos devolvera un 0 si es el humano
   choices.Add("Humano");
+  //radioBox nos devolvera 1 si es el IA fácil
   choices.Add("IA Facil");
+  //radioBox nos devolvera 2 si es el IA díficil
   choices.Add("IA Dificil");
 
   wxRadioBox* radioBox1 = new wxRadioBox(
@@ -149,9 +152,8 @@ void ConfNuevoJuego::columnasTablero(wxCommandEvent& event) {
 void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
 
 void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
-  // la idea de está parte era que de aquí se abriera la ventana como tal del
-  // juego
+  auto estado= make_unique<EstadoJuego>(numFilasTablero,numColumnasTablero,tipoJugadorUno, tipoJugadorDos);
   VistaJuego* juego =
-      new VistaJuego("Connect 4", numFilasTablero, numColumnasTablero);
+      new VistaJuego("4 en linea", move(estado));
   juego->Show(true);
 }
