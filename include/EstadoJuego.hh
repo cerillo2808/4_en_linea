@@ -19,6 +19,8 @@ class EstadoJuego{
     int verificarGanador();
     bool empate();
 
+    void cambiarTurno();
+
     //método que regrese 1 si es una casilla donde está el jugador 1
     //2 si es el 2 y 0 si está vacía 
     int estadoCelda (int fila, int columna);
