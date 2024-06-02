@@ -13,6 +13,8 @@ VistaJuego::VistaJuego(const wxString& title,unique_ptr<EstadoJuego> estado)
 
   espacioTablero->Bind(wxEVT_PAINT, &VistaJuego::onPaint, this);
   espacioTablero->Bind(wxEVT_LEFT_DOWN, &VistaJuego::onClick,this);
+  espacioTablero->Bind(wxEVT_RIGHT_DOWN,&VistaJuego::onClick,this );
+  espacioTablero->Bind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick,this);
 
   // creando fuente para el texto de los botones
   wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
@@ -112,4 +114,5 @@ void VistaJuego::onClick(wxMouseEvent& event){
     //covertimos coordenada en columna
     int columnaClick= coordX/anchoCelda;
     wxLogMessage("Clic en la columna %d", columnaClick);
+
 }
