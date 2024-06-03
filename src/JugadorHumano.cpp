@@ -7,6 +7,5 @@ using namespace std;
 JugadorHumano::JugadorHumano(string nombre, Color ficha)
     : IJugador(nombre, ficha) {}
 
-Color JugadorHumano ::getFicha() { return ficha; }
 
 void JugadorHumano::jugar() { cout << "humano" << endl; }

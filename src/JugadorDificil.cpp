@@ -11,7 +11,6 @@ using namespace std;
 JugadorDificil::JugadorDificil(string nombre, Color ficha)
     : IJugador(nombre, ficha) {}
 
-Color JugadorDificil ::getFicha() { return ficha; }
 
 void JugadorDificil ::setColorOponente(Color fichaOponente) {
   oponente = fichaOponente;

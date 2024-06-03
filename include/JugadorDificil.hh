@@ -15,7 +15,6 @@ class JugadorDificil : public IJugador {
   vector<int> minimax(Tablero tablero, int profundidad, int alfa, int beta,
                       Color jugador);
 
-  Color getFicha();
 
   void setColorOponente(Color ficha);
 
