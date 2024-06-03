@@ -19,9 +19,9 @@ class JugadorDificil : public IJugador {
 
   void setColorOponente(Color ficha);
 
-  int puntajeCaso(Tablero tablero){};
+  int puntajeCaso(Tablero tablero);
 
-  int valorJugada(Color fichaJugador, Color fichaTablero){};
+  int valorJugada(Color fichaJugador, Color fichaTablero);
 
  private:
   Color oponente;
