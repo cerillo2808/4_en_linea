@@ -1,45 +1,97 @@
 #include <EstadoJuego.hh>
 #include <IJugador.hh>
+#include <JugadorDificil.hh>
+#include <JugadorFacil.hh>
+#include <JugadorHumano.hh>
 #include <Tablero.hh>
 #include <iostream>
+#include <memory>
+#include <string>
 #include <vector>
+
+using namespace std;
 
 EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
                          int tipoJugador2)
-    : filas(filas), columnas(columnas) {
- 
+    : filas(filas), columnas(columnas), tablero(filas, columnas) {
   Tablero tablero = Tablero(filas, columnas);
 
-  instanciarJugadores(tipoJugador1, tipoJugador2);
+  unique_ptr<IJugador> jugadorUno = instanciarJugador(tipoJugador1, azul);
+  unique_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo);
+
   // Inciamos con el primer jugador, se va a ir cambiando
-  jugadorActual = jugadorUno;
+  jugadorActual = move(jugadorUno);
 }
 
-void EstadoJuego::instanciarJugadores(int tipoJugador1, int tipoJugador2) {
+std::unique_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador1,
+                                                         Color ficha) {
+  if (tipoJugador1 == 0) {
+    string nombre = "humano";
+    unique_ptr<IJugador> jugador =
+        unique_ptr<IJugador>(new JugadorHumano(nombre, azul));
+    return jugador;
 
-    if (tipoJugador1 == 0){
-        
-    }
+  } else if (tipoJugador1 == 1) {
+    string nombre = "facil";
+    unique_ptr<IJugador> jugador =
+        unique_ptr<IJugador>(new JugadorFacil(nombre, azul));
+    return jugador;
+
+  } else {
+    string nombre = "dificil";
+    unique_ptr<IJugador> jugador =
+        unique_ptr<IJugador>(new JugadorDificil(nombre, azul));
+    return jugador;
+  }
 }
 
-int EstadoJuego::estadoCelda(int fila, int columna) { return 1; }
+int EstadoJuego::estadoCelda(int fila, int columna) {
+  return tablero.getTablero()[fila][columna];
+}
 
 bool EstadoJuego::insertarFicha(int columna) {
-  // dependiendo del tipo del jugador tiene que usar un método de inserción de
-  // ficha distinto De acuerdo a los indices que obtenemos de los radio box si
-  // 0=jugadorHumano, 1=Fácil , 2= dificil
-  // Se le pasa el tipo como parametro a IJugador
-  return false;
+  Color ficha;
+
+  if (jugadorActual == jugadorUno) {
+    ficha = azul;
+  } else if (jugadorActual == jugadorDos) {
+    ficha = rojo;
+  }
+
+  return tablero.insertarFicha(ficha, columna);
 }
 
-int EstadoJuego::verificarGanador() { return 1; }
+int EstadoJuego::verificarGanador() {
+  Color ficha;
 
-bool EstadoJuego::empate() { return false; }
+  if (jugadorActual == jugadorUno) {
+    ficha = azul;
+  } else if (jugadorActual == jugadorDos) {
+    ficha = rojo;
+  }
+
+  if (tablero.analizarJugada(ficha, 1, 1)) {
+    // TODO: Conseguir las coordenadas en donde se insertó la ficha.
+    if (ficha == azul) {
+      return 1;
+    } else if (ficha == rojo) {
+      return 2;
+    }
+  }
+
+  return 0;
+}
+
+bool EstadoJuego::empate() { return tablero.empate(); }
 
 void EstadoJuego::cambiarTurno() {
   if (jugadorActual == jugadorUno) {
-    jugadorActual = jugadorDos;
+    unique_ptr<IJugador> temporal = move(jugadorActual);
+    jugadorActual = move(jugadorDos);
+    jugadorUno = move(temporal);
   } else {
-    jugadorActual = jugadorUno;
+    unique_ptr<IJugador> temporal = move(jugadorActual);
+    jugadorActual = move(jugadorUno);
+    jugadorUno = move(temporal);
   }
 }
