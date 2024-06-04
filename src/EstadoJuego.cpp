@@ -16,7 +16,7 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
     : filas(filas), columnas(columnas), tablero(filas, columnas) {
   Tablero tablero = Tablero(filas, columnas);
 
-  unique_ptr<IJugador> jugadorUno = instanciarJugador(tipoJugador1, azul);
+  unique_ptr<IJugador> jugadorUno = instanciarJugador(tipoJugador1, amarillo);
   unique_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo);
 
   // Inciamos con el primer jugador, se va a ir cambiando
@@ -28,19 +28,19 @@ std::unique_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador1,
   if (tipoJugador1 == 0) {
     string nombre = "humano";
     unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorHumano(nombre, azul));
+        unique_ptr<IJugador>(new JugadorHumano(nombre, ficha));
     return jugador;
 
   } else if (tipoJugador1 == 1) {
     string nombre = "facil";
     unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorFacil(nombre, azul));
+        unique_ptr<IJugador>(new JugadorFacil(nombre, ficha));
     return jugador;
 
   } else {
     string nombre = "dificil";
     unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorDificil(nombre, azul));
+        unique_ptr<IJugador>(new JugadorDificil(nombre, ficha));
     return jugador;
   }
 }
@@ -53,7 +53,7 @@ bool EstadoJuego::insertarFicha(int columna) {
   Color ficha;
 
   if (jugadorActual == jugadorUno) {
-    ficha = azul;
+    ficha = amarillo;
   } else if (jugadorActual == jugadorDos) {
     ficha = rojo;
   }
@@ -65,14 +65,14 @@ int EstadoJuego::verificarGanador() {
   Color ficha;
 
   if (jugadorActual == jugadorUno) {
-    ficha = azul;
+    ficha = amarillo;
   } else if (jugadorActual == jugadorDos) {
     ficha = rojo;
   }
 
   if (tablero.analizarJugada(ficha, 1, 1)) {
     // TODO: Conseguir las coordenadas en donde se insertó la ficha.
-    if (ficha == azul) {
+    if (ficha == amarillo) {
       return 1;
     } else if (ficha == rojo) {
       return 2;
