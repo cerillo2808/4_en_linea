@@ -16,29 +16,31 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
     : filas(filas), columnas(columnas), tablero(filas, columnas) {
   Tablero tablero = Tablero(filas, columnas);
 
-  unique_ptr<IJugador> jugadorUno = instanciarJugador(tipoJugador1, amarillo);
-  unique_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo);
+  unique_ptr<IJugador> jugadorUno =
+      instanciarJugador(tipoJugador1, amarillo, "1");
+  unique_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
 
   // Inciamos con el primer jugador, se va a ir cambiando
   jugadorActual = move(jugadorUno);
 }
 
-std::unique_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador1,
-                                                         Color ficha) {
-  if (tipoJugador1 == 0) {
-    string nombre = "humano";
+std::unique_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
+                                                         Color ficha,
+                                                         string numeroJugador) {
+  if (tipoJugador == 0) {
+    string nombre = numeroJugador;
     unique_ptr<IJugador> jugador =
         unique_ptr<IJugador>(new JugadorHumano(nombre, ficha));
     return jugador;
 
-  } else if (tipoJugador1 == 1) {
-    string nombre = "facil";
+  } else if (tipoJugador == 1) {
+    string nombre = numeroJugador;
     unique_ptr<IJugador> jugador =
         unique_ptr<IJugador>(new JugadorFacil(nombre, ficha));
     return jugador;
 
   } else {
-    string nombre = "dificil";
+    string nombre = numeroJugador;
     unique_ptr<IJugador> jugador =
         unique_ptr<IJugador>(new JugadorDificil(nombre, ficha));
     return jugador;
