@@ -48,21 +48,21 @@ TEST(TableroTest, AnalisisGaneDiagonal) {
   tablero.insertarFicha(rojo, 0);
   EXPECT_EQ(tablero.getTablero()[3][0], 2);
   EXPECT_FALSE(tablero.analizarJugada(rojo, 3, 0));
-  tablero.insertarFicha(azul, 1);
+  tablero.insertarFicha(amarillo, 1);
   tablero.insertarFicha(rojo, 1);
   EXPECT_EQ(tablero.getTablero()[3][1], 1);
   EXPECT_EQ(tablero.getTablero()[2][1], 2);
   EXPECT_FALSE(tablero.analizarJugada(rojo, 2, 1));
-  tablero.insertarFicha(azul, 2);
-  tablero.insertarFicha(azul, 2);
+  tablero.insertarFicha(amarillo, 2);
+  tablero.insertarFicha(amarillo, 2);
   tablero.insertarFicha(rojo, 2);
   EXPECT_EQ(tablero.getTablero()[3][2], 1);
   EXPECT_EQ(tablero.getTablero()[2][2], 1);
   EXPECT_EQ(tablero.getTablero()[1][2], 2);
   EXPECT_FALSE(tablero.analizarJugada(rojo, 1, 2));
-  tablero.insertarFicha(azul, 3);
-  tablero.insertarFicha(azul, 3);
-  tablero.insertarFicha(azul, 3);
+  tablero.insertarFicha(amarillo, 3);
+  tablero.insertarFicha(amarillo, 3);
+  tablero.insertarFicha(amarillo, 3);
   tablero.insertarFicha(rojo, 3);
   EXPECT_EQ(tablero.getTablero()[3][3], 1);
   EXPECT_EQ(tablero.getTablero()[2][3], 1);
@@ -89,7 +89,7 @@ TEST(TableroTest, InsertarFichaNoVacio) {
   EXPECT_EQ(tablero.getTablero().size(), 2);
 
   tablero.insertarFicha(rojo, 1);
-  tablero.insertarFicha(azul, 1);
+  tablero.insertarFicha(amarillo, 1);
 
   EXPECT_EQ(tablero.getTablero()[0][0], 0);
   EXPECT_EQ(tablero.getTablero()[0][1], 1);
@@ -102,7 +102,7 @@ TEST(TableroTest, InsertarFichaLleno) {
   EXPECT_EQ(tablero.getTablero().size(), 2);
 
   tablero.insertarFicha(rojo, 1);
-  tablero.insertarFicha(azul, 1);
+  tablero.insertarFicha(amarillo, 1);
   tablero.insertarFicha(rojo, 1);
 
   EXPECT_EQ(tablero.getTablero()[0][0], 0);
@@ -157,9 +157,9 @@ TEST(TableroTest, empateVerdadero) {
   Tablero tablero(2, 2);
 
   tablero.insertarFicha(rojo, 1);
-  tablero.insertarFicha(azul, 1);
+  tablero.insertarFicha(amarillo, 1);
   tablero.insertarFicha(rojo, 0);
-  tablero.insertarFicha(azul, 0);
+  tablero.insertarFicha(amarillo, 0);
 
   EXPECT_EQ(tablero.getTablero()[0][0], 1);
   EXPECT_EQ(tablero.getTablero()[0][1], 1);
@@ -174,7 +174,7 @@ TEST(TableroTest, empateFalso) {
   Tablero tablero(2, 2);
 
   tablero.insertarFicha(rojo, 1);
-  tablero.insertarFicha(azul, 1);
+  tablero.insertarFicha(amarillo, 1);
   tablero.insertarFicha(rojo, 0);
 
   EXPECT_EQ(tablero.getTablero()[0][0], 0);
