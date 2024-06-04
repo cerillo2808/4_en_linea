@@ -12,6 +12,7 @@ class MainFrame : public wxFrame {
   // event handlers del menu inicial
   void nuevoJuego(wxCommandEvent& event);
   void salir(wxCommandEvent& event);
+
 };
 
 #endif

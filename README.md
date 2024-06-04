@@ -46,3 +46,8 @@ Selecciona la columna en donde meterá la ficha de manera pseudo-random.
 Selecciona la columna con minimax.
 
 ### Interfaz Gráfica
+A nivel interno, los diferentes tipos de jugador se le asigna un número.
+
+- Jugador 0 = Jugador Humano
+- Jugador 1 = Jugador IA Fácil
+- Jugador 2 = Jugador IA Difícil
