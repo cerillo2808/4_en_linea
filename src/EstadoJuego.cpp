@@ -16,33 +16,33 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
     : filas(filas), columnas(columnas), tablero(filas, columnas) {
   Tablero tablero = Tablero(filas, columnas);
 
-  unique_ptr<IJugador> jugadorUno =
+  shared_ptr<IJugador> jugadorUno =
       instanciarJugador(tipoJugador1, amarillo, "1");
-  unique_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
+  shared_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
 
   // Inciamos con el primer jugador, se va a ir cambiando
   jugadorActual = move(jugadorUno);
 }
 
-std::unique_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
+std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
                                                          Color ficha,
                                                          string numeroJugador) {
   if (tipoJugador == 0) {
     string nombre = numeroJugador;
-    unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorHumano(nombre, ficha));
+    shared_ptr<IJugador> jugador =
+        shared_ptr<IJugador>(new JugadorHumano(nombre, ficha));
     return jugador;
 
   } else if (tipoJugador == 1) {
     string nombre = numeroJugador;
-    unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorFacil(nombre, ficha));
+    shared_ptr<IJugador> jugador =
+        shared_ptr<IJugador>(new JugadorFacil(nombre, ficha));
     return jugador;
 
   } else {
     string nombre = numeroJugador;
-    unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorDificil(nombre, ficha));
+    shared_ptr<IJugador> jugador =
+        shared_ptr<IJugador>(new JugadorDificil(nombre, ficha));
     return jugador;
   }
 }
@@ -88,11 +88,11 @@ bool EstadoJuego::empate() { return tablero.empate(); }
 
 void EstadoJuego::cambiarTurno() {
   if (jugadorActual == jugadorUno) {
-    unique_ptr<IJugador> temporal = move(jugadorActual);
+    shared_ptr<IJugador> temporal = move(jugadorActual);
     jugadorActual = move(jugadorDos);
     jugadorUno = move(temporal);
   } else {
-    unique_ptr<IJugador> temporal = move(jugadorActual);
+    shared_ptr<IJugador> temporal = move(jugadorActual);
     jugadorActual = move(jugadorUno);
     jugadorUno = move(temporal);
   }
