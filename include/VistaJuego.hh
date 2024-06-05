@@ -21,6 +21,10 @@ class VistaJuego : public wxFrame {
   unique_ptr<EstadoJuego> estadoActual;
   ConfNuevoJuego* confNuevoJuego;
   void onClose(wxCloseEvent& event);
+  void dialogoEmpate();
+  void dialogoGanador();
+  void nuevoJuego(wxCommandEvent& event);
+  void botonSalir(wxCommandEvent& event);
 };
 
 #endif

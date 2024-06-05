@@ -66,8 +66,8 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, uniq
   this->SetSizerAndFit(panelVertical);
 
   
-
-  //Maximize(true);
+  //que incialmente este maximizado
+  Maximize(true);
 }
 
 // método que se va a llamar cada que el tablero ocupe ser redibujado- por
@@ -129,7 +129,11 @@ void VistaJuego::onClick(wxMouseEvent& event){
     int coordX=event.GetX();
     //covertimos coordenada en columna
     int columnaClick= coordX/anchoCelda;
+    
     wxLogMessage("Clic en la columna %d", columnaClick);
+
+  
+    dialogoEmpate();
 
     if(estadoActual->insertarFicha(columnaClick)){
       //Sí pudimos insertar ficha, así que con refresh encolamos evento de dibujar
@@ -139,8 +143,7 @@ void VistaJuego::onClick(wxMouseEvent& event){
     if(estadoActual->verificarGanador()){
     
       }else if(estadoActual->empate()){
-
-
+      
       }else{
         // estadoActual->cambiarTurno();
         // turno->SetLabel("falta método para obtener nombre del jugador actual");
@@ -154,4 +157,58 @@ void VistaJuego::onClose(wxCloseEvent& event){
       confNuevoJuego->Close(true);
   }
   event.Skip();
+}
+
+void VistaJuego::dialogoEmpate(){
+    
+    wxDialog* dialogoEmpate= new wxDialog (this,wxID_ANY,"",wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
+    wxBoxSizer* vertical=new wxBoxSizer(wxVERTICAL);
+
+    wxStaticText* empateGrande= new wxStaticText(dialogoEmpate,wxID_ANY,"EMPATE!");
+    wxStaticText* empatePregunta= new wxStaticText(dialogoEmpate,wxID_ANY,"Ha sucedido un empate ¿Deseas reiniciar o salir?",wxDefaultPosition);
+    wxFont fuenteEmpate(wxFontInfo(15).Bold().FaceName("Georgia"));
+    empateGrande->SetFont(fuenteEmpate);
+
+    wxBoxSizer* horizontal=new wxBoxSizer(wxHORIZONTAL);
+    wxButton* nuevoJuego=new wxButton(dialogoEmpate,wxID_ANY, "NUEVO",wxDefaultPosition);
+    wxButton* salir=new wxButton(dialogoEmpate, wxID_ANY, "SALIR",wxDefaultPosition);
+    
+  
+    horizontal->AddStretchSpacer();
+    horizontal->Add(nuevoJuego,0,wxALL | wxEXPAND,10);
+    horizontal->AddStretchSpacer();
+    horizontal->Add(salir,0, wxALL | wxEXPAND,10);
+    horizontal->AddStretchSpacer();
+
+
+    vertical->Add(empateGrande,0,wxALL | wxALIGN_CENTER_HORIZONTAL,10);
+    vertical->Add(empatePregunta,0,wxALL | wxALIGN_CENTER_HORIZONTAL,10);
+    vertical->AddStretchSpacer();
+    vertical->Add(horizontal,0,wxALL| wxEXPAND,10 );
+
+    
+
+    dialogoEmpate->SetSizer(vertical);
+    dialogoEmpate->Fit();
+
+
+    nuevoJuego->Bind(wxEVT_BUTTON,&VistaJuego::nuevoJuego,this);
+    salir->Bind(wxEVT_BUTTON,&VistaJuego::botonSalir,this);
+
+    dialogoEmpate->ShowModal();
+
+    delete dialogoEmpate; 
+    
+}
+
+void VistaJuego::dialogoGanador(){
+
+}
+
+void VistaJuego::nuevoJuego(wxCommandEvent& event){
+  wxLogMessage("Presionaron nuevo desde dialog");
+}
+
+void VistaJuego::botonSalir(wxCommandEvent& event){
+  wxLogMessage("Presionaron salir desde dialog");
 }

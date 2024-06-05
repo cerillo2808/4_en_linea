@@ -43,7 +43,7 @@ MainFrame::MainFrame(const wxString& title)
   panelPrincipal->SetSizer(panelHorizontal);
 
   // que inicialmente este maximizado
-  //Maximize(true);
+  Maximize(true);
 }
 
 void MainFrame::nuevoJuego(wxCommandEvent& event) {

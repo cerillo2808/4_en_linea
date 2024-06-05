@@ -101,7 +101,7 @@ ConfNuevoJuego::ConfNuevoJuego(MainFrame* mainFrame, const wxString& title)
   botonRegresar->Bind(wxEVT_BUTTON, &ConfNuevoJuego::botonRegresar, this);
  
 
-  //Maximize(true);
+  Maximize(true);
 }
 
 // manejo de eventos
