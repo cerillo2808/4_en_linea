@@ -21,7 +21,8 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
   shared_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
 
   // Inciamos con el primer jugador, se va a ir cambiando
-  jugadorActual = move(jugadorUno);
+  shared_ptr<IJugador> jugadorActual = instanciarJugador(0, non_color, "placeholder");
+  jugadorActual.swap(jugadorUno);
 }
 
 std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
@@ -87,13 +88,17 @@ int EstadoJuego::verificarGanador() {
 bool EstadoJuego::empate() { return tablero.empate(); }
 
 void EstadoJuego::cambiarTurno() {
+  shared_ptr<IJugador> temporal = shared_ptr<IJugador>(new JugadorHumano("temporal", non_color));
+  
   if (jugadorActual == jugadorUno) {
-    shared_ptr<IJugador> temporal = move(jugadorActual);
-    jugadorActual = move(jugadorDos);
-    jugadorUno = move(temporal);
+    temporal.swap(jugadorActual);
+    jugadorActual.swap(jugadorDos);
+    jugadorUno.swap(temporal);
+    jugadorDos.swap(temporal);
   } else {
-    shared_ptr<IJugador> temporal = move(jugadorActual);
-    jugadorActual = move(jugadorUno);
-    jugadorUno = move(temporal);
+    temporal.swap(jugadorActual);
+    jugadorActual.swap(jugadorUno);
+    jugadorDos.swap(temporal);
+    jugadorUno.swap(temporal);
   }
 }
