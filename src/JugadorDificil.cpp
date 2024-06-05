@@ -19,7 +19,6 @@ void JugadorDificil ::setColorOponente(Color fichaOponente) {
 vector<int> JugadorDificil ::minimax(Tablero tablero, int profundidad, int alfa,
                                      int beta, Color jugador) {
   int column;
-  vector<int> columnasDisponibles = tablero.getColumnasDisponibles();
   if (profundidad == 0) {
     if (tablero.empate()) {
       return {-1, 0};
@@ -27,6 +26,7 @@ vector<int> JugadorDificil ::minimax(Tablero tablero, int profundidad, int alfa,
       return {-1, puntajeCaso(tablero)};
     }
   }
+  vector<int> columnasDisponibles = tablero.getColumnasDisponibles();
   if (jugador == ficha) {
     int puntajeCaso = INT_MIN;
     for (int i = 0; i < columnasDisponibles.size(); i++) {
@@ -87,7 +87,8 @@ int JugadorDificil ::puntajeCaso(Tablero tablero) {
   vector<vector<Color> > copiaTablero = tablero.getTablero();
 
   for (int i = (copiaTablero.size() - 1); i >= 0; i--) {
-    for (int j = 0; i < copiaTablero[0].size(); i++) {
+    for (int j = 0; j < copiaTablero[0].size(); j++) {
+      
       if (copiaTablero[i][j] == non_color) {
         continue;
       }
@@ -134,7 +135,7 @@ int JugadorDificil ::puntajeCaso(Tablero tablero) {
         }
       }
       // jugadas horizontales derecha
-      if (((j + 3) >= 0) && (copiaTablero[i][j + 1] != fichaOponente)) {
+      if (((j + 3) <= (copiaTablero[0].size() - 1)) && (copiaTablero[i][j + 1] != fichaOponente)) {
         int puntaje = 2 + valorJugada(fichaInteres, copiaTablero[i][j + 1]) +
                       valorJugada(fichaInteres, copiaTablero[i][j + 2]) +
                       valorJugada(fichaInteres, copiaTablero[i][j + 3]);
@@ -199,7 +200,6 @@ int JugadorDificil ::puntajeCaso(Tablero tablero) {
       }
     }
   }
-
   return contadorJugadasGaneIA - contadorJugadasGaneOponente;
 }
 
