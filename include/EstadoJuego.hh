@@ -28,7 +28,7 @@ class EstadoJuego {
   // usar verificarGanador de tablero para en caso de que haya ganador indicar
   // si fue el jugador uno o dos
   // TODO: Faltan coordenadas para Tablero::AnalizarJugada
-  int getGanador();
+  int verificarGanador();
 
   // devuelve verdadero si el tablero está lleno, devuelve falso si aún hay
   // campo en el tablero.
@@ -36,6 +36,9 @@ class EstadoJuego {
 
   // hace que jugadorActual cambie al otro jugador
   void cambiarTurno();
+
+  // hace que los colores del tablero sea non_color
+  void clearTablero();
 
   // atributos
   shared_ptr<IJugador> jugadorActual;

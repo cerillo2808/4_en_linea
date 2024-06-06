@@ -271,3 +271,7 @@ vector<int> Tablero ::getColumnasDisponibles() {
 
   return columnasDisponibles;
 }
+
+void Tablero::setCasilla(Color ficha, int fila, int columna) {
+  tablero[fila][columna] = ficha;
+}

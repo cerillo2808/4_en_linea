@@ -108,3 +108,81 @@ TEST(EstadoTest, insertarFichasOtroTurno) {
   EXPECT_EQ(juego.estadoCelda(1, 0), 0);
   EXPECT_EQ(juego.estadoCelda(1, 1), 1);
 }
+
+TEST(EstadoTest, empateSi) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 0);
+  juego.insertarFicha(1);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  juego.cambiarTurno();
+  juego.insertarFicha(1);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  juego.cambiarTurno();
+  juego.insertarFicha(0);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 1);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  juego.cambiarTurno();
+  juego.insertarFicha(0);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 1);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  bool empate = juego.empate();
+  EXPECT_TRUE(empate);
+}
+
+TEST(EstadoTest, empateNo) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 0);
+  juego.insertarFicha(1);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  juego.cambiarTurno();
+  juego.insertarFicha(1);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  juego.cambiarTurno();
+  juego.insertarFicha(0);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 1);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  bool empate = juego.empate();
+  EXPECT_FALSE(empate);
+}
+
+TEST(EstadoTest, clearTablero) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 0);
+  juego.insertarFicha(1);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  juego.cambiarTurno();
+  juego.insertarFicha(1);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  juego.cambiarTurno();
+  juego.insertarFicha(0);
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 1);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 1);
+  juego.clearTablero();
+  EXPECT_EQ(juego.estadoCelda(0, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(0, 1), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 0);
+  EXPECT_EQ(juego.estadoCelda(1, 1), 0);
+}

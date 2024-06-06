@@ -60,6 +60,9 @@ class Tablero {
   // método para que el tablero indique las columnas disponibles que posee
   vector<int> getColumnasDisponibles();
 
+  // método para modificar una casilla
+  void setCasilla(Color ficha, int fila, int columna);
+
  private:
   vector<vector<Color>> tablero;
   vector<int> columnasDisponibles;

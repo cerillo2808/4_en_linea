@@ -49,22 +49,11 @@ int EstadoJuego::insertarFicha(int columna) {
   return false;
 }
 
-int EstadoJuego::getGanador() {
-  Color ficha;
+int EstadoJuego::verificarGanador() {
 
-  if (jugadorActual->getColor() == jugadorUno->getColor()) {
-    ficha = amarillo;
-  } else if (jugadorActual->getColor() == jugadorDos->getColor()) {
-    ficha = rojo;
-  }
-
-  if (tablero.analizarJugada(ficha, 1, 1)) {
+  if (tablero.analizarJugada(jugadorActual->getColor(), 1, 1)) {
     // TODO: Conseguir las coordenadas en donde se insertó la ficha.
-    if (ficha == amarillo) {
-      return 1;
-    } else if (ficha == rojo) {
-      return 2;
-    }
+    return jugadorActual->getColor();
   }
 
   return 0;
@@ -77,5 +66,13 @@ void EstadoJuego::cambiarTurno() {
     jugadorActual = jugadorDos;
   } else {
     jugadorActual = jugadorUno;
+  }
+}
+
+void EstadoJuego::clearTablero(){
+  for (int i = 0; i<tablero.getFilas(); i++){
+    for (int j = 0; j<tablero.getColumnas(); j++){
+      tablero.setCasilla(non_color, i, j);
+    }
   }
 }
