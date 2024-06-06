@@ -77,8 +77,6 @@ int EstadoJuego::verificarGanador() {
 bool EstadoJuego::empate() { return tablero.empate(); }
 
 void EstadoJuego::cambiarTurno() {
-  cout << "El puntero de jugadorActual es " << jugadorActual.get() << endl;
-  cout << "El puntero de jugadorUno es " << jugadorUno.get() << endl;
   if (jugadorActual == jugadorUno) {
     jugadorActual = jugadorDos;
   } else {

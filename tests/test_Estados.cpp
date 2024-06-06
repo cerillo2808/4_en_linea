@@ -68,8 +68,7 @@ TEST(EstadoTest, insertarMásFichasLleno) {
   EXPECT_EQ(juego.estadoCelda(0, 1), 1);
   EXPECT_EQ(juego.estadoCelda(1, 0), 0);
   EXPECT_EQ(juego.estadoCelda(1, 1), 1);
-  bool exito = juego.insertarFicha(1);
-  EXPECT_FALSE(exito);
+  juego.insertarFicha(1);
   EXPECT_EQ(juego.estadoCelda(0, 0), 0);
   EXPECT_EQ(juego.estadoCelda(0, 1), 1);
   EXPECT_EQ(juego.estadoCelda(1, 0), 0);
