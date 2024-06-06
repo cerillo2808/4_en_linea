@@ -15,7 +15,7 @@ class EstadoJuego {
 
   // Según radio box_ 0 = humano, 1 = facil, 2 = dificil
   // Devuelve un puntero a la instancia del jugador generado.
-  shared_ptr<IJugador> instanciarJugador(int tipoJugador, Color Ficha,
+  unique_ptr<IJugador> instanciarJugador(int tipoJugador, Color Ficha,
                                          string numeroJugador);
 
   // método que regresa el número del enum que ocupe la celda.
@@ -33,10 +33,12 @@ class EstadoJuego {
 
   int getGanador();
 
+  Color asignarFicha();
+
   // atributo
-  shared_ptr<IJugador> jugadorActual;
-  shared_ptr<IJugador> jugadorUno;
-  shared_ptr<IJugador> jugadorDos;
+  unique_ptr<IJugador> jugadorActual;
+  unique_ptr<IJugador> jugadorUno;
+  unique_ptr<IJugador> jugadorDos;
   int filas;
   int columnas;
   Tablero tablero;
