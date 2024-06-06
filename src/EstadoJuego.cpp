@@ -21,6 +21,10 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
 
   // Inciamos con el primer jugador, se va a ir cambiando
   jugadorActual = jugadorUno;
+
+  // empiezan como -1, porque no se ha insertado nada aún
+  ultimaColumnaInsertada = -1;
+  ultimaFilaInsertada = -1;
 }
 
 std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
@@ -40,19 +44,24 @@ int EstadoJuego::estadoCelda(int fila, int columna) {
 }
 
 int EstadoJuego::insertarFicha(int columna) {
-  if (jugadorActual->getColor() == jugadorUno->getColor()) {
-    return tablero.insertarFicha(amarillo, columna);
-  } else if (jugadorActual->getColor() == jugadorDos->getColor()) {
-    return tablero.insertarFicha(rojo, columna);
+  if (jugadorActual == jugadorUno) {
+    int FilaInsertada = tablero.insertarFicha(amarillo, columna);
+    ultimaFilaInsertada = FilaInsertada;
+    ultimaColumnaInsertada = columna;
+    return columna;
+  } else if (jugadorActual == jugadorDos) {
+    int FilaInsertada = tablero.insertarFicha(rojo, columna);
+    ultimaFilaInsertada = FilaInsertada;
+    ultimaColumnaInsertada = columna;
+    return columna;
   }
 
-  return false;
+  return -1;
 }
 
 int EstadoJuego::verificarGanador() {
-
-  if (tablero.analizarJugada(jugadorActual->getColor(), 1, 1)) {
-    // TODO: Conseguir las coordenadas en donde se insertó la ficha.
+  if (tablero.analizarJugada(jugadorActual->getColor(), ultimaFilaInsertada,
+                             ultimaColumnaInsertada)) {
     return jugadorActual->getColor();
   }
 
@@ -69,9 +78,9 @@ void EstadoJuego::cambiarTurno() {
   }
 }
 
-void EstadoJuego::clearTablero(){
-  for (int i = 0; i<tablero.getFilas(); i++){
-    for (int j = 0; j<tablero.getColumnas(); j++){
+void EstadoJuego::clearTablero() {
+  for (int i = 0; i < tablero.getFilas(); i++) {
+    for (int j = 0; j < tablero.getColumnas(); j++) {
       tablero.setCasilla(non_color, i, j);
     }
   }

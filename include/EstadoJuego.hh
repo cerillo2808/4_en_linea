@@ -40,6 +40,11 @@ class EstadoJuego {
   // hace que los colores del tablero sea non_color
   void clearTablero();
 
+  // devuelve 0 si jugadorActual es humano, 1 si jugadorActual es facil, 2 si
+  // jugadorActual es dificil.
+  // TODO: implementarlo.
+  int getTipoJugador();
+
   // atributos
   shared_ptr<IJugador> jugadorActual;
   shared_ptr<IJugador> jugadorUno;
@@ -47,6 +52,8 @@ class EstadoJuego {
   int filas;
   int columnas;
   Tablero tablero;
+  int ultimaColumnaInsertada;
+  int ultimaFilaInsertada;
 };
 
 #endif

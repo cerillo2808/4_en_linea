@@ -186,3 +186,57 @@ TEST(EstadoTest, clearTablero) {
   EXPECT_EQ(juego.estadoCelda(1, 0), 0);
   EXPECT_EQ(juego.estadoCelda(1, 1), 0);
 }
+
+TEST(EstadoTest, getGanador1) {
+  EstadoJuego juego = EstadoJuego(4, 4, 0, 0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+
+  EXPECT_EQ(juego.estadoCelda(0, 0), 1);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 1);
+  EXPECT_EQ(juego.estadoCelda(2, 0), 1);
+  EXPECT_EQ(juego.estadoCelda(3, 0), 1);
+
+  int ganador = juego.verificarGanador();
+  EXPECT_EQ(ganador, 1);
+}
+
+TEST(EstadoTest, getGanador2) {
+  EstadoJuego juego = EstadoJuego(4, 4, 0, 0);
+  juego.cambiarTurno();
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+
+  EXPECT_EQ(juego.estadoCelda(0, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(2, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(3, 0), 2);
+
+  int ganador = juego.verificarGanador();
+  EXPECT_EQ(ganador, 2);
+}
+
+TEST(EstadoTest, getFilaDefault) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 0);
+  EXPECT_EQ(juego.ultimaColumnaInsertada, -1);
+}
+
+TEST(EstadoTest, getFila) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 0);
+  EXPECT_EQ(juego.ultimaColumnaInsertada, -1);
+  juego.insertarFicha(0);
+  EXPECT_EQ(juego.ultimaColumnaInsertada, 0);
+}
+
+TEST(EstadoTest, getFilaMasTurnos) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 0);
+  EXPECT_EQ(juego.ultimaColumnaInsertada, -1);
+  juego.insertarFicha(0);
+  EXPECT_EQ(juego.ultimaColumnaInsertada, 0);
+  juego.insertarFicha(2);
+  EXPECT_EQ(juego.ultimaColumnaInsertada, 2);
+}
