@@ -16,14 +16,10 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
     : filas(filas), columnas(columnas), tablero(filas, columnas) {
   Tablero tablero = Tablero(filas, columnas);
 
-  shared_ptr<IJugador> jugadorUno =
-      instanciarJugador(tipoJugador1, amarillo, "1");
-  shared_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
+  jugadorUno = instanciarJugador(tipoJugador1, amarillo, "1");
+  jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
 
   // Inciamos con el primer jugador, se va a ir cambiando
-  shared_ptr<IJugador> jugadorActual =
-      instanciarJugador(0, non_color, "placeholder");
-
   jugadorActual = jugadorUno;
 }
 
@@ -44,16 +40,7 @@ int EstadoJuego::estadoCelda(int fila, int columna) {
 }
 
 Color EstadoJuego::asignarFicha() {
-  Color ficha = non_color;
-
-  if (jugadorActual->getColor() == jugadorUno->getColor()) {
-    ficha = amarillo;
-  } else if (jugadorActual->getColor() == jugadorDos->getColor()) {
-    ficha = rojo;
-  }
-
-  return ficha;
-  // TODO: Eliminar este método porque es inútil
+  return jugadorActual->getColor();
 }
 
 int EstadoJuego::insertarFicha(int columna) {
