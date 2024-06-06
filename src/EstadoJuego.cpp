@@ -49,7 +49,7 @@ int EstadoJuego::insertarFicha(int columna) {
   return false;
 }
 
-int EstadoJuego::verificarGanador() {
+int EstadoJuego::getGanador() {
   Color ficha;
 
   if (jugadorActual->getColor() == jugadorUno->getColor()) {
