@@ -7,7 +7,7 @@ DialogoEmpate::DialogoEmpate(VistaJuego* ventanaVista):
         wxBoxSizer* vertical=new wxBoxSizer(wxVERTICAL);
 
     wxStaticText* empateGrande= new wxStaticText(this,wxID_ANY,"EMPATE!");
-    wxStaticText* empatePregunta= new wxStaticText(this,wxID_ANY,"Ha sucedido un empate, Deseas continuar o salir",wxDefaultPosition);
+    wxStaticText* empatePregunta= new wxStaticText(this,wxID_ANY,"Ha sucedido un empate, Deseas continuar o salir?",wxDefaultPosition);
     wxFont fuenteEmpate(wxFontInfo(15).Bold().FaceName("Georgia"));
     empateGrande->SetFont(fuenteEmpate);
 

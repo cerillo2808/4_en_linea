@@ -178,7 +178,7 @@ void VistaJuego::onClick(wxMouseEvent& event){
     wxLogMessage("Clic en la columna %d", columnaClick);
 
 
-    DialogoGanador* ganador= new DialogoGanador(this, "Jugador 1");
+    DialogoGanador* ganador= new DialogoGanador(this, "UNO");
     ganador->ShowModal();
     // DialogoEmpate* empate= new DialogoEmpate(this);
     // empate->ShowModal();
