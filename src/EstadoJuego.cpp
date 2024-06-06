@@ -46,9 +46,9 @@ int EstadoJuego::estadoCelda(int fila, int columna) {
 Color EstadoJuego::asignarFicha() {
   Color ficha = non_color;
 
-  if (jugadorActual == jugadorUno) {
+  if (jugadorActual->getColor() == jugadorUno->getColor()) {
     ficha = amarillo;
-  } else if (jugadorActual == jugadorDos) {
+  } else if (jugadorActual->getColor() == jugadorDos->getColor()) {
     ficha = rojo;
   }
 
@@ -90,7 +90,9 @@ int EstadoJuego::verificarGanador() {
 bool EstadoJuego::empate() { return tablero.empate(); }
 
 void EstadoJuego::cambiarTurno() {
-  if (jugadorActual->getColor() == jugadorUno->getColor()) {
+  cout << "El puntero de jugadorActual es " << jugadorActual.get() << endl;
+  cout << "El puntero de jugadorUno es " << jugadorUno.get() << endl;
+  if (jugadorActual == jugadorUno) {
     jugadorActual = jugadorDos;
   } else {
     jugadorActual = jugadorUno;
