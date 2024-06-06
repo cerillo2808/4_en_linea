@@ -42,8 +42,11 @@ class EstadoJuego {
 
   // devuelve 0 si jugadorActual es humano, 1 si jugadorActual es facil, 2 si
   // jugadorActual es dificil.
-  // TODO: implementarlo.
   int getTipoJugador();
+
+  // da los ganes del jugador. Hay que darle el nombre del jugador, que es "1" o
+  // "2". Devuelve -1 si no se encontró al jugador.
+  int getGanes(string nombreJugador);
 
   // atributos
   shared_ptr<IJugador> jugadorActual;
@@ -54,6 +57,8 @@ class EstadoJuego {
   Tablero tablero;
   int ultimaColumnaInsertada;
   int ultimaFilaInsertada;
+  int tipoJugador1;
+  int tipoJugador2;
 };
 
 #endif

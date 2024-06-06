@@ -13,7 +13,11 @@ using namespace std;
 
 EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
                          int tipoJugador2)
-    : filas(filas), columnas(columnas), tablero(filas, columnas) {
+    : filas(filas),
+      columnas(columnas),
+      tablero(filas, columnas),
+      tipoJugador1(tipoJugador1),
+      tipoJugador2(tipoJugador2) {
   Tablero tablero = Tablero(filas, columnas);
 
   jugadorUno = instanciarJugador(tipoJugador1, amarillo, "1");
@@ -62,6 +66,7 @@ int EstadoJuego::insertarFicha(int columna) {
 int EstadoJuego::verificarGanador() {
   if (tablero.analizarJugada(jugadorActual->getColor(), ultimaFilaInsertada,
                              ultimaColumnaInsertada)) {
+    jugadorActual->setGanes();
     return jugadorActual->getColor();
   }
 
@@ -84,4 +89,24 @@ void EstadoJuego::clearTablero() {
       tablero.setCasilla(non_color, i, j);
     }
   }
+}
+
+int EstadoJuego::getTipoJugador() {
+  if (jugadorActual == jugadorUno) {
+    return tipoJugador1;
+  } else if (jugadorActual == jugadorDos) {
+    return tipoJugador2;
+  }
+
+  return -1;
+}
+
+int EstadoJuego::getGanes(string nombre) {
+  if (nombre == "1") {
+    return jugadorUno->getGanes();
+  } else if (nombre == "2") {
+    return jugadorDos->getGanes();
+  }
+
+  return -1;
 }

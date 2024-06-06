@@ -240,3 +240,77 @@ TEST(EstadoTest, getFilaMasTurnos) {
   juego.insertarFicha(2);
   EXPECT_EQ(juego.ultimaColumnaInsertada, 2);
 }
+
+TEST(EstadoTest, getGanes) {
+  EstadoJuego juego = EstadoJuego(4, 4, 0, 0);
+  juego.cambiarTurno();
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+
+  EXPECT_EQ(juego.estadoCelda(0, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(2, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(3, 0), 2);
+
+  int ganador = juego.verificarGanador();
+  EXPECT_EQ(ganador, 2);
+  int ganes1 = juego.getGanes("1");
+  int ganes2 = juego.getGanes("2");
+
+  EXPECT_EQ(ganes1, 0);
+  EXPECT_EQ(ganes2, 1);
+}
+
+TEST(EstadoTest, getMásGanes) {
+  EstadoJuego juego = EstadoJuego(4, 4, 0, 0);
+  juego.cambiarTurno();
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+
+  EXPECT_EQ(juego.estadoCelda(0, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(1, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(2, 0), 2);
+  EXPECT_EQ(juego.estadoCelda(3, 0), 2);
+
+  int ganador = juego.verificarGanador();
+  EXPECT_EQ(ganador, 2);
+  int ganes1 = juego.getGanes("1");
+  int ganes2 = juego.getGanes("2");
+
+  EXPECT_EQ(ganes1, 0);
+  EXPECT_EQ(ganes2, 1);
+
+  juego.clearTablero();
+
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+  juego.insertarFicha(0);
+
+  int ganador_1 = juego.verificarGanador();
+  EXPECT_EQ(ganador_1, 2);
+  int ganes1_1 = juego.getGanes("1");
+  int ganes2_1 = juego.getGanes("2");
+
+  EXPECT_EQ(ganes1_1, 0);
+  EXPECT_EQ(ganes2_1, 2);
+}
+
+TEST(EstadoTest, getJugador) {
+  EstadoJuego juego = EstadoJuego(2, 2, 1, 0);
+  int jugador1 = juego.getTipoJugador();
+  EXPECT_EQ(jugador1, 1);
+}
+
+TEST(EstadoTest, getJugadorConTurno) {
+  EstadoJuego juego = EstadoJuego(2, 2, 1, 0);
+  int jugador1 = juego.getTipoJugador();
+  EXPECT_EQ(jugador1, 1);
+  juego.cambiarTurno();
+  int jugador2 = juego.getTipoJugador();
+  EXPECT_EQ(jugador2, 0);
+}
