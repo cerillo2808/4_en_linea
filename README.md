@@ -17,7 +17,7 @@ Para ejectuar las pruebas, ingrese a la carpeta `build/tests`, y ejecute el coma
 
 - Fila 0 es la fila más superior, mientras que columna 0 la columna más izquierda. 
 
-- El jugador 1 siempre será color azul y el jugador 2 color rojo.
+- El jugador 1 siempre será color amarillo y el jugador 2 color rojo.
 
 - Se juega hasta que se llegue a un ganador o se llene el tablero y resulte en empate.
 

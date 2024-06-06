@@ -1,45 +1,119 @@
 #include <EstadoJuego.hh>
 #include <IJugador.hh>
+#include <JugadorDificil.hh>
+#include <JugadorFacil.hh>
+#include <JugadorHumano.hh>
 #include <Tablero.hh>
 #include <iostream>
+#include <memory>
+#include <string>
 #include <vector>
+
+using namespace std;
 
 EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
                          int tipoJugador2)
-    : filas(filas), columnas(columnas) {
- 
+    : filas(filas), columnas(columnas), tablero(filas, columnas) {
   Tablero tablero = Tablero(filas, columnas);
 
-  instanciarJugadores(tipoJugador1, tipoJugador2);
+  unique_ptr<IJugador> jugadorUno =
+      instanciarJugador(tipoJugador1, amarillo, "1");
+  unique_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
+
   // Inciamos con el primer jugador, se va a ir cambiando
-  jugadorActual = jugadorUno;
+  unique_ptr<IJugador> jugadorActual =
+      instanciarJugador(0, non_color, "placeholder");
+  jugadorActual.swap(jugadorUno);
 }
 
-void EstadoJuego::instanciarJugadores(int tipoJugador1, int tipoJugador2) {
+std::unique_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
+                                                         Color ficha,
+                                                         string numeroJugador) {
+  if (tipoJugador == 0) {
+    string nombre = numeroJugador;
+    unique_ptr<IJugador> jugador =
+        unique_ptr<IJugador>(new JugadorHumano(nombre, ficha));
+    return jugador;
 
-    if (tipoJugador1 == 0){
-        
-    }
+  } else if (tipoJugador == 1) {
+    string nombre = numeroJugador;
+    unique_ptr<IJugador> jugador =
+        unique_ptr<IJugador>(new JugadorFacil(nombre, ficha));
+    return jugador;
+
+  } else {
+    string nombre = numeroJugador;
+    unique_ptr<IJugador> jugador =
+        unique_ptr<IJugador>(new JugadorDificil(nombre, ficha));
+    return jugador;
+  }
 }
 
-int EstadoJuego::estadoCelda(int fila, int columna) { return 1; }
+int EstadoJuego::estadoCelda(int fila, int columna) {
+  return tablero.getTablero()[fila][columna];
+}
+
+Color EstadoJuego::asignarFicha() {
+  Color ficha = non_color;
+
+  if (jugadorActual == jugadorUno) {
+    ficha = amarillo;
+  } else if (jugadorActual == jugadorDos) {
+    ficha = rojo;
+  }
+
+  return ficha;
+  // TODO: Eliminar este método porque es inútil
+}
 
 bool EstadoJuego::insertarFicha(int columna) {
-  // dependiendo del tipo del jugador tiene que usar un método de inserción de
-  // ficha distinto De acuerdo a los indices que obtenemos de los radio box si
-  // 0=jugadorHumano, 1=Fácil , 2= dificil
-  // Se le pasa el tipo como parametro a IJugador
+  if (jugadorActual == jugadorUno) {
+    return tablero.insertarFicha(amarillo, columna);
+  } else if (jugadorActual == jugadorDos) {
+    return tablero.insertarFicha(rojo, columna);
+  }
+
   return false;
+
+  // TODO: asegurar que el == logre llegar al else-if
 }
 
-int EstadoJuego::verificarGanador() { return 1; }
+int EstadoJuego::verificarGanador() {
+  Color ficha;
 
-bool EstadoJuego::empate() { return false; }
+  if (jugadorActual == jugadorUno) {
+    ficha = amarillo;
+  } else if (jugadorActual == jugadorDos) {
+    ficha = rojo;
+  }
+
+  if (tablero.analizarJugada(ficha, 1, 1)) {
+    // TODO: Conseguir las coordenadas en donde se insertó la ficha.
+    if (ficha == amarillo) {
+      return 1;
+    } else if (ficha == rojo) {
+      return 2;
+    }
+  }
+
+  return 0;
+}
+
+bool EstadoJuego::empate() { return tablero.empate(); }
 
 void EstadoJuego::cambiarTurno() {
+  unique_ptr<IJugador> temporal =
+      unique_ptr<IJugador>(new JugadorHumano("temporal", non_color));
+
   if (jugadorActual == jugadorUno) {
-    jugadorActual = jugadorDos;
+    temporal.swap(jugadorActual);
+    jugadorActual.swap(jugadorDos);
+    jugadorUno.swap(temporal);
+    jugadorDos.swap(temporal);
   } else {
-    jugadorActual = jugadorUno;
+    temporal.swap(jugadorActual);
+    jugadorActual.swap(jugadorUno);
+    jugadorDos.swap(temporal);
+    jugadorUno.swap(temporal);
   }
 }
