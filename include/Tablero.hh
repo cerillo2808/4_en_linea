@@ -44,9 +44,9 @@ class Tablero {
   // método que busca si hay 4 fichas en dirección diagonal superior-derecha
   bool recorridoArribaDer(Color ficha, int contador, int fila, int columna);
 
-  // método que inserta la ficha, devuelve falso si la columna ya estaba llena,
-  // devuelve verdadero si se logró insertar la ficha
-  bool insertarFicha(Color Ficha, int columna);
+  // método que inserta la ficha, devuelve -1 si la columna ya estaba llena,
+  // sino devuelve el número de fila donde se inserto la ficha
+  int insertarFicha(Color Ficha, int columna);
 
   // método que devuelve la cantidad de filas
   int getFilas();
@@ -54,9 +54,14 @@ class Tablero {
   // método que devuelve la cantidad de columnas
   int getColumnas();
 
+  // método para verificar si hubo un empate en la partida
   bool empate();
+
+  // método para que el tablero indique las columnas disponibles que posee
+  vector<int> getColumnasDisponibles();
 
  private:
   vector<vector<Color>> tablero;
+  vector<int> columnasDisponibles;
 };
 #endif

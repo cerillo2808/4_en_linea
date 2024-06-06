@@ -4,8 +4,8 @@
 #include <memory>
 #include <VistaJuego.hh>
 
-VistaJuego::VistaJuego(const wxString& title,unique_ptr<EstadoJuego> estado)
-    : wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxDefaultSize),
+VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, unique_ptr<EstadoJuego> estado)
+    : wxFrame(confNuevoJuego, wxID_ANY, title, wxDefaultPosition, wxDefaultSize),confNuevoJuego(confNuevoJuego),
       estadoActual(move(estado)) {
 
   // crear el espacio, panel, para el tablero
@@ -15,26 +15,37 @@ VistaJuego::VistaJuego(const wxString& title,unique_ptr<EstadoJuego> estado)
   espacioTablero->Bind(wxEVT_LEFT_DOWN, &VistaJuego::onClick,this);
   espacioTablero->Bind(wxEVT_RIGHT_DOWN,&VistaJuego::onClick,this );
   espacioTablero->Bind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick,this);
+  Bind(wxEVT_CLOSE_WINDOW,&VistaJuego::onClose, this);
 
   // creando fuente para el texto de los botones
   wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
+  wxFont fuenteMarcador(wxFontInfo(15).Bold().FaceName("Arial"));
 
   // marcadores de las partidas ganadas
-  wxGridSizer* tablaPuntaje = new wxGridSizer(2, 2, 5, 5);
+  wxGridSizer* tablaPuntaje = new wxGridSizer(2, 2, 7, 6);
 
   wxStaticText* etiquetaJugadorUno =
       new wxStaticText(this, wxID_ANY, "Jugador 1");
+  etiquetaJugadorUno->SetFont(fuenteMarcador);
   wxStaticText* etiquetaJugadorDos =
       new wxStaticText(this, wxID_ANY, "Jugador 2");
+  etiquetaJugadorDos->SetFont(fuenteMarcador);
 
   wxStaticText* puntajeJugadorUno = new wxStaticText(this, wxID_ANY, "0");
+  puntajeJugadorUno->SetFont(fuenteMarcador);
   wxStaticText* puntajeJugadorDos = new wxStaticText(this, wxID_ANY, "0");
-
+  puntajeJugadorDos->SetFont(fuenteMarcador);
   // ingresando todo a la tabla
   tablaPuntaje->Add(etiquetaJugadorUno, 0, wxALIGN_CENTER);
   tablaPuntaje->Add(etiquetaJugadorDos, 0, wxALIGN_CENTER);
   tablaPuntaje->Add(puntajeJugadorUno, 0, wxALIGN_CENTER);
   tablaPuntaje->Add(puntajeJugadorDos, 0, wxALIGN_CENTER);
+
+  //Texto estático para indicar el turno de los jugadores
+  turno=new wxStaticText(this,wxID_ANY,"Turno: Jugador 1");
+  turno->SetFont(fuenteBotones);
+  wxButton* botonSalir=new wxButton(this,wxID_ANY,"SALIR", wxDefaultPosition,wxSize(150, 90));
+  botonSalir->SetFont(fuenteMarcador);
 
   wxBoxSizer* panelVertical = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer* panelHorizontal = new wxBoxSizer(wxHORIZONTAL);
@@ -42,6 +53,11 @@ VistaJuego::VistaJuego(const wxString& title,unique_ptr<EstadoJuego> estado)
   // que el marcador quede en la esquina superior derecha
 
   panelHorizontal->Add(tablaPuntaje, 0, wxALIGN_RIGHT | wxALL, 10);
+  panelHorizontal->AddStretchSpacer();
+  panelHorizontal->Add(turno, 0, wxALIGN_CENTER | wxALL, 10 );
+  panelHorizontal->AddStretchSpacer();
+  panelHorizontal->Add(botonSalir,0,wxALIGN_LEFT | wxALL, 10);
+
 
   int margenLados = 60;
   panelVertical->Add(panelHorizontal, 0, wxEXPAND | wxTOP | wxRIGHT, 10);
@@ -51,7 +67,7 @@ VistaJuego::VistaJuego(const wxString& title,unique_ptr<EstadoJuego> estado)
 
   
 
-  Maximize(true);
+  //Maximize(true);
 }
 
 // método que se va a llamar cada que el tablero ocupe ser redibujado- por
@@ -124,13 +140,18 @@ void VistaJuego::onClick(wxMouseEvent& event){
     
       }else if(estadoActual->empate()){
 
+
       }else{
-        estadoActual->cambiarTurno();
-        //TODO:control para indicar de quien es el turno en base al jugador actual en estado
+        // estadoActual->cambiarTurno();
+        // turno->SetLabel("falta método para obtener nombre del jugador actual");
       }
 
 
+}
 
-
-
+void VistaJuego::onClose(wxCloseEvent& event){
+  if (confNuevoJuego){
+      confNuevoJuego->Close(true);
+  }
+  event.Skip();
 }

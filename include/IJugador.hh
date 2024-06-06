@@ -19,6 +19,9 @@ class IJugador {
   // Constructor
   IJugador(string nombre, Color ficha) : nombre(nombre), ficha(ficha) {}
 
+  // método para obtener el color de ficha del jugador
+  Color getColor () {return ficha;}
+
   // método abstracto:
   virtual void jugar() = 0;
 

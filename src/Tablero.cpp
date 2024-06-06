@@ -221,7 +221,7 @@ int Tablero::getColumnas() {
   return 0;
 }
 
-bool Tablero::insertarFicha(Color ficha, int columna) {
+int Tablero::insertarFicha(Color ficha, int columna) {
   if (tablero[0][columna] == non_color) {
     // verifica que la columna a la que se quiere insertar la ficha no esté
     // llena.
@@ -233,12 +233,12 @@ bool Tablero::insertarFicha(Color ficha, int columna) {
         // la fila de la columna en la que se encuentre vacío es non_color
         tablero[i][columna] = ficha;
         // se procede a asignarle el color a ese campo vacío
-        return true;
+        return i;
         // se para el for aquí para que no asigne más fichas.
       }
     }
   }
-  return false;
+  return -1;
   // se retorna falso, para que la GUI sepa que no se logró insertar la ficha
   // en esa columna y deje que el usuario haga otro click.
 }
@@ -250,4 +250,24 @@ bool Tablero::empate() {
     }
   }
   return true;
+}
+
+vector<int> Tablero ::getColumnasDisponibles() {
+  // el tablero va modificandose con cada movimiento, por lo que para obtener
+  // valores actualizados lo ideal es re-obtenerlos, para ello se borran los
+  // elementos y se vuelven a solicitar los disponibles
+  if (!columnasDisponibles.empty()) {
+    columnasDisponibles.clear();
+  }
+
+  for (int i = 0; i < tablero[0].size(); i++) {
+    // se sabe que mientras la fila 0 de una columna esté vacía (sea non_color)
+    // es porque al menos existe una columna disponible
+    if (tablero[0][i] == non_color) {
+      // por ello se inserta de inmediato el valor i
+      columnasDisponibles.push_back(i);
+    }
+  }
+
+  return columnasDisponibles;
 }

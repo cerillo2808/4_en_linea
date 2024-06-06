@@ -27,6 +27,7 @@ MainFrame::MainFrame(const wxString& title)
 
   nuevoJuegoBoton->Bind(wxEVT_BUTTON, &MainFrame::nuevoJuego, this);
   salirBoton->Bind(wxEVT_BUTTON, &MainFrame::salir, this);
+  
 
   panelVertical->AddStretchSpacer();
   panelVertical->Add(nuevoJuegoBoton, 0, wxALL | wxEXPAND, 10);
@@ -42,13 +43,14 @@ MainFrame::MainFrame(const wxString& title)
   panelPrincipal->SetSizer(panelHorizontal);
 
   // que inicialmente este maximizado
-  Maximize(true);
+  //Maximize(true);
 }
 
 void MainFrame::nuevoJuego(wxCommandEvent& event) {
   ConfNuevoJuego* ventanaConf =
-      new ConfNuevoJuego("Ventana de configuración para el nuevo juego");
+      new ConfNuevoJuego(this,"Ventana de configuración para el nuevo juego");
   ventanaConf->Show();
 }
 
 void MainFrame::salir(wxCommandEvent& event) { Close(true); }
+
