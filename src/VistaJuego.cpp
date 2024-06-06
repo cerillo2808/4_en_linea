@@ -1,6 +1,9 @@
 #include <wx/dcbuffer.h>
 #include <wx/wx.h>
+#include <wx/timer.h>
 #include <EstadoJuego.hh>
+#include <DialogoEmpate.hh>
+#include <DialogoGanador.hh>
 #include <memory>
 #include <VistaJuego.hh>
 
@@ -66,9 +69,41 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, uniq
   this->SetSizerAndFit(panelVertical);
 
   
-
-  //Maximize(true);
+  //que incialmente este maximizado
+  Maximize(true);
 }
+
+//método que se llama cuando se va a insertar una ficha, inicializa la animación y los valores que se ocupan para ella
+//recibe en que columna se quiere insertar la ficha, así como el color del jugador que la está insertando
+//se establecio: 1=amarillo, 2=rojo
+void VistaJuego::animacion(int columna, int color){
+  columna=columna;
+  color=color;
+  //el eje Y de la pantalla va a estar originalmente en 0 para que caiga desde arriba
+  valEjeY=0;
+  hayAnimacion=true;
+  //TODO: Correción en estado para que insertarFicha devuelva int
+  //insertarficha me devuelve el entero donde se insertar la ficha en la lógica, aquí lo usamos para saber hasta que fila debe de llegar la ficha en su caída
+  //fila=estadoActual->insertarFicha();
+
+  //vamos a llamar a onTimer cada 16 milisegundos
+  timer->Start(16);
+}
+
+//Método que actualiza la posición de la ficha en cada intervalo de tiempo definido por el wxtimer
+
+void VistaJuego::onTimer(wxTimerEvent& event){
+
+  //vamos a ir incrementando la posición de la ficha en el ejeY
+  valEjeY=valEjeY+5;
+
+  //si el valor de la ficha en el eje Y llega al valor del eje Y de la fila correspondiente o se pasa detenemos la animación y el timer
+
+}
+
+
+
+
 
 // método que se va a llamar cada que el tablero ocupe ser redibujado- por
 // ejemplo que tenga que cambiar de tamaño
@@ -104,14 +139,20 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
   // vamos a establecer el lápiz que se usa en el buffer para dibujar los
   // circulos del tablero
   bufferDibujo.SetPen(wxPen(*wxBLACK, 2));
-  // establecemos brush para rellenar las celdas
-  bufferDibujo.SetBrush(*wxWHITE_BRUSH);
+
 
   // vamos a ir iterando para dibujar los circulos en cada celda del tablero
   // vamos rellenando por filas
 
   for (int i = 0; i < estadoActual->columnas; i++) {
     for (int j = 0; j < estadoActual->filas; j++) {
+      if(estadoActual->estadoCelda(i,j)==1){
+        bufferDibujo.SetBrush(*wxYELLOW_BRUSH);
+      }else if(estadoActual->estadoCelda(i,j)==2){
+        bufferDibujo.SetBrush(*wxRED_BRUSH);
+      }else{
+          bufferDibujo.SetBrush(*wxWHITE_BRUSH);
+      }
       // calculamos el eje x del centro del circulo
       int ejeX = i * anchoCelda + anchoCelda / 2;
       int ejeY = j * alturaCelda + alturaCelda / 2;
@@ -119,6 +160,10 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
     }
   }
 }
+
+
+
+
 
 void VistaJuego::onClick(wxMouseEvent& event){
 
@@ -129,7 +174,14 @@ void VistaJuego::onClick(wxMouseEvent& event){
     int coordX=event.GetX();
     //covertimos coordenada en columna
     int columnaClick= coordX/anchoCelda;
+    
     wxLogMessage("Clic en la columna %d", columnaClick);
+
+
+    DialogoGanador* ganador= new DialogoGanador(this, "Jugador 1");
+    ganador->ShowModal();
+    // DialogoEmpate* empate= new DialogoEmpate(this);
+    // empate->ShowModal();
 
     if(estadoActual->insertarFicha(columnaClick)){
       //Sí pudimos insertar ficha, así que con refresh encolamos evento de dibujar
@@ -139,8 +191,7 @@ void VistaJuego::onClick(wxMouseEvent& event){
     if(estadoActual->verificarGanador()){
     
       }else if(estadoActual->empate()){
-
-
+      
       }else{
         // estadoActual->cambiarTurno();
         // turno->SetLabel("falta método para obtener nombre del jugador actual");
@@ -149,9 +200,13 @@ void VistaJuego::onClick(wxMouseEvent& event){
 
 }
 
+
+
 void VistaJuego::onClose(wxCloseEvent& event){
   if (confNuevoJuego){
       confNuevoJuego->Close(true);
   }
   event.Skip();
 }
+
+
