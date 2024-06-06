@@ -16,11 +16,13 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
     : filas(filas), columnas(columnas), tablero(filas, columnas) {
   Tablero tablero = Tablero(filas, columnas);
 
-  shared_ptr<IJugador> jugadorUno = instanciarJugador(tipoJugador1, amarillo, "1");
+  shared_ptr<IJugador> jugadorUno =
+      instanciarJugador(tipoJugador1, amarillo, "1");
   shared_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
 
   // Inciamos con el primer jugador, se va a ir cambiando
-  shared_ptr<IJugador> jugadorActual = instanciarJugador(0, non_color, "placeholder");
+  shared_ptr<IJugador> jugadorActual =
+      instanciarJugador(0, non_color, "placeholder");
 
   jugadorActual = jugadorUno;
 }
@@ -29,14 +31,11 @@ std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
                                                          Color ficha,
                                                          string numeroJugador) {
   if (tipoJugador == 0) {
-    auto jugador = std::make_shared<JugadorHumano>(numeroJugador, ficha);
-    return jugador;
+    return std::make_shared<JugadorHumano>(numeroJugador, ficha);
   } else if (tipoJugador == 1) {
-    auto jugador = std::make_shared<JugadorFacil>(numeroJugador, ficha);
-    return jugador;
+    return std::make_shared<JugadorFacil>(numeroJugador, ficha);
   } else {
-    auto jugador = std::make_shared<JugadorDificil>(numeroJugador, ficha);
-    return jugador;
+    return std::make_shared<JugadorDificil>(numeroJugador, ficha);
   }
 }
 
