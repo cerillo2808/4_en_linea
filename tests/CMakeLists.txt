@@ -4,6 +4,11 @@ find_package(GTest REQUIRED)
 
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 
+# Set the build type to Debug to include debug symbols
+set(CMAKE_BUILD_TYPE Debug)
+
+# Add debug flags to the compiler
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
 add_executable(unit_tests
 # TODO: Añadan acá todos los archivos de pruebas

@@ -16,35 +16,26 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
     : filas(filas), columnas(columnas), tablero(filas, columnas) {
   Tablero tablero = Tablero(filas, columnas);
 
-  unique_ptr<IJugador> jugadorUno =
-      instanciarJugador(tipoJugador1, amarillo, "1");
-  unique_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
+  shared_ptr<IJugador> jugadorUno = instanciarJugador(tipoJugador1, amarillo, "1");
+  shared_ptr<IJugador> jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
 
   // Inciamos con el primer jugador, se va a ir cambiando
-  unique_ptr<IJugador> jugadorActual =
-      instanciarJugador(0, non_color, "placeholder");
-  jugadorActual.swap(jugadorUno);
+  shared_ptr<IJugador> jugadorActual = instanciarJugador(0, non_color, "placeholder");
+
+  jugadorActual = jugadorUno;
 }
 
-std::unique_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
+std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
                                                          Color ficha,
                                                          string numeroJugador) {
   if (tipoJugador == 0) {
-    string nombre = numeroJugador;
-    unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorHumano(nombre, ficha));
+    auto jugador = std::make_shared<JugadorHumano>(numeroJugador, ficha);
     return jugador;
-
   } else if (tipoJugador == 1) {
-    string nombre = numeroJugador;
-    unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorFacil(nombre, ficha));
+    auto jugador = std::make_shared<JugadorFacil>(numeroJugador, ficha);
     return jugador;
-
   } else {
-    string nombre = numeroJugador;
-    unique_ptr<IJugador> jugador =
-        unique_ptr<IJugador>(new JugadorDificil(nombre, ficha));
+    auto jugador = std::make_shared<JugadorDificil>(numeroJugador, ficha);
     return jugador;
   }
 }
@@ -66,24 +57,22 @@ Color EstadoJuego::asignarFicha() {
   // TODO: Eliminar este método porque es inútil
 }
 
-bool EstadoJuego::insertarFicha(int columna) {
-  if (jugadorActual == jugadorUno) {
+int EstadoJuego::insertarFicha(int columna) {
+  if (jugadorActual->getColor() == jugadorUno->getColor()) {
     return tablero.insertarFicha(amarillo, columna);
-  } else if (jugadorActual == jugadorDos) {
+  } else if (jugadorActual->getColor() == jugadorDos->getColor()) {
     return tablero.insertarFicha(rojo, columna);
   }
 
   return false;
-
-  // TODO: asegurar que el == logre llegar al else-if
 }
 
 int EstadoJuego::verificarGanador() {
   Color ficha;
 
-  if (jugadorActual == jugadorUno) {
+  if (jugadorActual->getColor() == jugadorUno->getColor()) {
     ficha = amarillo;
-  } else if (jugadorActual == jugadorDos) {
+  } else if (jugadorActual->getColor() == jugadorDos->getColor()) {
     ficha = rojo;
   }
 
@@ -102,18 +91,9 @@ int EstadoJuego::verificarGanador() {
 bool EstadoJuego::empate() { return tablero.empate(); }
 
 void EstadoJuego::cambiarTurno() {
-  unique_ptr<IJugador> temporal =
-      unique_ptr<IJugador>(new JugadorHumano("temporal", non_color));
-
-  if (jugadorActual == jugadorUno) {
-    temporal.swap(jugadorActual);
-    jugadorActual.swap(jugadorDos);
-    jugadorUno.swap(temporal);
-    jugadorDos.swap(temporal);
+  if (jugadorActual->getColor() == jugadorUno->getColor()) {
+    jugadorActual = jugadorDos;
   } else {
-    temporal.swap(jugadorActual);
-    jugadorActual.swap(jugadorUno);
-    jugadorDos.swap(temporal);
-    jugadorUno.swap(temporal);
+    jugadorActual = jugadorUno;
   }
 }
