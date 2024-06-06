@@ -33,9 +33,7 @@ class EstadoJuego {
 
   int getGanador();
 
-  Color asignarFicha();
-
-  // atributo
+  // atributos
   shared_ptr<IJugador> jugadorActual;
   shared_ptr<IJugador> jugadorUno;
   shared_ptr<IJugador> jugadorDos;

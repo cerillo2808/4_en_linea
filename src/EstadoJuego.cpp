@@ -39,10 +39,6 @@ int EstadoJuego::estadoCelda(int fila, int columna) {
   return tablero.getTablero()[fila][columna];
 }
 
-Color EstadoJuego::asignarFicha() {
-  return jugadorActual->getColor();
-}
-
 int EstadoJuego::insertarFicha(int columna) {
   if (jugadorActual->getColor() == jugadorUno->getColor()) {
     return tablero.insertarFicha(amarillo, columna);
