@@ -21,16 +21,22 @@ class EstadoJuego {
   // método que regresa el número del enum que ocupe la celda.
   int estadoCelda(int fila, int columna);
 
+  // método que inserta la ficha en el tablero y devuelve la columna en la que
+  // se logró insertar.
   int insertarFicha(int columna);
 
   // usar verificarGanador de tablero para en caso de que haya ganador indicar
   // si fue el jugador uno o dos
   int verificarGanador();
 
+  // devuelve verdadero si el tablero está lleno, devuelve falso si aún hay
+  // campo en el tablero.
   bool empate();
 
+  // hace que jugadorActual cambie al otro jugador
   void cambiarTurno();
 
+  // TODO: Faltan las coordenadas para Tablero::AnalizarJugada
   int getGanador();
 
   // atributos
