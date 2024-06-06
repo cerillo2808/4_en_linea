@@ -9,6 +9,33 @@ TEST (JugadorDificlInstancia,ConstructorJugador) {
     EXPECT_EQ(ia.getColor(), amarillo);
 }
 
+TEST (funcionesGeneralesIJugador1,obtenerNombre) {
+    JugadorDificil ia ("IA",amarillo);
+    EXPECT_EQ(ia.getNombre(),"IA");
+}
+
+TEST (funcionesGeneralesIJugador2,obtenerGanes) {
+    JugadorDificil ia ("IA",amarillo);
+    EXPECT_EQ(ia.getGanes(),0);
+}
+
+TEST (funcionesGeneralesIJugador3,modificarGane) {
+    JugadorDificil ia ("IA",amarillo);
+    EXPECT_EQ(ia.getGanes(),0);
+    ia.setGanes();
+    EXPECT_EQ(ia.getGanes(),1);
+}
+
+TEST (funcionesGeneralesIJugador4,modificarGaneVariasVeces) {
+    JugadorDificil ia ("IA",amarillo);
+    EXPECT_EQ(ia.getGanes(),0);
+    ia.setGanes();
+    ia.setGanes();
+    ia.setGanes();
+    ia.setGanes();
+    EXPECT_EQ(ia.getGanes(),4);
+}
+
 TEST (ValorJugadaIA,mismoColorDeIA) {
     JugadorDificil ia ("IA",amarillo);
     EXPECT_EQ(ia.valorJugada(amarillo,amarillo),2);
