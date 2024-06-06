@@ -12,6 +12,7 @@ ConfNuevoJuego::ConfNuevoJuego(MainFrame* mainFrame, const wxString& title)
   numFilasTablero = numColumnasTablero = 4;
 
   wxPanel* panelPrincipal = new wxPanel(this);
+  panelPrincipal->SetBackgroundColour((wxColour("#07c3ed")));
 
   wxBoxSizer* panelVertical = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer* panelHorizontal = new wxBoxSizer(wxHORIZONTAL);

@@ -1,6 +1,8 @@
 #include <wx/dcbuffer.h>
 #include <wx/wx.h>
 #include <EstadoJuego.hh>
+#include <DialogoEmpate.hh>
+#include <DialogoGanador.hh>
 #include <memory>
 #include <VistaJuego.hh>
 
@@ -104,14 +106,20 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
   // vamos a establecer el lápiz que se usa en el buffer para dibujar los
   // circulos del tablero
   bufferDibujo.SetPen(wxPen(*wxBLACK, 2));
-  // establecemos brush para rellenar las celdas
-  bufferDibujo.SetBrush(*wxWHITE_BRUSH);
+
 
   // vamos a ir iterando para dibujar los circulos en cada celda del tablero
   // vamos rellenando por filas
 
   for (int i = 0; i < estadoActual->columnas; i++) {
     for (int j = 0; j < estadoActual->filas; j++) {
+      if(estadoActual->estadoCelda(i,j)==1){
+        bufferDibujo.SetBrush(*wxYELLOW_BRUSH);
+      }else if(estadoActual->estadoCelda(i,j)==2){
+        bufferDibujo.SetBrush(*wxRED_BRUSH);
+      }else{
+          bufferDibujo.SetBrush(*wxWHITE_BRUSH);
+      }
       // calculamos el eje x del centro del circulo
       int ejeX = i * anchoCelda + anchoCelda / 2;
       int ejeY = j * alturaCelda + alturaCelda / 2;
@@ -132,8 +140,11 @@ void VistaJuego::onClick(wxMouseEvent& event){
     
     wxLogMessage("Clic en la columna %d", columnaClick);
 
-  
-    dialogoEmpate();
+
+    DialogoGanador* ganador= new DialogoGanador(this, "Joshua");
+    ganador->ShowModal();
+    // DialogoEmpate* empate= new DialogoEmpate(this);
+    // empate->ShowModal();
 
     if(estadoActual->insertarFicha(columnaClick)){
       //Sí pudimos insertar ficha, así que con refresh encolamos evento de dibujar
@@ -159,56 +170,3 @@ void VistaJuego::onClose(wxCloseEvent& event){
   event.Skip();
 }
 
-void VistaJuego::dialogoEmpate(){
-    
-    wxDialog* dialogoEmpate= new wxDialog (this,wxID_ANY,"",wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE);
-    wxBoxSizer* vertical=new wxBoxSizer(wxVERTICAL);
-
-    wxStaticText* empateGrande= new wxStaticText(dialogoEmpate,wxID_ANY,"EMPATE!");
-    wxStaticText* empatePregunta= new wxStaticText(dialogoEmpate,wxID_ANY,"Ha sucedido un empate ¿Deseas reiniciar o salir?",wxDefaultPosition);
-    wxFont fuenteEmpate(wxFontInfo(15).Bold().FaceName("Georgia"));
-    empateGrande->SetFont(fuenteEmpate);
-
-    wxBoxSizer* horizontal=new wxBoxSizer(wxHORIZONTAL);
-    wxButton* nuevoJuego=new wxButton(dialogoEmpate,wxID_ANY, "NUEVO",wxDefaultPosition);
-    wxButton* salir=new wxButton(dialogoEmpate, wxID_ANY, "SALIR",wxDefaultPosition);
-    
-  
-    horizontal->AddStretchSpacer();
-    horizontal->Add(nuevoJuego,0,wxALL | wxEXPAND,10);
-    horizontal->AddStretchSpacer();
-    horizontal->Add(salir,0, wxALL | wxEXPAND,10);
-    horizontal->AddStretchSpacer();
-
-
-    vertical->Add(empateGrande,0,wxALL | wxALIGN_CENTER_HORIZONTAL,10);
-    vertical->Add(empatePregunta,0,wxALL | wxALIGN_CENTER_HORIZONTAL,10);
-    vertical->AddStretchSpacer();
-    vertical->Add(horizontal,0,wxALL| wxEXPAND,10 );
-
-    
-
-    dialogoEmpate->SetSizer(vertical);
-    dialogoEmpate->Fit();
-
-
-    nuevoJuego->Bind(wxEVT_BUTTON,&VistaJuego::nuevoJuego,this);
-    salir->Bind(wxEVT_BUTTON,&VistaJuego::botonSalir,this);
-
-    dialogoEmpate->ShowModal();
-
-    delete dialogoEmpate; 
-    
-}
-
-void VistaJuego::dialogoGanador(){
-
-}
-
-void VistaJuego::nuevoJuego(wxCommandEvent& event){
-  wxLogMessage("Presionaron nuevo desde dialog");
-}
-
-void VistaJuego::botonSalir(wxCommandEvent& event){
-  wxLogMessage("Presionaron salir desde dialog");
-}

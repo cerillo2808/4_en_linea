@@ -27,6 +27,8 @@ set(SRCS
     EstadoJuego.cpp
     VistaJuego.cpp
     ConfNuevoJuego.cpp
+    DialogoEmpate.cpp
+    DialogoGanador.cpp
 )
 
 if(APPLE)

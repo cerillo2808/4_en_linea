@@ -12,19 +12,15 @@ enviarle los inputs del usuario a controlar,
 class VistaJuego : public wxFrame {
  public:
   VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, unique_ptr<EstadoJuego> estado);
-
+  unique_ptr<EstadoJuego> estadoActual;
  private:
   void onPaint(wxPaintEvent& event);
   void onClick(wxMouseEvent& event);
   wxPanel* espacioTablero;
   wxStaticText* turno;
-  unique_ptr<EstadoJuego> estadoActual;
   ConfNuevoJuego* confNuevoJuego;
   void onClose(wxCloseEvent& event);
-  void dialogoEmpate();
-  void dialogoGanador();
-  void nuevoJuego(wxCommandEvent& event);
-  void botonSalir(wxCommandEvent& event);
+
 };
 
 #endif
