@@ -21,12 +21,16 @@ class VistaJuego : public wxFrame {
   void onTimer(wxTimerEvent& event);
   void animacion(int columna, int color);
   void onClose(wxCloseEvent& event);
+  void controladorTurnos();
+
   //atributos
   wxPanel* espacioTablero;
   wxStaticText* turno;
   ConfNuevoJuego* confNuevoJuego;
+
   int columna;
-  int fila;
+  int filaDondeInserto;
+  int turnoActual;
   int colorFicha;
   wxTimer* timer;
   bool hayAnimacion;
