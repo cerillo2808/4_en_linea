@@ -48,6 +48,9 @@ class EstadoJuego {
   // "2". Devuelve -1 si no se encontró al jugador.
   int getGanes(string nombreJugador);
 
+  // devuelve verdadero si jugadorActual es humano.
+  bool esHumano();
+
   // atributos
   shared_ptr<IJugador> jugadorActual;
   shared_ptr<IJugador> jugadorUno;

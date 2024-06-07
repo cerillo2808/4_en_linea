@@ -110,3 +110,17 @@ int EstadoJuego::getGanes(string nombre) {
 
   return -1;
 }
+
+bool EstadoJuego::esHumano() {
+  if (jugadorActual == jugadorUno) {
+    if (tipoJugador1 == 0) {
+      return true;
+    }
+  } else if (jugadorActual == jugadorDos) {
+    if (tipoJugador2 == 0) {
+      return true;
+    }
+  }
+
+  return false;
+}

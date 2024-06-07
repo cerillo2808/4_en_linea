@@ -314,3 +314,29 @@ TEST(EstadoTest, getJugadorConTurno) {
   int jugador2 = juego.getTipoJugador();
   EXPECT_EQ(jugador2, 0);
 }
+
+TEST(EstadoTest, getJugadorHumano1) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 0);
+  bool jugador1 = juego.esHumano();
+  EXPECT_TRUE(jugador1);
+}
+
+TEST(EstadoTest, getJugadorNoHumano1) {
+  EstadoJuego juego = EstadoJuego(2, 2, 1, 0);
+  bool jugador1 = juego.esHumano();
+  EXPECT_FALSE(jugador1);
+}
+
+TEST(EstadoTest, getJugadorHumano2) {
+  EstadoJuego juego = EstadoJuego(2, 2, 1, 0);
+  juego.cambiarTurno();
+  bool jugador2 = juego.esHumano();
+  EXPECT_TRUE(jugador2);
+}
+
+TEST(EstadoTest, getJugadorNoHumano2) {
+  EstadoJuego juego = EstadoJuego(2, 2, 1, 2);
+  juego.cambiarTurno();
+  bool jugador2 = juego.esHumano();
+  EXPECT_FALSE(jugador2);
+}
