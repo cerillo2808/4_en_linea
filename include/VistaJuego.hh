@@ -19,18 +19,22 @@ class VistaJuego : public wxFrame {
   void onPaint(wxPaintEvent& event);
   void onClick(wxMouseEvent& event);
   void onTimer(wxTimerEvent& event);
-  void animacion(int columna, int color);
+  void iniciarAnimacion(int columna, int color);
   void onClose(wxCloseEvent& event);
+  void onBotonSalir(wxCommandEvent& event);
   void controladorTurnos();
+  void insertarFichaGUI(int columna);
+  void llamarJugarIAs();
+  void actualizarEstado();
+  int obtenerCoordY(int filaObjetivo);
 
   //atributos
   wxPanel* espacioTablero;
   wxStaticText* turno;
   ConfNuevoJuego* confNuevoJuego;
 
-  int columna;
-  int filaDondeInserto;
-  int turnoActual;
+  int columnaObjetivo;
+  int filaObjetivo;
   int colorFicha;
   wxTimer* timer;
   bool hayAnimacion;
