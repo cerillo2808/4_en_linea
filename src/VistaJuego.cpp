@@ -1,25 +1,30 @@
 #include <wx/dcbuffer.h>
-#include <wx/wx.h>
 #include <wx/timer.h>
-#include <EstadoJuego.hh>
+#include <wx/wx.h>
+
 #include <DialogoEmpate.hh>
 #include <DialogoGanador.hh>
-#include <memory>
+#include <EstadoJuego.hh>
 #include <VistaJuego.hh>
+#include <memory>
 
-VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, unique_ptr<EstadoJuego> estado)
-    : wxFrame(confNuevoJuego, wxID_ANY, title, wxDefaultPosition, wxDefaultSize),confNuevoJuego(confNuevoJuego),
-      estadoActual(move(estado)), timer(new wxTimer(this)), hayAnimacion(false), valEjeY(0){
-
+VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
+                       unique_ptr<EstadoJuego> estado)
+    : wxFrame(confNuevoJuego, wxID_ANY, title, wxDefaultPosition,
+              wxDefaultSize),
+      confNuevoJuego(confNuevoJuego),
+      estadoActual(move(estado)),
+      timer(new wxTimer(this)),
+      hayAnimacion(false),
+      valEjeY(0) {
   // crear el espacio, panel, para el tablero
   espacioTablero = new wxPanel(this);
 
   espacioTablero->Bind(wxEVT_PAINT, &VistaJuego::onPaint, this);
-  espacioTablero->Bind(wxEVT_LEFT_DOWN, &VistaJuego::onClick,this);
-  espacioTablero->Bind(wxEVT_RIGHT_DOWN,&VistaJuego::onClick,this );
-  espacioTablero->Bind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick,this);
-  Bind(wxEVT_CLOSE_WINDOW,&VistaJuego::onClose, this);
-
+  espacioTablero->Bind(wxEVT_LEFT_DOWN, &VistaJuego::onClick, this);
+  espacioTablero->Bind(wxEVT_RIGHT_DOWN, &VistaJuego::onClick, this);
+  espacioTablero->Bind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick, this);
+  Bind(wxEVT_CLOSE_WINDOW, &VistaJuego::onClose, this);
 
   // creando fuente para el texto de los botones
   wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
@@ -45,13 +50,13 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, uniq
   tablaPuntaje->Add(puntajeJugadorUno, 0, wxALIGN_CENTER);
   tablaPuntaje->Add(puntajeJugadorDos, 0, wxALIGN_CENTER);
 
-  //Texto estático para indicar el turno de los jugadores
-  turno=new wxStaticText(this,wxID_ANY,"Turno: Jugador 1");
+  // Texto estático para indicar el turno de los jugadores
+  turno = new wxStaticText(this, wxID_ANY, "Turno: Jugador 1");
   turno->SetFont(fuenteBotones);
-  wxButton* botonSalir=new wxButton(this,wxID_ANY,"SALIR", wxDefaultPosition,wxSize(150, 90));
+  wxButton* botonSalir =
+      new wxButton(this, wxID_ANY, "SALIR", wxDefaultPosition, wxSize(150, 90));
   botonSalir->SetFont(fuenteMarcador);
   botonSalir->Bind(wxEVT_BUTTON, &VistaJuego::onBotonSalir, this);
-
 
   wxBoxSizer* panelVertical = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer* panelHorizontal = new wxBoxSizer(wxHORIZONTAL);
@@ -60,119 +65,112 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, uniq
 
   panelHorizontal->Add(tablaPuntaje, 0, wxALIGN_RIGHT | wxALL, 10);
   panelHorizontal->AddStretchSpacer();
-  panelHorizontal->Add(turno, 0, wxALIGN_CENTER | wxALL, 10 );
+  panelHorizontal->Add(turno, 0, wxALIGN_CENTER | wxALL, 10);
   panelHorizontal->AddStretchSpacer();
-  panelHorizontal->Add(botonSalir,0,wxALIGN_LEFT | wxALL, 10);
-
+  panelHorizontal->Add(botonSalir, 0, wxALIGN_LEFT | wxALL, 10);
 
   int margenLados = 60;
   panelVertical->Add(panelHorizontal, 0, wxEXPAND | wxTOP | wxRIGHT, 10);
-  panelVertical->Add(espacioTablero, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxBOTTOM, margenLados);
+  panelVertical->Add(espacioTablero, 1,
+                     wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxBOTTOM,
+                     margenLados);
 
   this->SetSizerAndFit(panelVertical);
 
-  
-  
-  //que incialmente este maximizado
+  // que incialmente este maximizado
   Maximize(true);
 }
 
-//método que trabaja en un hilo distinto
-void VistaJuego::llamarJugarIAs(){
-  //TO-DO: corregir que jugar devuelva una columna
-  // int columna= estadoActual->jugadorActual->jugar();
-  // insertarFichaGUI(columna);
-
+// método que trabaja en un hilo distinto
+void VistaJuego::llamarJugarIAs() {
+  // TO-DO: corregir que jugar devuelva una columna
+  //  int columna= estadoActual->jugadorActual->jugar();
+  //  insertarFichaGUI(columna);
 }
-
 
 /*Este es el método que va controlando los turnos
 va ir mostrando en panatalla el nombre del jugadro del cual es el turno 1 o 2
 dependiendo del tipo de jugador va a habilitar o no onclick*/
-void VistaJuego::controladorTurnos(){
-  //obtenemos nombre del jugador
-  wxString nombreActual=estadoActual->jugadorActual->getNombre();
+void VistaJuego::controladorTurnos() {
+  // obtenemos nombre del jugador
+  wxString nombreActual = estadoActual->jugadorActual->getNombre();
   turno->SetLabel("Turno: " + nombreActual);
-  //TODO:método de si es humano para saber si habilitar o no el onclick
-  if(estadoActual->esHumano()){
-    //si es true no hace nada porque onclick se encarga
-  }else{
-    //TO-DO: usar sync 
+  // TODO:método de si es humano para saber si habilitar o no el onclick
+  if (estadoActual->esHumano()) {
+    // si es true no hace nada porque onclick se encarga
+  } else {
+    // TO-DO: usar sync
     llamarJugarIAs();
   }
 }
 
-
-
-void VistaJuego::actualizarEstado(){
-    if(estadoActual->verificarGanador()){
-        DialogoGanador* ganador= new DialogoGanador(this,(estadoActual->jugadorActual->getNombre()));
-        ganador->ShowModal();
-        }else if(estadoActual->empate()){
-          DialogoEmpate* empate= new DialogoEmpate(this,(estadoActual->jugadorActual->getNombre()));
-          
-        } 
-    //cualquiera de los dos casos anteriores les va a dar la posibilidad de salir, si desean continuar
-    //o si no sucede ninguna de las dos
-    estadoActual->cambiarTurno();
-    controladorTurnos();
-
+void VistaJuego::actualizarEstado() {
+  if (estadoActual->verificarGanador()) {
+    DialogoGanador* ganador =
+        new DialogoGanador(this, (estadoActual->jugadorActual->getNombre()));
+    ganador->ShowModal();
+  } else if (estadoActual->empate()) {
+    DialogoEmpate* empate =
+        new DialogoEmpate(this, (estadoActual->jugadorActual->getNombre()));
   }
+  // cualquiera de los dos casos anteriores les va a dar la posibilidad de
+  // salir, si desean continuar o si no sucede ninguna de las dos
+  estadoActual->cambiarTurno();
+  controladorTurnos();
+}
 
-
-
-
-//método que se llama cuando se va a insertar una ficha, inicializa la animación y los valores que se ocupan para ella
-//recibe en que columna se quiere insertar la ficha, así como el color del jugador que la está insertando
-//se establecio: 1=amarillo, 2=rojo
-void VistaJuego::iniciarAnimacion(int columna,int filaObj){
-  columnaObjetivo=columna;
-  filaObjetivo=filaObj;
-  hayAnimacion=true;
-  //el valor del eje Y tiene que iniciar en 0, se ve "cayendo"
-  valEjeY=0;
-  //vamos a llamar a onTimer cada 16 milisegundos
+// método que se llama cuando se va a insertar una ficha, inicializa la
+// animación y los valores que se ocupan para ella recibe en que columna se
+// quiere insertar la ficha, así como el color del jugador que la está
+// insertando se establecio: 1=amarillo, 2=rojo
+void VistaJuego::iniciarAnimacion(int columna, int filaObj) {
+  columnaObjetivo = columna;
+  filaObjetivo = filaObj;
+  hayAnimacion = true;
+  // el valor del eje Y tiene que iniciar en 0, se ve "cayendo"
+  valEjeY = 0;
+  // vamos a llamar a onTimer cada 16 milisegundos
   timer->Start(16);
 }
 
-//método para obtener la coordena Y donde se encuentra una ficha insertada
-//es utilizado para en onTimer saber cuando ya se llego a la coordenada deseada, donde insertamos la ficha
-int VistaJuego::obtenerCoordY(int filaObjetivo){
-  //primero ocupamos conocer el espacio total de tablero donde se hace el dibujo
-  int altura=espacioTablero->GetClientSize().GetHeight();
-  //dividimos la altura total entre la  cantidad de filas, así obtenemos la altura de cada celda
-  int alturaCelda= altura/estadoActual->filas;
-  //obtenemos la altura del borde superior de la celda a eso le sumamos la mitad de la altura de la celda, sumandolos obtenemos la coordenada del centro
-  return filaObjetivo * alturaCelda + alturaCelda /2;
+// método para obtener la coordena Y donde se encuentra una ficha insertada
+// es utilizado para en onTimer saber cuando ya se llego a la coordenada
+// deseada, donde insertamos la ficha
+int VistaJuego::obtenerCoordY(int filaObjetivo) {
+  // primero ocupamos conocer el espacio total de tablero donde se hace el
+  // dibujo
+  int altura = espacioTablero->GetClientSize().GetHeight();
+  // dividimos la altura total entre la  cantidad de filas, así obtenemos la
+  // altura de cada celda
+  int alturaCelda = altura / estadoActual->filas;
+  // obtenemos la altura del borde superior de la celda a eso le sumamos la
+  // mitad de la altura de la celda, sumandolos obtenemos la coordenada del
+  // centro
+  return filaObjetivo * alturaCelda + alturaCelda / 2;
 }
 
+// Método que actualiza la posición de la ficha en cada intervalo de tiempo
+// definido por el wxtimer
 
-
-//Método que actualiza la posición de la ficha en cada intervalo de tiempo definido por el wxtimer
-
-void VistaJuego::onTimer(wxTimerEvent& event){
-  //revisamos que la animación siga en proceso
-  if(!hayAnimacion){
-    //no hay una animación detenemos el timer
-      timer->Stop();
-      return;
-  }
-  //vamos a ir incrementando la posición de la ficha en el ejeY
-  valEjeY=valEjeY+5;
-  //si el valor de la ficha en el eje Y llega al valor del eje Y de la fila correspondiente o se pasa detenemos la animación y el timer
-  if(valEjeY>=obtenerCoordY(filaObjetivo)){
-    hayAnimacion=false;
+void VistaJuego::onTimer(wxTimerEvent& event) {
+  // revisamos que la animación siga en proceso
+  if (!hayAnimacion) {
+    // no hay una animación detenemos el timer
     timer->Stop();
-    //cuando se para la animación actualizamos el estado
-      actualizarEstado();
-
+    return;
   }
-  Refresh();//forzamos un repintado
+  // vamos a ir incrementando la posición de la ficha en el ejeY
+  valEjeY = valEjeY + 5;
+  // si el valor de la ficha en el eje Y llega al valor del eje Y de la fila
+  // correspondiente o se pasa detenemos la animación y el timer
+  if (valEjeY >= obtenerCoordY(filaObjetivo)) {
+    hayAnimacion = false;
+    timer->Stop();
+    // cuando se para la animación actualizamos el estado
+    actualizarEstado();
+  }
+  Refresh();  // forzamos un repintado
 }
-
-
-
-
 
 // método que se va a llamar cada que el tablero ocupe ser redibujado- por
 // ejemplo que tenga que cambiar de tamaño
@@ -182,7 +180,7 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
   // reducir el parpadeo
   wxBufferedPaintDC bufferDibujo(espacioTablero);
 
-   // Establece el color de fondo a azul
+  // Establece el color de fondo a azul
   bufferDibujo.SetBackground(*wxBLUE);
   // limpia el area del dibujo:
   bufferDibujo.Clear();
@@ -209,18 +207,17 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
   // circulos del tablero
   bufferDibujo.SetPen(wxPen(*wxBLACK, 2));
 
-
   // vamos a ir iterando para dibujar los circulos en cada celda del tablero
   // vamos rellenando por filas
 
   for (int i = 0; i < estadoActual->columnas; i++) {
     for (int j = 0; j < estadoActual->filas; j++) {
-      if(estadoActual->estadoCelda(i,j)==1){
+      if (estadoActual->estadoCelda(i, j) == 1) {
         bufferDibujo.SetBrush(*wxYELLOW_BRUSH);
-      }else if(estadoActual->estadoCelda(i,j)==2){
+      } else if (estadoActual->estadoCelda(i, j) == 2) {
         bufferDibujo.SetBrush(*wxRED_BRUSH);
-      }else{
-          bufferDibujo.SetBrush(*wxWHITE_BRUSH);
+      } else {
+        bufferDibujo.SetBrush(*wxWHITE_BRUSH);
       }
       // calculamos el eje x del centro del circulo
       int ejeX = i * anchoCelda + anchoCelda / 2;
@@ -229,62 +226,58 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
     }
   }
 
-  //dibuja la animación
+  // dibuja la animación
 
-  if(hayAnimacion){
-    //en lugar de por el espacio de la celda, seleccionamos el color por el jugador 
-    const wxBrush* brush=(estadoActual->jugadorActual->getColor()==1) ? wxYELLOW_BRUSH : wxRED_BRUSH;
+  if (hayAnimacion) {
+    // en lugar de por el espacio de la celda, seleccionamos el color por el
+    // jugador
+    const wxBrush* brush = (estadoActual->jugadorActual->getColor() == 1)
+                               ? wxYELLOW_BRUSH
+                               : wxRED_BRUSH;
     bufferDibujo.SetBrush(*brush);
-    //vamos a usar las cordenas de ese momento del eje Y y X
+    // vamos a usar las cordenas de ese momento del eje Y y X
     int ejeX = columnaObjetivo * anchoCelda + anchoCelda / 2;
-    int ejeY=valEjeY;
+    int ejeY = valEjeY;
     bufferDibujo.DrawCircle(ejeX, ejeY, radio);
   }
 }
 
+void VistaJuego::insertarFichaGUI(int columna) {
+  int fila = estadoActual->insertarFicha(columna);
+  // Si la fila es distinta de -1 es válida
+  if (fila != -1) {
+    iniciarAnimacion(columna, fila);
 
+  } else {
+    // TO-DO: Manajear caso donde no se logró insertar
+    wxMessageBox("La columna está llena, selecciona otra columna.");
+  }
+}
 
-void VistaJuego::insertarFichaGUI(int columna){
-
-  int fila= estadoActual->insertarFicha(columna);
-  //Si la fila es distinta de -1 es válida
-  if(fila!=-1){
-    iniciarAnimacion(columna,fila);
-    
-  } else{
-    //TO-DO: Manajear caso donde no se logró insertar
-     wxMessageBox("La columna está llena, selecciona otra columna.");
+void VistaJuego::onClick(wxMouseEvent& event) {
+  // verificamos que se ejecute solo cuando es un humano quien juega
+  if (!estadoActual->esHumano()) {
+    return;
   }
 
+  int anchoPanel = espacioTablero->GetClientSize().GetWidth();
+
+  int anchoCelda = anchoPanel / estadoActual->columnas;
+  // obtenemos la coordenada del eje X del evento del click, coordenada relativa
+  // al tamaño de espacioTablero
+  int coordX = event.GetX();
+  // covertimos coordenada en columna
+  int columnaClick = coordX / anchoCelda;
+
+  // llamamos a método común para insertar una ficha
+  insertarFichaGUI(columnaClick);
 }
 
-void VistaJuego::onClick(wxMouseEvent& event){
-    //verificamos que se ejecute solo cuando es un humano quien juega
-    if(!estadoActual->esHumano()){
-        return;
-    }
-
-    int anchoPanel=espacioTablero->GetClientSize().GetWidth();
-    
-    int anchoCelda = anchoPanel / estadoActual->columnas;
-    //obtenemos la coordenada del eje X del evento del click, coordenada relativa al tamaño de espacioTablero
-    int coordX=event.GetX();
-    //covertimos coordenada en columna
-    int columnaClick= coordX/anchoCelda;
-
-    //llamamos a método común para insertar una ficha
-    insertarFichaGUI(columnaClick);
-    
-}
-
-
-
-void VistaJuego::onClose(wxCloseEvent& event){
-  if (confNuevoJuego){
-      confNuevoJuego->Close(true);
+void VistaJuego::onClose(wxCloseEvent& event) {
+  if (confNuevoJuego) {
+    confNuevoJuego->Close(true);
   }
   event.Skip();
 }
-
 
 void VistaJuego::onBotonSalir(wxCommandEvent& event) { Close(true); }

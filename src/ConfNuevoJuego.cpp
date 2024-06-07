@@ -1,9 +1,10 @@
 #include <wx/spinctrl.h>
 #include <wx/wx.h>
-#include <memory>
-#include <EstadoJuego.hh>
+
 #include <ConfNuevoJuego.hh>
+#include <EstadoJuego.hh>
 #include <VistaJuego.hh>
+#include <memory>
 
 ConfNuevoJuego::ConfNuevoJuego(MainFrame* mainFrame, const wxString& title)
     : wxFrame(mainFrame, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)) {
@@ -30,11 +31,11 @@ ConfNuevoJuego::ConfNuevoJuego(MainFrame* mainFrame, const wxString& title)
   staticText->SetFont(fuente);
 
   wxArrayString choices;
-  //radioBox nos devolvera un 0 si es el humano
+  // radioBox nos devolvera un 0 si es el humano
   choices.Add("Humano");
-  //radioBox nos devolvera 1 si es el IA fácil
+  // radioBox nos devolvera 1 si es el IA fácil
   choices.Add("IA Facil");
-  //radioBox nos devolvera 2 si es el IA díficil
+  // radioBox nos devolvera 2 si es el IA díficil
   choices.Add("IA Dificil");
 
   wxRadioBox* radioBox1 = new wxRadioBox(
@@ -100,7 +101,6 @@ ConfNuevoJuego::ConfNuevoJuego(MainFrame* mainFrame, const wxString& title)
   spinCtrl2->Bind(wxEVT_SPINCTRL, &ConfNuevoJuego::columnasTablero, this);
   botonIniciarJuego->Bind(wxEVT_BUTTON, &ConfNuevoJuego::botonIniciar, this);
   botonRegresar->Bind(wxEVT_BUTTON, &ConfNuevoJuego::botonRegresar, this);
- 
 
   Maximize(true);
 }
@@ -154,9 +154,9 @@ void ConfNuevoJuego::columnasTablero(wxCommandEvent& event) {
 void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
 
 void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
-  auto estado= make_unique<EstadoJuego>(numFilasTablero,numColumnasTablero,tipoJugadorUno, tipoJugadorDos);
-  VistaJuego* juego =
-      new VistaJuego(this,"4 en linea", move(estado));
+  auto estado = make_unique<EstadoJuego>(numFilasTablero, numColumnasTablero,
+                                         tipoJugadorUno, tipoJugadorDos);
+  VistaJuego* juego = new VistaJuego(this, "4 en linea", move(estado));
   juego->Show(true);
   this->Hide();
 }
