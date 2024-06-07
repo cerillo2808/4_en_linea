@@ -41,8 +41,8 @@ DialogoGanador::DialogoGanador(VistaJuego* ventanaVista,std::string nombreJugado
 
 
  void DialogoGanador::continuar(wxCommandEvent& event){
-    //aquí requerimos algo como VistaJuego->estadoActual->clearTablero();
-    //¿Se le puede enviar desde aquí un refresh? 
+    ventanaVista->estadoActual->clearTablero();
+    ventanaVista->Refresh();
  }
 
 void DialogoGanador::salir(wxCommandEvent& event){
