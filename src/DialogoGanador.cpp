@@ -3,15 +3,15 @@
 #include <wx/msgdlg.h>
 
 DialogoGanador::DialogoGanador(VistaJuego* ventanaVista,std::string nombreJugador):
-    wxDialog(ventanaVista, wxID_ANY,"", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE ),ventanaVista(ventanaVista),nombreJugador(nombreJugador){
+    wxDialog(ventanaVista, wxID_ANY,"", wxDefaultPosition, wxSize(570, 280), wxDEFAULT_DIALOG_STYLE ),ventanaVista(ventanaVista),nombreJugador(nombreJugador){
     
     wxBoxSizer* vertical=new wxBoxSizer(wxVERTICAL);
 
-    std::string mensajeGanador= nombreJugador + " ha GANADO!" ;
+    std::string mensajeGanador= "Jugador "+ nombreJugador + " ha GANADO!!" ;
 
     wxStaticText* textoVictoria= new wxStaticText(this,wxID_ANY,mensajeGanador);
     wxStaticText* pregunta= new wxStaticText(this,wxID_ANY,"Deseas continuar o salir",wxDefaultPosition);
-    wxFont fuenteVictoria(wxFontInfo(15).Bold().FaceName("Georgia"));
+    wxFont fuenteVictoria(wxFontInfo(20).Bold().FaceName("Georgia"));
     textoVictoria->SetFont(fuenteVictoria);
 
     wxBoxSizer* horizontal=new wxBoxSizer(wxHORIZONTAL);
@@ -30,7 +30,8 @@ DialogoGanador::DialogoGanador(VistaJuego* ventanaVista,std::string nombreJugado
     vertical->Add(horizontal,0,wxALL| wxEXPAND,10 );
 
     this->SetSizer(vertical);
-    this->Fit();
+    this->Layout();
+    //this->Fit();
 
     continuar->Bind(wxEVT_BUTTON,&DialogoGanador::continuar,this);
     salir->Bind(wxEVT_BUTTON,&DialogoGanador::salir,this);

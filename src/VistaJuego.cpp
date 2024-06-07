@@ -9,7 +9,7 @@
 
 VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, unique_ptr<EstadoJuego> estado)
     : wxFrame(confNuevoJuego, wxID_ANY, title, wxDefaultPosition, wxDefaultSize),confNuevoJuego(confNuevoJuego),
-      estadoActual(move(estado)) {
+      estadoActual(move(estado)), timer(new wxTimer(this)), hayAnimacion(false), valEjeY(0){
 
   // crear el espacio, panel, para el tablero
   espacioTablero = new wxPanel(this);
@@ -20,6 +20,8 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, uniq
   espacioTablero->Bind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick,this);
   Bind(wxEVT_CLOSE_WINDOW,&VistaJuego::onClose, this);
 
+  //iniciamos con que sea el turno del jugador 1
+  turnoActual=1;
   // creando fuente para el texto de los botones
   wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
   wxFont fuenteMarcador(wxFontInfo(15).Bold().FaceName("Arial"));
@@ -72,6 +74,22 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, uniq
   //que incialmente este maximizado
   Maximize(true);
 }
+/*Este es el método que va controlando los turnos
+va ir mostrando en panatalla el nombre del jugadro del cual es el turno 1 o 2
+dependiendo del tipo de jugador va a habilitar o no onclick*/
+void VistaJuego::controladorTurnos(){
+  //obtenemos nombre del jugador
+  wxString nombreActual=estadoActual->jugadorActual->getNombre();
+  turno->SetLabel("Turno: " + nombreActual);
+  //TODO:método de si es humano para saber si habilitar o no el onclick
+}
+
+
+
+
+
+
+
 
 //método que se llama cuando se va a insertar una ficha, inicializa la animación y los valores que se ocupan para ella
 //recibe en que columna se quiere insertar la ficha, así como el color del jugador que la está insertando
@@ -79,8 +97,6 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, uniq
 void VistaJuego::animacion(int columna, int color){
   columna=columna;
   color=color;
-  //el eje Y de la pantalla va a estar originalmente en 0 para que caiga desde arriba
-  valEjeY=0;
   hayAnimacion=true;
   //TODO: Correción en estado para que insertarFicha devuelva int
   //insertarficha me devuelve el entero donde se insertar la ficha en la lógica, aquí lo usamos para saber hasta que fila debe de llegar la ficha en su caída
@@ -93,12 +109,18 @@ void VistaJuego::animacion(int columna, int color){
 //Método que actualiza la posición de la ficha en cada intervalo de tiempo definido por el wxtimer
 
 void VistaJuego::onTimer(wxTimerEvent& event){
-
+  //revisamos que la animación siga en proceso
+  if(!hayAnimacion){
+    //no hay una animación detenemos el timer
+      timer->Stop();
+      return;
+  }
   //vamos a ir incrementando la posición de la ficha en el ejeY
   valEjeY=valEjeY+5;
 
   //si el valor de la ficha en el eje Y llega al valor del eje Y de la fila correspondiente o se pasa detenemos la animación y el timer
 
+  Refresh();
 }
 
 
@@ -178,7 +200,7 @@ void VistaJuego::onClick(wxMouseEvent& event){
     wxLogMessage("Clic en la columna %d", columnaClick);
 
 
-    DialogoGanador* ganador= new DialogoGanador(this, "Jugador 1");
+    DialogoGanador* ganador= new DialogoGanador(this, "UNO");
     ganador->ShowModal();
     // DialogoEmpate* empate= new DialogoEmpate(this);
     // empate->ShowModal();
