@@ -56,14 +56,14 @@ ConfNuevoJuego::ConfNuevoJuego(MainFrame* mainFrame, const wxString& title)
   textoSpin2->SetFont(fuenteR);
   wxSpinCtrl* spinCtrl =
       new wxSpinCtrl(panelPrincipal, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                     wxDefaultSize, wxSP_ARROW_KEYS, 4, 15, 7);
+                     wxDefaultSize, wxSP_ARROW_KEYS, 4, 10, 4);
   spinCtrl->SetFont(fuenteR);
   wxStaticText* textoSpin3 = new wxStaticText(
       panelPrincipal, wxID_ANY, "Casillas Verticales: ", wxDefaultPosition);
   textoSpin3->SetFont(fuenteR);
   wxSpinCtrl* spinCtrl2 =
       new wxSpinCtrl(panelPrincipal, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                     wxDefaultSize, wxSP_ARROW_KEYS, 4, 15, 7);
+                     wxDefaultSize, wxSP_ARROW_KEYS, 4, 10, 4);
   spinCtrl2->SetFont(fuenteR);
   wxButton* botonIniciarJuego = new wxButton(
       panelPrincipal, wxID_ANY, "INICIAR", wxDefaultPosition, wxSize(400, 100));
