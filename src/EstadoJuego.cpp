@@ -17,11 +17,12 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
                          int tipoJugador2)
     : filas(filas),
       columnas(columnas),
-      tablero(std::make_shared<Tablero>(filas, columnas)),
+      tablero(filas, columnas),
       tipoJugador1(tipoJugador1),
       tipoJugador2(tipoJugador2) {
-
-      //Tablero tablero = Tablero(filas, columnas);
+    
+    Tablero tablero = Tablero(filas, columnas);
+      
 
   jugadorUno = instanciarJugador(tipoJugador1, amarillo, "1");
   jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
@@ -47,25 +48,29 @@ std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
 }
 
 int EstadoJuego::estadoCelda(int fila, int columna) {
-  if(!tablero){
-    throw std::invalid_argument ("El tablero es nulo");
-  } 
+  // if(!tablero){
+  //   throw std::invalid_argument ("El tablero es nulo");
+  // } 
   
-  if (fila<0 || fila>=tablero->getFilas() || columna < 0 || columna>=tablero->getColumnas()){
-    throw std::out_of_range("Índice fuera de rango: (" + std::to_string(fila) + ", " + std::to_string(columna) + ")");
-  }
+  if (fila < 0 || fila >= tablero.getFilas()) {
+    throw std::out_of_range("Fila fuera de rango: Fila pedida: " + std::to_string(fila) + ", Total de filas según programa: " + std::to_string(tablero.getFilas()));
+}
 
-  return tablero->getTablero()[fila][columna];
+if (columna < 0 || columna >= tablero.getColumnas()) {
+    throw std::out_of_range("Columna fuera de rango: Columna pedida: " + std::to_string(columna) + ", Total de columnas según programa: " + std::to_string(tablero.getColumnas()));
+}
+
+  return tablero.getTablero()[fila][columna];
 }
 
 int EstadoJuego::insertarFicha(int columna) {
   if (jugadorActual == jugadorUno) {
-    int FilaInsertada = tablero->insertarFicha(amarillo, columna);
+    int FilaInsertada = tablero.insertarFicha(amarillo, columna);
     ultimaFilaInsertada = FilaInsertada;
     ultimaColumnaInsertada = columna;
     return columna;
   } else if (jugadorActual == jugadorDos) {
-    int FilaInsertada = tablero->insertarFicha(rojo, columna);
+    int FilaInsertada = tablero.insertarFicha(rojo, columna);
     ultimaFilaInsertada = FilaInsertada;
     ultimaColumnaInsertada = columna;
     return columna;
@@ -75,7 +80,7 @@ int EstadoJuego::insertarFicha(int columna) {
 }
 
 int EstadoJuego::verificarGanador() {
-  if (tablero->analizarJugada(jugadorActual->getColor(), ultimaFilaInsertada,
+  if (tablero.analizarJugada(jugadorActual->getColor(), ultimaFilaInsertada,
                              ultimaColumnaInsertada)) {
     jugadorActual->setGanes();
     return jugadorActual->getColor();
@@ -84,7 +89,7 @@ int EstadoJuego::verificarGanador() {
   return 0;
 }
 
-bool EstadoJuego::empate() { return tablero->empate(); }
+bool EstadoJuego::empate() { return tablero.empate(); }
 
 void EstadoJuego::cambiarTurno() {
   if (jugadorActual == jugadorUno) {
@@ -95,9 +100,9 @@ void EstadoJuego::cambiarTurno() {
 }
 
 void EstadoJuego::clearTablero() {
-  for (int i = 0; i < tablero->getFilas(); i++) {
-    for (int j = 0; j < tablero->getColumnas(); j++) {
-      tablero->setCasilla(non_color, i, j);
+  for (int i = 0; i < tablero.getFilas(); i++) {
+    for (int j = 0; j < tablero.getColumnas(); j++) {
+      tablero.setCasilla(non_color, i, j);
     }
   }
 }
