@@ -57,7 +57,7 @@ class EstadoJuego {
   shared_ptr<IJugador> jugadorDos;
   int filas;
   int columnas;
-  Tablero tablero;
+  shared_ptr <Tablero> tablero;
   int ultimaColumnaInsertada;
   int ultimaFilaInsertada;
   int tipoJugador1;

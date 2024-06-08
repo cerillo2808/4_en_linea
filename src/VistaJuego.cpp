@@ -255,8 +255,9 @@ void VistaJuego::insertarFichaGUI(int columna) {
 }
 
 void VistaJuego::onClick(wxMouseEvent& event) {
-  // verificamos que se ejecute solo cuando es un humano quien juega
-  if (!estadoActual->esHumano()) {
+  // verificamos que se ejecute solo cuando es un humano quien juega}
+  //también verificamos que haya una instancia de estado en ese momento
+  if (estadoActual && !estadoActual->esHumano()) {
     return;
   }
 
@@ -276,7 +277,22 @@ void VistaJuego::onClick(wxMouseEvent& event) {
 void VistaJuego::onClose(wxCloseEvent& event) {
   if (confNuevoJuego) {
     confNuevoJuego->Close(true);
+    //confNuevoJuego = nullptr;
   }
+    //desabilitamos todos los eventos de vistaJuego
+    espacioTablero->Unbind(wxEVT_PAINT, &VistaJuego::onPaint, this);
+    espacioTablero->Unbind(wxEVT_LEFT_DOWN, &VistaJuego::onClick, this);
+    espacioTablero->Unbind(wxEVT_RIGHT_DOWN, &VistaJuego::onClick, this);
+    espacioTablero->Unbind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick, this);
+    Unbind(wxEVT_CLOSE_WINDOW, &VistaJuego::onClose, this);
+
+     if (timer) {
+        timer->Stop();
+        delete timer;
+        timer = nullptr;
+    }
+
+
   event.Skip();
 }
 

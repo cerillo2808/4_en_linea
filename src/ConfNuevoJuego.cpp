@@ -7,7 +7,8 @@
 #include <memory>
 
 ConfNuevoJuego::ConfNuevoJuego(MainFrame* mainFrame, const wxString& title)
-    : wxFrame(mainFrame, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)) {
+    : wxFrame(mainFrame, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)),
+     tipoJugadorUno(0), tipoJugadorDos(0), numFilasTablero(4), numColumnasTablero(4) {
   // luego se va a sobreescribir pero es para evitar errores:
 
   numFilasTablero = numColumnasTablero = 4;
@@ -154,6 +155,9 @@ void ConfNuevoJuego::columnasTablero(wxCommandEvent& event) {
 void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
 
 void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
+   wxLogMessage("Iniciando juego con filas: %d, columnas: %d, tipoJugadorUno: %d, tipoJugadorDos: %d",
+               numFilasTablero, numColumnasTablero, tipoJugadorUno, tipoJugadorDos);
+
   auto estado = make_unique<EstadoJuego>(numFilasTablero, numColumnasTablero,
                                          tipoJugadorUno, tipoJugadorDos);
   VistaJuego* juego = new VistaJuego(this, "4 en linea", move(estado));
