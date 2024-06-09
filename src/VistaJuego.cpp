@@ -1,12 +1,12 @@
 #include <wx/dcbuffer.h>
 #include <wx/timer.h>
 #include <wx/wx.h>
-
 #include <DialogoEmpate.hh>
 #include <DialogoGanador.hh>
 #include <EstadoJuego.hh>
 #include <VistaJuego.hh>
 #include <memory>
+#include <future>
 
 VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
                        unique_ptr<EstadoJuego> estado)
@@ -79,13 +79,23 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
 
   // que incialmente este maximizado
   Maximize(true);
+
+  // Llama al controlador de turnos para comenzar el juego
+  controladorTurnos();
 }
 
 // método que trabaja en un hilo distinto
 void VistaJuego::llamarJugarIAs() {
   // TO-DO: corregir que jugar devuelva una columna
-  //  int columna= estadoActual->jugadorActual->jugar();
-  //  insertarFichaGUI(columna);
+  int columna;
+  //columna= estadoActual->jugadorActual->jugar();
+
+  //Las actualizaciones de la GUI tiene que realizarse en el hilo principal 
+  // con wxTheApp->CallAfter hacemos que insertarFichaGUI se ejecute en el hilo principal
+  //ocupamos el lamba para pasar el argumento de columna 
+  wxTheApp->CallAfter([this, columna]() {
+        insertarFichaGUI(columna);
+    });
 }
 
 /*Este es el método que va controlando los turnos
@@ -99,8 +109,8 @@ void VistaJuego::controladorTurnos() {
   if (estadoActual->esHumano()) {
     // si es true no hace nada porque onclick se encarga
   } else {
-    // TO-DO: usar sync
-    llamarJugarIAs();
+    // Inicia la ejecución de llamar IAs en un hilo distinto al de la GUI
+     std::async(std::launch::async, &VistaJuego::llamarJugarIAs, this);
   }
 }
 
@@ -209,22 +219,21 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
 
   // vamos a ir iterando para dibujar los circulos en cada celda del tablero
   // vamos rellenando por filas
-
-  for (int i = 0; i < estadoActual->columnas; i++) {
-    for (int j = 0; j < estadoActual->filas; j++) {
-      if (estadoActual->estadoCelda(i, j) == 1) {
-        bufferDibujo.SetBrush(*wxYELLOW_BRUSH);
-      } else if (estadoActual->estadoCelda(i, j) == 2) {
-        bufferDibujo.SetBrush(*wxRED_BRUSH);
-      } else {
-        bufferDibujo.SetBrush(*wxWHITE_BRUSH);
+    for (int i = 0; i < estadoActual->filas; i++) {
+      for (int j = 0; j < estadoActual->columnas; j++) {
+        if(estadoActual->estadoCelda(i,j)==1){
+          bufferDibujo.SetBrush(*wxYELLOW_BRUSH);
+        }else if(estadoActual->estadoCelda(i,j)==2){
+          bufferDibujo.SetBrush(*wxRED_BRUSH);
+        }else{
+            bufferDibujo.SetBrush(*wxWHITE_BRUSH);
+        }
+        // calculamos el eje x del centro del circulo
+        int ejeX = j * anchoCelda + anchoCelda / 2;
+        int ejeY = i * alturaCelda + alturaCelda / 2;
+        bufferDibujo.DrawCircle(ejeX, ejeY, radio);
       }
-      // calculamos el eje x del centro del circulo
-      int ejeX = i * anchoCelda + anchoCelda / 2;
-      int ejeY = j * alturaCelda + alturaCelda / 2;
-      bufferDibujo.DrawCircle(ejeX, ejeY, radio);
     }
-  }
 
   // dibuja la animación
 
