@@ -6,10 +6,11 @@
 class DialogoEmpate:public wxDialog{
     public:
     //Constructor
-    DialogoEmpate(VistaJuego* ventanaVista);
+    DialogoEmpate(VistaJuego* ventanaVista,string nombreJugador);
     void continuar(wxCommandEvent& event);
     void salir(wxCommandEvent& event);
     VistaJuego* ventanaVista;
+    string nombreJugador;
 };
 
 

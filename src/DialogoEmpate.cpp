@@ -2,8 +2,8 @@
 #include <VistaJuego.hh>
 #include <wx/msgdlg.h>
 
-DialogoEmpate::DialogoEmpate(VistaJuego* ventanaVista):
-    wxDialog(ventanaVista, wxID_ANY,"", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE ),ventanaVista(ventanaVista){
+DialogoEmpate::DialogoEmpate(VistaJuego* ventanaVista,string nombreJugador):
+    wxDialog(ventanaVista, wxID_ANY,"", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE ),ventanaVista(ventanaVista),nombreJugador(nombreJugador){
         wxBoxSizer* vertical=new wxBoxSizer(wxVERTICAL);
 
     wxStaticText* empateGrande= new wxStaticText(this,wxID_ANY,"EMPATE!");
@@ -37,8 +37,8 @@ DialogoEmpate::DialogoEmpate(VistaJuego* ventanaVista):
 
 
  void DialogoEmpate::continuar(wxCommandEvent& event){
-    //aquí requerimos algo como VistaJuego->estadoActual->clearTablero();
-    //¿Se le puede enviar desde aquí un refresh? 
+    ventanaVista->estadoActual->clearTablero();
+    ventanaVista->Refresh();
  }
 
 void DialogoEmpate::salir(wxCommandEvent& event){

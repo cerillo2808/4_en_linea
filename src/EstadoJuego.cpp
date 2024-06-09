@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include <stdexcept>
+
 using namespace std;
 
 EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
@@ -44,6 +46,15 @@ std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
 }
 
 int EstadoJuego::estadoCelda(int fila, int columna) {
+
+   if (fila < 0 || fila >= tablero.getFilas()) {
+    throw std::out_of_range("Fila fuera de rango: Fila pedida: " + std::to_string(fila) + ", Total de filas según programa: " + std::to_string(tablero.getFilas()));
+}
+
+if (columna < 0 || columna >= tablero.getColumnas()) {
+    throw std::out_of_range("Columna fuera de rango: Columna pedida: " + std::to_string(columna) + ", Total de columnas según programa: " + std::to_string(tablero.getColumnas()));
+}
+
   return tablero.getTablero()[fila][columna];
 }
 

@@ -7,6 +7,10 @@
 #include <memory>
 #include <VistaJuego.hh>
 
+#include <stdexcept> 
+
+
+
 VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, unique_ptr<EstadoJuego> estado)
     : wxFrame(confNuevoJuego, wxID_ANY, title, wxDefaultPosition, wxDefaultSize),confNuevoJuego(confNuevoJuego),
       estadoActual(move(estado)), timer(new wxTimer(this)), hayAnimacion(false), valEjeY(0){
@@ -166,8 +170,10 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
   // vamos a ir iterando para dibujar los circulos en cada celda del tablero
   // vamos rellenando por filas
 
-  for (int i = 0; i < estadoActual->columnas; i++) {
-    for (int j = 0; j < estadoActual->filas; j++) {
+   try {
+
+  for (int i = 0; i < estadoActual->filas; i++) {
+    for (int j = 0; j < estadoActual->columnas; j++) {
       if(estadoActual->estadoCelda(i,j)==1){
         bufferDibujo.SetBrush(*wxYELLOW_BRUSH);
       }else if(estadoActual->estadoCelda(i,j)==2){
@@ -176,12 +182,18 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
           bufferDibujo.SetBrush(*wxWHITE_BRUSH);
       }
       // calculamos el eje x del centro del circulo
-      int ejeX = i * anchoCelda + anchoCelda / 2;
-      int ejeY = j * alturaCelda + alturaCelda / 2;
+      int ejeX = j * anchoCelda + anchoCelda / 2;
+      int ejeY = i * alturaCelda + alturaCelda / 2;
       bufferDibujo.DrawCircle(ejeX, ejeY, radio);
     }
   }
+   } catch (const std::out_of_range& e) {
+    wxLogMessage("Excepción atrapada en onPaint: %s", e.what());
+  } catch (...) {
+    wxLogMessage("Excepción desconocida atrapada en onPaint");
+  }
 }
+
 
 
 
@@ -230,5 +242,3 @@ void VistaJuego::onClose(wxCloseEvent& event){
   }
   event.Skip();
 }
-
-
