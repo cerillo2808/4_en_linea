@@ -116,16 +116,19 @@ void VistaJuego::controladorTurnos() {
 
 void VistaJuego::actualizarEstado() {
   if (estadoActual->verificarGanador()) {
+     wxLogMessage("Ganador detectado desde actualizar estado");
     DialogoGanador* ganador =
         new DialogoGanador(this, (estadoActual->jugadorActual->getNombre()));
     ganador->ShowModal();
   } else if (estadoActual->empate()) {
+    wxLogMessage("Empate detectado desde actualizar estado");
     DialogoEmpate* empate =
         new DialogoEmpate(this, (estadoActual->jugadorActual->getNombre()));
   }
   // cualquiera de los dos casos anteriores les va a dar la posibilidad de
   // salir, si desean continuar o si no sucede ninguna de las dos
   estadoActual->cambiarTurno();
+   wxLogMessage("Cambiando turno desde actulizar estado");
   controladorTurnos();
 }
 
@@ -134,6 +137,7 @@ void VistaJuego::actualizarEstado() {
 // quiere insertar la ficha, así como el color del jugador que la está
 // insertando se establecio: 1=amarillo, 2=rojo
 void VistaJuego::iniciarAnimacion(int columna, int filaObj) {
+  wxLogMessage("Iniciando animación para columna: %d, fila: %d", columna, filaObj);
   columnaObjetivo = columna;
   filaObjetivo = filaObj;
   hayAnimacion = true;
@@ -167,6 +171,7 @@ void VistaJuego::onTimer(wxTimerEvent& event) {
   if (!hayAnimacion) {
     // no hay una animación detenemos el timer
     timer->Stop();
+     wxLogMessage("Animación detenida");
     return;
   }
   // vamos a ir incrementando la posición de la ficha en el ejeY
@@ -176,6 +181,7 @@ void VistaJuego::onTimer(wxTimerEvent& event) {
   if (valEjeY >= obtenerCoordY(filaObjetivo)) {
     hayAnimacion = false;
     timer->Stop();
+     wxLogMessage("Ficha llegó a la posición objetivo");
     // cuando se para la animación actualizamos el estado
     actualizarEstado();
   }
@@ -252,11 +258,12 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
 }
 
 void VistaJuego::insertarFichaGUI(int columna) {
+  wxLogMessage("Insertando ficha en columna: %d", columna);
   int fila = estadoActual->insertarFicha(columna);
   // Si la fila es distinta de -1 es válida
   if (fila != -1) {
+     wxLogMessage("Se logró insertar, vamos a iniciar animacion con columna: %d, fila: %d", columna, fila);
     iniciarAnimacion(columna, fila);
-
   } else {
     // TO-DO: Manajear caso donde no se logró insertar
     wxMessageBox("La columna está llena, selecciona otra columna.");
@@ -264,20 +271,65 @@ void VistaJuego::insertarFichaGUI(int columna) {
 }
 
 void VistaJuego::onClick(wxMouseEvent& event) {
+  wxLogMessage("Se atrapo un click");
   // verificamos que se ejecute solo cuando es un humano quien juega}
   //también verificamos que haya una instancia de estado en ese momento
   if (estadoActual && !estadoActual->esHumano()) {
+     wxLogMessage("No es el turno de un humano");
     return;
   }
 
+  wxLogMessage("Turno de un humano, procediendo con onClick");
+
+   if (!estadoActual) {
+        wxLogMessage("Error: estadoActual es nulo");
+        return;
+    }
+  
+    if(!espacioTablero){
+       wxLogMessage("Error: espacioTablero es nulo");
+        return;
+    }
+
+
   int anchoPanel = espacioTablero->GetClientSize().GetWidth();
 
+  wxLogMessage("Ancho del panel: %d", anchoPanel);
+
+  if (anchoPanel <= 0) {
+        wxLogMessage("Error: anchoPanel es %d, que no es válido", anchoPanel);
+        return;
+    }
+
   int anchoCelda = anchoPanel / estadoActual->columnas;
+
+   wxLogMessage("Ancho de cada celda: %d", anchoCelda);
+
+   if (anchoCelda <= 0) {
+        wxLogMessage("Error: anchoCelda es %d, que no es válido", anchoCelda);
+        return;
+    }
+
   // obtenemos la coordenada del eje X del evento del click, coordenada relativa
   // al tamaño de espacioTablero
   int coordX = event.GetX();
+  wxLogMessage("Coordenada X del clic: %d", coordX);
+
+  // Verificar si coordX es válida
+    if (coordX < 0) {
+        wxLogMessage("Error: coordX es %d, que no es válido", coordX);
+        return;
+    }
   // covertimos coordenada en columna
   int columnaClick = coordX / anchoCelda;
+  wxLogMessage("Columna del clic: %d", columnaClick);
+
+  // Verificar si columnaClick es válida
+    if (columnaClick < 0 || columnaClick >= estadoActual->columnas) {
+        wxLogMessage("Error: columnaClick es %d, que no es válido", columnaClick);
+        return;
+    }
+
 
   // llamamos a método común para insertar una ficha
   insertarFichaGUI(columnaClick);

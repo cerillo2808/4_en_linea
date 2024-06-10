@@ -68,12 +68,12 @@ int EstadoJuego::insertarFicha(int columna) {
     int FilaInsertada = tablero.insertarFicha(amarillo, columna);
     ultimaFilaInsertada = FilaInsertada;
     ultimaColumnaInsertada = columna;
-    return columna;
+    return FilaInsertada;
   } else if (jugadorActual == jugadorDos) {
     int FilaInsertada = tablero.insertarFicha(rojo, columna);
     ultimaFilaInsertada = FilaInsertada;
     ultimaColumnaInsertada = columna;
-    return columna;
+    return FilaInsertada;
   }
 
   return -1;
