@@ -154,10 +154,6 @@ void ConfNuevoJuego::columnasTablero(wxCommandEvent& event) {
 void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
 
 void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
-  wxLogMessage(
-      "Iniciando juego con filas: %d, columnas: %d, tipoJugadorUno: %d, "
-      "tipoJugadorDos: %d",
-      numFilasTablero, numColumnasTablero, tipoJugadorUno, tipoJugadorDos);
 
   auto estado = make_unique<EstadoJuego>(numFilasTablero, numColumnasTablero,
                                          tipoJugadorUno, tipoJugadorDos);

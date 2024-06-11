@@ -48,9 +48,6 @@ std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
 }
 
 int EstadoJuego::estadoCelda(int fila, int columna) {
-  // if(!tablero){
-  //   throw std::invalid_argument ("El tablero es nulo");
-  // } 
   
   if (fila < 0 || fila >= tablero.getFilas()) {
     throw std::out_of_range("Fila fuera de rango: Fila pedida: " + std::to_string(fila) + ", Total de filas según programa: " + std::to_string(tablero.getFilas()));

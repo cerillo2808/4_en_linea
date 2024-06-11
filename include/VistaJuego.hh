@@ -34,12 +34,6 @@ class VistaJuego : public wxFrame {
   wxStaticText* turno;
   ConfNuevoJuego* confNuevoJuego;
 
-  // int columnaObjetivo;
-  // int filaObjetivo;
-  // int colorFicha;
-  // wxTimer* timer;
-  // bool hayAnimacion;
-  // int valEjeY;
 };
 
 #endif
