@@ -120,7 +120,7 @@ void VistaJuego::actualizarEstado() {
     DialogoGanador* ganador =
         new DialogoGanador(this, (estadoActual->jugadorActual->getNombre()));
     ganador->ShowModal();
-  } else if (estadoActual->empate()) {
+  } if else (estadoActual->empate()) {
     wxLogMessage("Empate detectado desde actualizar estado");
     DialogoEmpate* empate =
         new DialogoEmpate(this, (estadoActual->jugadorActual->getNombre()));
@@ -132,63 +132,7 @@ void VistaJuego::actualizarEstado() {
   controladorTurnos();
 }
 
-#include<stdio.h>
 
-// método que se llama cuando se va a insertar una ficha, inicializa la
-// animación y los valores que se ocupan para ella recibe en que columna se
-// quiere insertar la ficha, así como el color del jugador que la está
-// insertando se establecio: 1=amarillo, 2=rojo
-void VistaJuego::iniciarAnimacion(int columna, int filaObj) {
-  printf("Iniciando animación para columna: %d, fila: %d", columna, filaObj);
-  columnaObjetivo = columna;
-  filaObjetivo = filaObj;
-  hayAnimacion = true;
-  // el valor del eje Y tiene que iniciar en 0, se ve "cayendo"
-  valEjeY = 0;
-  // vamos a llamar a onTimer cada 16 milisegundos
-  timer->Start(16);
-}
-
-// método para obtener la coordena Y donde se encuentra una ficha insertada
-// es utilizado para en onTimer saber cuando ya se llego a la coordenada
-// deseada, donde insertamos la ficha
-int VistaJuego::obtenerCoordY(int filaObjetivo) {
-  // primero ocupamos conocer el espacio total de tablero donde se hace el
-  // dibujo
-  int altura = espacioTablero->GetClientSize().GetHeight();
-  // dividimos la altura total entre la  cantidad de filas, así obtenemos la
-  // altura de cada celda
-  int alturaCelda = altura / estadoActual->filas;
-  // obtenemos la altura del borde superior de la celda a eso le sumamos la
-  // mitad de la altura de la celda, sumandolos obtenemos la coordenada del
-  // centro
-  return filaObjetivo * alturaCelda + alturaCelda / 2;
-}
-
-// Método que actualiza la posición de la ficha en cada intervalo de tiempo
-// definido por el wxtimer
-
-void VistaJuego::onTimer(wxTimerEvent& event) {
-  // revisamos que la animación siga en proceso
-  if (!hayAnimacion) {
-    // no hay una animación detenemos el timer
-    timer->Stop();
-     wxLogMessage("Animación detenida");
-    return;
-  }
-  // vamos a ir incrementando la posición de la ficha en el ejeY
-  valEjeY = valEjeY + 5;
-  // si el valor de la ficha en el eje Y llega al valor del eje Y de la fila
-  // correspondiente o se pasa detenemos la animación y el timer
-  if (valEjeY >= obtenerCoordY(filaObjetivo)) {
-    hayAnimacion = false;
-    timer->Stop();
-     wxLogMessage("Ficha llegó a la posición objetivo");
-    // cuando se para la animación actualizamos el estado
-    actualizarEstado();
-  }
-  Refresh();  // forzamos un repintado
-}
 
 // método que se va a llamar cada que el tablero ocupe ser redibujado- por
 // ejemplo que tenga que cambiar de tamaño
@@ -242,22 +186,8 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
         bufferDibujo.DrawCircle(ejeX, ejeY, radio);
       }
     }
-
-  // dibuja la animación
-
-  if (hayAnimacion) {
-    // en lugar de por el espacio de la celda, seleccionamos el color por el
-    // jugador
-    const wxBrush* brush = (estadoActual->jugadorActual->getColor() == 1)
-                               ? wxYELLOW_BRUSH
-                               : wxRED_BRUSH;
-    bufferDibujo.SetBrush(*brush);
-    // vamos a usar las cordenas de ese momento del eje Y y X
-    int ejeX = columnaObjetivo * anchoCelda + anchoCelda / 2;
-    int ejeY = valEjeY;
-    bufferDibujo.DrawCircle(ejeX, ejeY, radio);
   }
-}
+
 
 void VistaJuego::insertarFichaGUI(int columna) {
  // wxLogMessage("Insertando ficha en columna: %d", columna);
@@ -265,7 +195,8 @@ void VistaJuego::insertarFichaGUI(int columna) {
   // Si la fila es distinta de -1 es válida
   if (fila != -1) {
     //wxLogMessage("Se logró insertar, vamos a iniciar animacion con columna: %d, fila: %d", columna, fila);
-    iniciarAnimacion(columna, fila);
+    actualizarEstado();
+    Refresh();
   } else {
     // TO-DO: Manajear caso donde no se logró insertar
     wxMessageBox("La columna está llena, selecciona otra columna.");
