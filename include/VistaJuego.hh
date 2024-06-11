@@ -18,8 +18,6 @@ class VistaJuego : public wxFrame {
  //métodos 
   void onPaint(wxPaintEvent& event);
   void onClick(wxMouseEvent& event);
-  void onTimer(wxTimerEvent& event);
-  void iniciarAnimacion(int columna, int color);
   void onClose(wxCloseEvent& event);
   void onBotonSalir(wxCommandEvent& event);
   void controladorTurnos();
@@ -33,12 +31,12 @@ class VistaJuego : public wxFrame {
   wxStaticText* turno;
   ConfNuevoJuego* confNuevoJuego;
 
-  int columnaObjetivo;
-  int filaObjetivo;
-  int colorFicha;
-  wxTimer* timer;
-  bool hayAnimacion;
-  int valEjeY;
+  // int columnaObjetivo;
+  // int filaObjetivo;
+  // int colorFicha;
+  // wxTimer* timer;
+  // bool hayAnimacion;
+  // int valEjeY;
   
 };
 

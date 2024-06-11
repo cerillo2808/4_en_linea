@@ -9,9 +9,6 @@
 ConfNuevoJuego::ConfNuevoJuego(MainFrame* mainFrame, const wxString& title)
     : wxFrame(mainFrame, wxID_ANY, title, wxDefaultPosition, wxSize(500, 400)),
      tipoJugadorUno(0), tipoJugadorDos(0), numFilasTablero(4), numColumnasTablero(4) {
-  // luego se va a sobreescribir pero es para evitar errores:
-
-  numFilasTablero = numColumnasTablero = 4;
 
   wxPanel* panelPrincipal = new wxPanel(this);
   panelPrincipal->SetBackgroundColour((wxColour("#07c3ed")));

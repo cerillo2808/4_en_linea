@@ -14,11 +14,11 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
               wxDefaultSize),
       confNuevoJuego(confNuevoJuego),
       estadoActual(move(estado)),
-      timer(new wxTimer(this)),
-      hayAnimacion(false),
-      valEjeY(0) {
-  // crear el espacio, panel, para el tablero
-  espacioTablero = new wxPanel(this);
+      espacioTablero(new wxPanel(this)),
+      turno(new wxStaticText(this, wxID_ANY, "Turno: Jugador 1"))
+  {
+
+
 
   espacioTablero->Bind(wxEVT_PAINT, &VistaJuego::onPaint, this);
   espacioTablero->Bind(wxEVT_LEFT_DOWN, &VistaJuego::onClick, this);
@@ -29,6 +29,8 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
   // creando fuente para el texto de los botones
   wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
   wxFont fuenteMarcador(wxFontInfo(15).Bold().FaceName("Arial"));
+
+  turno->SetFont(fuenteBotones);
 
   // marcadores de las partidas ganadas
   wxGridSizer* tablaPuntaje = new wxGridSizer(2, 2, 7, 6);
@@ -50,9 +52,8 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
   tablaPuntaje->Add(puntajeJugadorUno, 0, wxALIGN_CENTER);
   tablaPuntaje->Add(puntajeJugadorDos, 0, wxALIGN_CENTER);
 
-  // Texto estático para indicar el turno de los jugadores
-  turno = new wxStaticText(this, wxID_ANY, "Turno: Jugador 1");
-  turno->SetFont(fuenteBotones);
+
+ 
   wxButton* botonSalir =
       new wxButton(this, wxID_ANY, "SALIR", wxDefaultPosition, wxSize(150, 90));
   botonSalir->SetFont(fuenteMarcador);
@@ -84,10 +85,11 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
   controladorTurnos();
 }
 
+
 // método que trabaja en un hilo distinto
 void VistaJuego::llamarJugarIAs() {
   // TO-DO: corregir que jugar devuelva una columna
-  int columna;
+  int columna=0;
   //columna= estadoActual->jugadorActual->jugar();
 
   //Las actualizaciones de la GUI tiene que realizarse en el hilo principal 
@@ -116,19 +118,17 @@ void VistaJuego::controladorTurnos() {
 
 void VistaJuego::actualizarEstado() {
   if (estadoActual->verificarGanador()) {
-     wxLogMessage("Ganador detectado desde actualizar estado");
     DialogoGanador* ganador =
         new DialogoGanador(this, (estadoActual->jugadorActual->getNombre()));
     ganador->ShowModal();
-  } if else (estadoActual->empate()) {
-    wxLogMessage("Empate detectado desde actualizar estado");
+  } else if(estadoActual->empate()) {
     DialogoEmpate* empate =
         new DialogoEmpate(this, (estadoActual->jugadorActual->getNombre()));
+    empate->ShowModal();
   }
   // cualquiera de los dos casos anteriores les va a dar la posibilidad de
   // salir, si desean continuar o si no sucede ninguna de las dos
   estadoActual->cambiarTurno();
-   wxLogMessage("Cambiando turno desde actulizar estado");
   controladorTurnos();
 }
 
@@ -190,11 +190,9 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
 
 
 void VistaJuego::insertarFichaGUI(int columna) {
- // wxLogMessage("Insertando ficha en columna: %d", columna);
   int fila = estadoActual->insertarFicha(columna);
   // Si la fila es distinta de -1 es válida
   if (fila != -1) {
-    //wxLogMessage("Se logró insertar, vamos a iniciar animacion con columna: %d, fila: %d", columna, fila);
     actualizarEstado();
     Refresh();
   } else {
@@ -204,62 +202,48 @@ void VistaJuego::insertarFichaGUI(int columna) {
 }
 
 void VistaJuego::onClick(wxMouseEvent& event) {
-  wxLogMessage("Se atrapo un click");
   // verificamos que se ejecute solo cuando es un humano quien juega}
   //también verificamos que haya una instancia de estado en ese momento
   if (estadoActual && !estadoActual->esHumano()) {
-     wxLogMessage("No es el turno de un humano");
     return;
   }
 
-  wxLogMessage("Turno de un humano, procediendo con onClick");
-
    if (!estadoActual) {
-        wxLogMessage("Error: estadoActual es nulo");
         return;
     }
   
     if(!espacioTablero){
-       wxLogMessage("Error: espacioTablero es nulo");
         return;
     }
 
 
   int anchoPanel = espacioTablero->GetClientSize().GetWidth();
 
-  wxLogMessage("Ancho del panel: %d", anchoPanel);
 
   if (anchoPanel <= 0) {
-        wxLogMessage("Error: anchoPanel es %d, que no es válido", anchoPanel);
         return;
     }
 
   int anchoCelda = anchoPanel / estadoActual->columnas;
 
-   wxLogMessage("Ancho de cada celda: %d", anchoCelda);
 
    if (anchoCelda <= 0) {
-        wxLogMessage("Error: anchoCelda es %d, que no es válido", anchoCelda);
         return;
     }
 
   // obtenemos la coordenada del eje X del evento del click, coordenada relativa
   // al tamaño de espacioTablero
   int coordX = event.GetX();
-  wxLogMessage("Coordenada X del clic: %d", coordX);
 
   // Verificar si coordX es válida
     if (coordX < 0) {
-        wxLogMessage("Error: coordX es %d, que no es válido", coordX);
         return;
     }
   // covertimos coordenada en columna
   int columnaClick = coordX / anchoCelda;
-  wxLogMessage("Columna del clic: %d", columnaClick);
 
   // Verificar si columnaClick es válida
     if (columnaClick < 0 || columnaClick >= estadoActual->columnas) {
-        wxLogMessage("Error: columnaClick es %d, que no es válido", columnaClick);
         return;
     }
 
@@ -279,12 +263,6 @@ void VistaJuego::onClose(wxCloseEvent& event) {
     espacioTablero->Unbind(wxEVT_RIGHT_DOWN, &VistaJuego::onClick, this);
     espacioTablero->Unbind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick, this);
     Unbind(wxEVT_CLOSE_WINDOW, &VistaJuego::onClose, this);
-
-     if (timer) {
-        timer->Stop();
-        delete timer;
-        timer = nullptr;
-    }
 
 
   event.Skip();
