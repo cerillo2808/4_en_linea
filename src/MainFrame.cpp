@@ -12,15 +12,13 @@ MainFrame::MainFrame(const wxString& title)
 
   wxFont fuenteT(wxFontInfo(50).Bold().FaceName("Bangers"));
 
-  wxStaticText* msjBienvenida =
-      new wxStaticText(panelPrincipal, wxID_ANY,
-                       "Bienvenid@s a 4 en Linea!", wxDefaultPosition);
+  wxStaticText* msjBienvenida = new wxStaticText(
+      panelPrincipal, wxID_ANY, "Bienvenid@s a 4 en Linea!", wxDefaultPosition);
   msjBienvenida->SetFont(fuenteT);
 
   // creando fuente para el texto de los botones
   wxFont fuenteBotones(wxFontInfo(30).Bold().FaceName("Arial"));
 
-  
   wxBoxSizer* panelVertical = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer* panelHorizontal = new wxBoxSizer(wxHORIZONTAL);
 
@@ -36,9 +34,9 @@ MainFrame::MainFrame(const wxString& title)
 
   nuevoJuegoBoton->Bind(wxEVT_BUTTON, &MainFrame::nuevoJuego, this);
   salirBoton->Bind(wxEVT_BUTTON, &MainFrame::salir, this);
-  
+
   panelVertical->AddStretchSpacer();
-  panelVertical->Add(msjBienvenida,0, wxALL | wxEXPAND, 10);
+  panelVertical->Add(msjBienvenida, 0, wxALL | wxEXPAND, 10);
   panelVertical->AddStretchSpacer();
   panelVertical->Add(nuevoJuegoBoton, 0, wxALL | wxEXPAND, 10);
   panelVertical->Add(salirBoton, 0, wxALL | wxEXPAND, 10);
@@ -58,9 +56,8 @@ MainFrame::MainFrame(const wxString& title)
 
 void MainFrame::nuevoJuego(wxCommandEvent& event) {
   ConfNuevoJuego* ventanaConf =
-      new ConfNuevoJuego(this,"Ventana de configuración para el nuevo juego");
+      new ConfNuevoJuego(this, "Ventana de configuración para el nuevo juego");
   ventanaConf->Show();
 }
 
 void MainFrame::salir(wxCommandEvent& event) { Close(true); }
-

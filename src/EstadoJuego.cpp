@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include <stdexcept>
+
 using namespace std;
 
 EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
@@ -18,7 +20,9 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
       tablero(filas, columnas),
       tipoJugador1(tipoJugador1),
       tipoJugador2(tipoJugador2) {
-  Tablero tablero = Tablero(filas, columnas);
+    
+    Tablero tablero = Tablero(filas, columnas);
+      
 
   jugadorUno = instanciarJugador(tipoJugador1, amarillo, "1");
   jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
@@ -44,6 +48,15 @@ std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
 }
 
 int EstadoJuego::estadoCelda(int fila, int columna) {
+  
+  if (fila < 0 || fila >= tablero.getFilas()) {
+    throw std::out_of_range("Fila fuera de rango: Fila pedida: " + std::to_string(fila) + ", Total de filas según programa: " + std::to_string(tablero.getFilas()));
+}
+
+if (columna < 0 || columna >= tablero.getColumnas()) {
+    throw std::out_of_range("Columna fuera de rango: Columna pedida: " + std::to_string(columna) + ", Total de columnas según programa: " + std::to_string(tablero.getColumnas()));
+}
+
   return tablero.getTablero()[fila][columna];
 }
 
@@ -52,12 +65,12 @@ int EstadoJuego::insertarFicha(int columna) {
     int FilaInsertada = tablero.insertarFicha(amarillo, columna);
     ultimaFilaInsertada = FilaInsertada;
     ultimaColumnaInsertada = columna;
-    return columna;
+    return FilaInsertada;
   } else if (jugadorActual == jugadorDos) {
     int FilaInsertada = tablero.insertarFicha(rojo, columna);
     ultimaFilaInsertada = FilaInsertada;
     ultimaColumnaInsertada = columna;
-    return columna;
+    return FilaInsertada;
   }
 
   return -1;

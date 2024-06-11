@@ -1,3 +1,9 @@
+
+# Add debug flags to the compiler
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
+
 # TODO: Cambiar el nombre del destino. Este va a ser el nombre del ejecutable
 set(TARGET_NAME 4_en_linea)
 

@@ -1,12 +1,13 @@
 #ifndef CONFNUEVOJUEGO_HH
 #define CONFNUEVOJUEGO_HH
-#include <MainFrame.hh>
 #include <wx/wx.h>
+
+#include <MainFrame.hh>
 
 class ConfNuevoJuego : public wxFrame {
  public:
   // Constructor toma el nombre de la ventana como parametro
-  ConfNuevoJuego(MainFrame* mainFrame,const wxString& title);
+  ConfNuevoJuego(MainFrame* mainFrame, const wxString& title);
 
  private:
   void jugadorUno(wxCommandEvent& event);
