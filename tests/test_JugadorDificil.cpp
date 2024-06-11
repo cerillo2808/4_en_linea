@@ -4,6 +4,7 @@
 #include <Tablero.hh>
 #include <algorithm>
 #include <climits>
+#include <chrono>
 
 TEST(JugadorDificlInstancia, ConstructorJugador) {
   JugadorDificil ia("IA", amarillo);
@@ -55,7 +56,7 @@ TEST(ValorJugadaOponente, colorOponente) {
 TEST(PuntajeTableroVacio, Vacio) {
   Tablero tablero(4, 4);
   JugadorDificil ia("IA", amarillo);
-  EXPECT_EQ(ia.puntajeCaso(tablero), 0);
+  EXPECT_EQ(ia.puntajeTablero(tablero), 0);
 }
 
 TEST(PuntajeJugadas, JugadaIA1) {
@@ -72,7 +73,7 @@ TEST(PuntajeJugadas, JugadaIA1) {
   tablero.insertarFicha(amarillo, 0);
   tablero.insertarFicha(amarillo, 0);
 
-  EXPECT_EQ(ia.puntajeCaso(tablero), 46);
+  EXPECT_EQ(ia.puntajeTablero(tablero), 46);
 }
 
 TEST(PuntajeJugadas, JugadaIA2) {
@@ -89,7 +90,7 @@ TEST(PuntajeJugadas, JugadaIA2) {
   tablero.insertarFicha(amarillo, 3);
   tablero.insertarFicha(amarillo, 3);
 
-  EXPECT_EQ(ia.puntajeCaso(tablero), 46);
+  EXPECT_EQ(ia.puntajeTablero(tablero), 46);
 }
 
 TEST(PuntajeJugadasVerticalesOponente, JugadaOponente) {
@@ -103,7 +104,7 @@ TEST(PuntajeJugadasVerticalesOponente, JugadaOponente) {
   tablero.insertarFicha(rojo, 0);
   tablero.insertarFicha(rojo, 0);
 
-  EXPECT_EQ(ia.puntajeCaso(tablero), -46);
+  EXPECT_EQ(ia.puntajeTablero(tablero), -46);
 }
 
 TEST(RestaPuntaje1, dosFilasVerticales) {
@@ -122,7 +123,7 @@ TEST(RestaPuntaje1, dosFilasVerticales) {
   tablero.insertarFicha(amarillo, 1);
   tablero.insertarFicha(amarillo, 1);
 
-  EXPECT_EQ(ia.puntajeCaso(tablero), 0);
+  EXPECT_EQ(ia.puntajeTablero(tablero), 0);
 }
 
 TEST(RestaPuntaje2, dosFilasHorizontales) {
@@ -141,7 +142,7 @@ TEST(RestaPuntaje2, dosFilasHorizontales) {
   tablero.insertarFicha(amarillo, 2);
   tablero.insertarFicha(amarillo, 3);
 
-  EXPECT_EQ(ia.puntajeCaso(tablero), 0);
+  EXPECT_EQ(ia.puntajeTablero(tablero), 0);
 }
 
 TEST(RestaPuntaje3, dosFichasDistribuidas) {
@@ -154,7 +155,7 @@ TEST(RestaPuntaje3, dosFichasDistribuidas) {
 
   tablero.insertarFicha(amarillo, 0);
 
-  EXPECT_EQ(ia.puntajeCaso(tablero), 5);
+  EXPECT_EQ(ia.puntajeTablero(tablero), 5);
 }
 
 TEST(Minimax1, IAIniciaLaPartida) {
@@ -163,7 +164,8 @@ TEST(Minimax1, IAIniciaLaPartida) {
   JugadorDificil ia("IA", amarillo);
   ia.setColorOponente(rojo);
 
-  EXPECT_EQ(ia.minimax(tablero, 1, INT_MIN, INT_MAX, amarillo)[0], 0);
+  auto tiempoInicio = std :: chrono :: time_point_cast<std :: chrono :: seconds>(std :: chrono :: system_clock::now());
+  EXPECT_EQ(ia.minimax(tiempoInicio,3600.0, tablero, 1, INT_MIN, INT_MAX, amarillo)[0], 0);
 }
 
 TEST(Minimax2, IAEscogeMejorMovimiento) {
@@ -175,7 +177,8 @@ TEST(Minimax2, IAEscogeMejorMovimiento) {
   JugadorDificil ia("IA", amarillo);
   ia.setColorOponente(rojo);
 
-  EXPECT_EQ(ia.minimax(tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 3);
+  auto tiempoInicio = std :: chrono :: time_point_cast<std :: chrono :: seconds>(std :: chrono :: system_clock::now());
+  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 3);
 }
 
 TEST(Minimax3, IAMovimientoGanador) {
@@ -191,7 +194,8 @@ TEST(Minimax3, IAMovimientoGanador) {
   JugadorDificil ia("IA", amarillo);
   ia.setColorOponente(rojo);
 
-  EXPECT_EQ(ia.minimax(tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 0);
+  auto tiempoInicio = std :: chrono :: time_point_cast<std :: chrono :: seconds>(std :: chrono :: system_clock::now());
+  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 0);
 }
 
 TEST(Minimax4, OponenteMovimientoGanador) {
@@ -206,7 +210,8 @@ TEST(Minimax4, OponenteMovimientoGanador) {
   JugadorDificil ia("IA", amarillo);
   ia.setColorOponente(rojo);
 
-  EXPECT_EQ(ia.minimax(tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 1);
+  auto tiempoInicio = std :: chrono :: time_point_cast<std :: chrono :: seconds>(std :: chrono :: system_clock::now());
+  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 1);
 }
 
 TEST(Minimax5, Empate) {
@@ -230,5 +235,6 @@ TEST(Minimax5, Empate) {
   JugadorDificil ia("IA", amarillo);
   ia.setColorOponente(rojo);
 
-  EXPECT_EQ(ia.minimax(tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 0);
+  auto tiempoInicio = std :: chrono :: time_point_cast<std :: chrono :: seconds>(std :: chrono :: system_clock::now());
+  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 0);
 }

@@ -16,14 +16,14 @@ void JugadorDificil ::setColorOponente(Color fichaOponente) {
   oponente = fichaOponente;
 }
 
-vector<int> JugadorDificil ::minimax(Tablero tablero, int profundidad, int alfa,
+vector<int> JugadorDificil ::minimax(std::chrono::time_point<std::chrono::system_clock> tiempoInicio, double tiempoLimite, Tablero tablero, int profundidad, int alfa,
                                      int beta, Color jugador) {
   int column;
   if (profundidad == 0) {
     if (tablero.empate()) {
       return {-1, 0};
     } else {
-      return {-1, puntajeCaso(tablero)};
+      return {-1, puntajeTablero(tablero)};
     }
   }
   vector<int> columnasDisponibles = tablero.getColumnasDisponibles();
@@ -37,8 +37,11 @@ vector<int> JugadorDificil ::minimax(Tablero tablero, int profundidad, int alfa,
       if (verificarGaneIA) {
         return {columna, 10000000};
       } else {
+        const auto actual = std::chrono::system_clock::now();
+        std::chrono::duration<double> tiempoTranscurrido = actual - tiempoInicio; 
+        if (tiempoTranscurrido.count() < tiempoLimite){ 
         int nuevoPuntaje =
-            minimax(copiaTablero, profundidad - 1, alfa, beta, oponente)[1];
+            minimax(tiempoInicio,tiempoLimite,copiaTablero, profundidad - 1, alfa, beta, oponente)[1];
         if (nuevoPuntaje > puntajeCaso) {
           puntajeCaso = nuevoPuntaje;
           column = columna;
@@ -46,6 +49,9 @@ vector<int> JugadorDificil ::minimax(Tablero tablero, int profundidad, int alfa,
         alfa = max(alfa, puntajeCaso);
         if (alfa >= beta) {
           break;
+        }}
+        else {
+          return {columna,puntajeTablero(copiaTablero)};
         }
       }
     }
@@ -62,8 +68,11 @@ vector<int> JugadorDificil ::minimax(Tablero tablero, int profundidad, int alfa,
       if (verificarGaneJugador) {
         return {columna, -10000000};
       } else {
+        const auto actual = std::chrono::system_clock::now();
+        std::chrono::duration<double> tiempoTranscurrido = actual - tiempoInicio; 
+        if (tiempoTranscurrido.count() < tiempoLimite){
         int nuevoPuntaje =
-            minimax(copiaTablero, profundidad - 1, alfa, beta, ficha)[1];
+            minimax(tiempoInicio, tiempoLimite, copiaTablero, profundidad - 1, alfa, beta, ficha)[1];
         if (nuevoPuntaje < puntajeCaso) {
           puntajeCaso = nuevoPuntaje;
           column = columna;
@@ -71,6 +80,9 @@ vector<int> JugadorDificil ::minimax(Tablero tablero, int profundidad, int alfa,
         beta = min(beta, puntajeCaso);
         if (alfa >= beta) {
           break;
+        }}
+        else {
+          return {columna,puntajeTablero(copiaTablero)};
         }
       }
     }
@@ -78,7 +90,7 @@ vector<int> JugadorDificil ::minimax(Tablero tablero, int profundidad, int alfa,
   }
 }
 
-int JugadorDificil ::puntajeCaso(Tablero tablero) {
+int JugadorDificil ::puntajeTablero(Tablero tablero) {
   int contadorJugadasGaneIA = 0;
   int contadorJugadasGaneOponente = 0;
   Color fichaInteres;

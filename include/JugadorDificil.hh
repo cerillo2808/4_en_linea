@@ -4,6 +4,7 @@
 #include <Tablero.hh>
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 using namespace std;
 
@@ -12,13 +13,13 @@ class JugadorDificil : public IJugador {
   JugadorDificil(string nombre, Color ficha);
   void jugar() override;
 
-  vector<int> minimax(Tablero tablero, int profundidad, int alfa, int beta,
+  vector<int> minimax(std::chrono::time_point<std::chrono::system_clock> tiempoInicio, double timepoLimite, Tablero tablero, int profundidad, int alfa, int beta,
                       Color jugador);
 
 
   void setColorOponente(Color ficha);
 
-  int puntajeCaso(Tablero tablero);
+  int puntajeTablero(Tablero tablero);
 
   int valorJugada(Color fichaJugador, Color fichaTablero);
 
