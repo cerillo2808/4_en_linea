@@ -132,12 +132,14 @@ void VistaJuego::actualizarEstado() {
   controladorTurnos();
 }
 
+#include<stdio.h>
+
 // método que se llama cuando se va a insertar una ficha, inicializa la
 // animación y los valores que se ocupan para ella recibe en que columna se
 // quiere insertar la ficha, así como el color del jugador que la está
 // insertando se establecio: 1=amarillo, 2=rojo
 void VistaJuego::iniciarAnimacion(int columna, int filaObj) {
-  wxLogMessage("Iniciando animación para columna: %d, fila: %d", columna, filaObj);
+  printf("Iniciando animación para columna: %d, fila: %d", columna, filaObj);
   columnaObjetivo = columna;
   filaObjetivo = filaObj;
   hayAnimacion = true;
@@ -258,11 +260,11 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
 }
 
 void VistaJuego::insertarFichaGUI(int columna) {
-  wxLogMessage("Insertando ficha en columna: %d", columna);
+ // wxLogMessage("Insertando ficha en columna: %d", columna);
   int fila = estadoActual->insertarFicha(columna);
   // Si la fila es distinta de -1 es válida
   if (fila != -1) {
-     wxLogMessage("Se logró insertar, vamos a iniciar animacion con columna: %d, fila: %d", columna, fila);
+    //wxLogMessage("Se logró insertar, vamos a iniciar animacion con columna: %d, fila: %d", columna, fila);
     iniciarAnimacion(columna, fila);
   } else {
     // TO-DO: Manajear caso donde no se logró insertar
