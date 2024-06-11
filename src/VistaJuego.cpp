@@ -1,12 +1,13 @@
 #include <wx/dcbuffer.h>
 #include <wx/timer.h>
 #include <wx/wx.h>
+
 #include <DialogoEmpate.hh>
 #include <DialogoGanador.hh>
 #include <EstadoJuego.hh>
 #include <VistaJuego.hh>
-#include <memory>
 #include <future>
+#include <memory>
 
 VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
                        unique_ptr<EstadoJuego> estado)
@@ -15,11 +16,7 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
       confNuevoJuego(confNuevoJuego),
       estadoActual(move(estado)),
       espacioTablero(new wxPanel(this)),
-      turno(new wxStaticText(this, wxID_ANY, "Turno: Jugador 1"))
-  {
-
-
-
+      turno(new wxStaticText(this, wxID_ANY, "Turno: Jugador 1")) {
   espacioTablero->Bind(wxEVT_PAINT, &VistaJuego::onPaint, this);
   espacioTablero->Bind(wxEVT_LEFT_DOWN, &VistaJuego::onClick, this);
   espacioTablero->Bind(wxEVT_RIGHT_DOWN, &VistaJuego::onClick, this);
@@ -52,8 +49,6 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
   tablaPuntaje->Add(puntajeJugadorUno, 0, wxALIGN_CENTER);
   tablaPuntaje->Add(puntajeJugadorDos, 0, wxALIGN_CENTER);
 
-
- 
   wxButton* botonSalir =
       new wxButton(this, wxID_ANY, "SALIR", wxDefaultPosition, wxSize(150, 90));
   botonSalir->SetFont(fuenteMarcador);
@@ -85,19 +80,17 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
   controladorTurnos();
 }
 
-
 // método que trabaja en un hilo distinto
 void VistaJuego::llamarJugarIAs() {
   // TO-DO: corregir que jugar devuelva una columna
-  int columna=0;
-  //columna= estadoActual->jugadorActual->jugar();
+  int columna = 0;
+  // columna= estadoActual->jugadorActual->jugar();
 
-  //Las actualizaciones de la GUI tiene que realizarse en el hilo principal 
-  // con wxTheApp->CallAfter hacemos que insertarFichaGUI se ejecute en el hilo principal
-  //ocupamos el lamba para pasar el argumento de columna 
-  wxTheApp->CallAfter([this, columna]() {
-        insertarFichaGUI(columna);
-    });
+  // Las actualizaciones de la GUI tiene que realizarse en el hilo principal
+  //  con wxTheApp->CallAfter hacemos que insertarFichaGUI se ejecute en el hilo
+  //  principal
+  // ocupamos el lamba para pasar el argumento de columna
+  wxTheApp->CallAfter([this, columna]() { insertarFichaGUI(columna); });
 }
 
 /*Este es el método que va controlando los turnos
@@ -112,7 +105,7 @@ void VistaJuego::controladorTurnos() {
     // si es true no hace nada porque onclick se encarga
   } else {
     // Inicia la ejecución de llamar IAs en un hilo distinto al de la GUI
-     std::async(std::launch::async, &VistaJuego::llamarJugarIAs, this);
+    std::async(std::launch::async, &VistaJuego::llamarJugarIAs, this);
   }
 }
 
@@ -121,7 +114,7 @@ void VistaJuego::actualizarEstado() {
     DialogoGanador* ganador =
         new DialogoGanador(this, (estadoActual->jugadorActual->getNombre()));
     ganador->ShowModal();
-  } else if(estadoActual->empate()) {
+  } else if (estadoActual->empate()) {
     DialogoEmpate* empate =
         new DialogoEmpate(this, (estadoActual->jugadorActual->getNombre()));
     empate->ShowModal();
@@ -131,8 +124,6 @@ void VistaJuego::actualizarEstado() {
   estadoActual->cambiarTurno();
   controladorTurnos();
 }
-
-
 
 // método que se va a llamar cada que el tablero ocupe ser redibujado- por
 // ejemplo que tenga que cambiar de tamaño
@@ -171,23 +162,22 @@ void VistaJuego::onPaint(wxPaintEvent& event) {
 
   // vamos a ir iterando para dibujar los circulos en cada celda del tablero
   // vamos rellenando por filas
-    for (int i = 0; i < estadoActual->filas; i++) {
-      for (int j = 0; j < estadoActual->columnas; j++) {
-        if(estadoActual->estadoCelda(i,j)==1){
-          bufferDibujo.SetBrush(*wxYELLOW_BRUSH);
-        }else if(estadoActual->estadoCelda(i,j)==2){
-          bufferDibujo.SetBrush(*wxRED_BRUSH);
-        }else{
-            bufferDibujo.SetBrush(*wxWHITE_BRUSH);
-        }
-        // calculamos el eje x del centro del circulo
-        int ejeX = j * anchoCelda + anchoCelda / 2;
-        int ejeY = i * alturaCelda + alturaCelda / 2;
-        bufferDibujo.DrawCircle(ejeX, ejeY, radio);
+  for (int i = 0; i < estadoActual->filas; i++) {
+    for (int j = 0; j < estadoActual->columnas; j++) {
+      if (estadoActual->estadoCelda(i, j) == 1) {
+        bufferDibujo.SetBrush(*wxYELLOW_BRUSH);
+      } else if (estadoActual->estadoCelda(i, j) == 2) {
+        bufferDibujo.SetBrush(*wxRED_BRUSH);
+      } else {
+        bufferDibujo.SetBrush(*wxWHITE_BRUSH);
       }
+      // calculamos el eje x del centro del circulo
+      int ejeX = j * anchoCelda + anchoCelda / 2;
+      int ejeY = i * alturaCelda + alturaCelda / 2;
+      bufferDibujo.DrawCircle(ejeX, ejeY, radio);
     }
   }
-
+}
 
 void VistaJuego::insertarFichaGUI(int columna) {
   int fila = estadoActual->insertarFicha(columna);
@@ -203,50 +193,46 @@ void VistaJuego::insertarFichaGUI(int columna) {
 
 void VistaJuego::onClick(wxMouseEvent& event) {
   // verificamos que se ejecute solo cuando es un humano quien juega}
-  //también verificamos que haya una instancia de estado en ese momento
+  // también verificamos que haya una instancia de estado en ese momento
   if (estadoActual && !estadoActual->esHumano()) {
     return;
   }
 
-   if (!estadoActual) {
-        return;
-    }
-  
-    if(!espacioTablero){
-        return;
-    }
+  if (!estadoActual) {
+    return;
+  }
 
+  if (!espacioTablero) {
+    return;
+  }
 
   int anchoPanel = espacioTablero->GetClientSize().GetWidth();
 
-
   if (anchoPanel <= 0) {
-        return;
-    }
+    return;
+  }
 
   int anchoCelda = anchoPanel / estadoActual->columnas;
 
-
-   if (anchoCelda <= 0) {
-        return;
-    }
+  if (anchoCelda <= 0) {
+    return;
+  }
 
   // obtenemos la coordenada del eje X del evento del click, coordenada relativa
   // al tamaño de espacioTablero
   int coordX = event.GetX();
 
   // Verificar si coordX es válida
-    if (coordX < 0) {
-        return;
-    }
+  if (coordX < 0) {
+    return;
+  }
   // covertimos coordenada en columna
   int columnaClick = coordX / anchoCelda;
 
   // Verificar si columnaClick es válida
-    if (columnaClick < 0 || columnaClick >= estadoActual->columnas) {
-        return;
-    }
-
+  if (columnaClick < 0 || columnaClick >= estadoActual->columnas) {
+    return;
+  }
 
   // llamamos a método común para insertar una ficha
   insertarFichaGUI(columnaClick);
@@ -255,15 +241,14 @@ void VistaJuego::onClick(wxMouseEvent& event) {
 void VistaJuego::onClose(wxCloseEvent& event) {
   if (confNuevoJuego) {
     confNuevoJuego->Close(true);
-    //confNuevoJuego = nullptr;
+    // confNuevoJuego = nullptr;
   }
-    //desabilitamos todos los eventos de vistaJuego
-    espacioTablero->Unbind(wxEVT_PAINT, &VistaJuego::onPaint, this);
-    espacioTablero->Unbind(wxEVT_LEFT_DOWN, &VistaJuego::onClick, this);
-    espacioTablero->Unbind(wxEVT_RIGHT_DOWN, &VistaJuego::onClick, this);
-    espacioTablero->Unbind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick, this);
-    Unbind(wxEVT_CLOSE_WINDOW, &VistaJuego::onClose, this);
-
+  // desabilitamos todos los eventos de vistaJuego
+  espacioTablero->Unbind(wxEVT_PAINT, &VistaJuego::onPaint, this);
+  espacioTablero->Unbind(wxEVT_LEFT_DOWN, &VistaJuego::onClick, this);
+  espacioTablero->Unbind(wxEVT_RIGHT_DOWN, &VistaJuego::onClick, this);
+  espacioTablero->Unbind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick, this);
+  Unbind(wxEVT_CLOSE_WINDOW, &VistaJuego::onClose, this);
 
   event.Skip();
 }

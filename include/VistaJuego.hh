@@ -1,10 +1,11 @@
 #ifndef VISTAJUEGO_HH
 #define VISTAJUEGO_HH
-#include <wx/wx.h>
 #include <wx/timer.h>
-#include <memory>
-#include <EstadoJuego.hh>
+#include <wx/wx.h>
+
 #include <ConfNuevoJuego.hh>
+#include <EstadoJuego.hh>
+#include <memory>
 
 /*Esta clase es la encargada de representar la vista del juego,
 enviarle los inputs del usuario a controlar,
@@ -12,10 +13,12 @@ enviarle los inputs del usuario a controlar,
 
 class VistaJuego : public wxFrame {
  public:
-  VistaJuego(ConfNuevoJuego* confNuevoJuego,const wxString title, unique_ptr<EstadoJuego> estado);
+  VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
+             unique_ptr<EstadoJuego> estado);
   unique_ptr<EstadoJuego> estadoActual;
+
  private:
- //métodos 
+  // métodos
   void onPaint(wxPaintEvent& event);
   void onClick(wxMouseEvent& event);
   void onClose(wxCloseEvent& event);
@@ -26,7 +29,7 @@ class VistaJuego : public wxFrame {
   void actualizarEstado();
   int obtenerCoordY(int filaObjetivo);
 
-  //atributos
+  // atributos
   wxPanel* espacioTablero;
   wxStaticText* turno;
   ConfNuevoJuego* confNuevoJuego;
@@ -37,7 +40,6 @@ class VistaJuego : public wxFrame {
   // wxTimer* timer;
   // bool hayAnimacion;
   // int valEjeY;
-  
 };
 
 #endif
