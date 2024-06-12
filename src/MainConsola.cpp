@@ -87,7 +87,11 @@ int main() {
           columnaInsertar--;
         }
       } else {
-        cout << "Turno de IA" << endl;
+        if (juego.getTipoJugador() == 1) {
+          cout << "Turno de IA Fácil" << endl;
+        } else {
+          cout << "Turno de IA Difícil" << endl;
+        }
         juego.jugar();
       }
 
@@ -105,7 +109,6 @@ int main() {
       }
 
       juego.cambiarTurno();
-
     } while (true);
 
     cout << "\nContadores:" << endl;
