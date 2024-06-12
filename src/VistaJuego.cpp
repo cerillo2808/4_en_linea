@@ -39,9 +39,9 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
       new wxStaticText(this, wxID_ANY, "Jugador 2");
   etiquetaJugadorDos->SetFont(fuenteMarcador);
 
-  wxStaticText* puntajeJugadorUno = new wxStaticText(this, wxID_ANY, "0");
+  wxStaticText* puntajeJugadorUno = new wxStaticText(this, wxID_ANY, to_string(estadoActual->getGanes("1")));
   puntajeJugadorUno->SetFont(fuenteMarcador);
-  wxStaticText* puntajeJugadorDos = new wxStaticText(this, wxID_ANY, "0");
+  wxStaticText* puntajeJugadorDos = new wxStaticText(this, wxID_ANY, to_string(estadoActual->getGanes("2")));
   puntajeJugadorDos->SetFont(fuenteMarcador);
   // ingresando todo a la tabla
   tablaPuntaje->Add(etiquetaJugadorUno, 0, wxALIGN_CENTER);

@@ -46,6 +46,7 @@ DialogoGanador::DialogoGanador(VistaJuego* ventanaVista,
 
 void DialogoGanador::continuar(wxCommandEvent& event) {
   ventanaVista->estadoActual->clearTablero();
+  ventanaVista->estadoActual->getGanes(nombreJugador);
   ventanaVista->Refresh();
 }
 
