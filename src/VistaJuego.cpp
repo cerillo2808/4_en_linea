@@ -82,16 +82,13 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
 
 // método que trabaja en un hilo distinto
 void VistaJuego::llamarJugarIAs() {
-  int columna= estadoActual->jugar();
+int columna= estadoActual->jugar();
 
   // Las actualizaciones de la GUI tiene que realizarse en el hilo principal
   //  con wxTheApp->CallAfter hacemos que insertarFichaGUI se ejecute en el hilo
   //  principal
   // ocupamos el lamba para pasar el argumento de columna
-  wxTheApp->CallAfter([this, columna]() { 
-    //verificamos que la ventana actual siga existiendo 
-            insertarFichaGUI(columna); 
-        
+  wxTheApp->CallAfter([this, columna]() { insertarFichaGUI(columna); 
   });
 }
 
@@ -112,19 +109,22 @@ void VistaJuego::controladorTurnos() {
 }
 
 void VistaJuego::actualizarEstado() {
+  bool repetir = false;
   if (estadoActual->verificarGanador()) {
-    DialogoGanador* ganador =
-        new DialogoGanador(this, (estadoActual->jugadorActual->getNombre()));
-    ganador->ShowModal();
+    DialogoGanador ganador(this, estadoActual->jugadorActual->getNombre());
+    repetir = ganador.ShowModal() == wxID_OK;
   } else if (estadoActual->empate()) {
-    DialogoEmpate* empate =
-        new DialogoEmpate(this, (estadoActual->jugadorActual->getNombre()));
-    empate->ShowModal();
+    DialogoEmpate empate(this, estadoActual->jugadorActual->getNombre());
+    repetir = empate.ShowModal() == wxID_OK;
   }
   // cualquiera de los dos casos anteriores les va a dar la posibilidad de
   // salir, si desean continuar o si no sucede ninguna de las dos
-  estadoActual->cambiarTurno();
-  controladorTurnos();
+  if (repetir) {
+        estadoActual->cambiarTurno();
+        controladorTurnos();
+  } else{
+    close(true);
+  }
 }
 
 // método que se va a llamar cada que el tablero ocupe ser redibujado- por
@@ -245,12 +245,12 @@ void VistaJuego::onClose(wxCloseEvent& event) {
     confNuevoJuego->Close(true);
     // confNuevoJuego = nullptr;
   }
-  // desabilitamos todos los eventos de vistaJuego
-  espacioTablero->Unbind(wxEVT_PAINT, &VistaJuego::onPaint, this);
-  espacioTablero->Unbind(wxEVT_LEFT_DOWN, &VistaJuego::onClick, this);
-  espacioTablero->Unbind(wxEVT_RIGHT_DOWN, &VistaJuego::onClick, this);
-  espacioTablero->Unbind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick, this);
-  Unbind(wxEVT_CLOSE_WINDOW, &VistaJuego::onClose, this);
+  // // desabilitamos todos los eventos de vistaJuego
+  // espacioTablero->Unbind(wxEVT_PAINT, &VistaJuego::onPaint, this);
+  // espacioTablero->Unbind(wxEVT_LEFT_DOWN, &VistaJuego::onClick, this);
+  // espacioTablero->Unbind(wxEVT_RIGHT_DOWN, &VistaJuego::onClick, this);
+  // espacioTablero->Unbind(wxEVT_MIDDLE_DOWN, &VistaJuego::onClick, this);
+  // Unbind(wxEVT_CLOSE_WINDOW, &VistaJuego::onClose, this);
 
   event.Skip();
 }

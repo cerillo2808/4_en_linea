@@ -22,8 +22,8 @@ DialogoGanador::DialogoGanador(VistaJuego* ventanaVista,
 
   wxBoxSizer* horizontal = new wxBoxSizer(wxHORIZONTAL);
   wxButton* continuar =
-      new wxButton(this, wxID_ANY, "Continuar", wxDefaultPosition);
-  wxButton* salir = new wxButton(this, wxID_ANY, "SALIR", wxDefaultPosition);
+      new wxButton(this, wxID_OK, "Continuar", wxDefaultPosition);
+  wxButton* salir = new wxButton(this, wxID_CANCEL, "SALIR", wxDefaultPosition);
 
   horizontal->AddStretchSpacer();
   horizontal->Add(continuar, 0, wxALL | wxEXPAND, 10);
@@ -55,16 +55,10 @@ void DialogoGanador::continuar(wxCommandEvent& event) {
   ventanaVista->puntajeJugadorDos->SetLabel(wxString::Format("%d", ganesJugadorDos));
   //encolar un refresh para onpaint
   ventanaVista->Refresh();
-  this->Close();
+  EndModal(wxID_OK);
 }
 
 void DialogoGanador::salir(wxCommandEvent& event) {
-  // verificamos que vista no sea un puntero nulo
-  if (ventanaVista) {
-    ventanaVista->Close(true);
-    // nos aseguramos que no siga existiendo el puntero a ventana vista
-    ventanaVista = nullptr;
-  }
-  // cerramos el dialogo
   EndModal(wxID_CANCEL);
+  event.Skip(false);
 }
