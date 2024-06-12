@@ -1,8 +1,8 @@
 #ifndef JUGADORHUMANO_HH
 #define JUGADORHUMANO_HH
+#include <Color.hh>
 #include <IJugador.hh>
 #include <Tablero.hh>
-#include <Color.hh>
 
 using namespace std;
 

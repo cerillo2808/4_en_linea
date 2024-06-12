@@ -2,9 +2,9 @@
 #define JUGADORFACIL_HH
 #include <Color.hh>
 #include <IJugador.hh>
+#include <Tablero.hh>
 #include <random>
 #include <vector>
-#include <Tablero.hh>
 
 using namespace std;
 

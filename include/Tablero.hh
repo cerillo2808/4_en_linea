@@ -1,8 +1,8 @@
 #ifndef TABLERO_HH
 #define TABLERO_HH
 #include <Color.hh>
-#include <vector>
 #include <string>
+#include <vector>
 
 using namespace std;
 

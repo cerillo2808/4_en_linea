@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+
 #include <Color.hh>
 #include <JugadorFacil.hh>
 #include <Tablero.hh>
@@ -38,23 +39,22 @@ TEST(JugadorFacil, modificarGaneVariasVeces) {
 }
 
 TEST(JugadorFacil, jugarEnTablero2x2) {
-  Tablero tablero (2,2);
+  Tablero tablero(2, 2);
   JugadorFacil ia("IA", amarillo);
   int columna = ia.jugar(tablero);
-  EXPECT_TRUE((columna >= 0) && (columna<= 1));
+  EXPECT_TRUE((columna >= 0) && (columna <= 1));
 }
 
 TEST(JugadorFacil, jugarEnTablero4x4) {
-  Tablero tablero (4,4);
+  Tablero tablero(4, 4);
   JugadorFacil ia("IA", amarillo);
   int columna = ia.jugar(tablero);
-  EXPECT_TRUE((columna >= 0) && (columna<= 3));
+  EXPECT_TRUE((columna >= 0) && (columna <= 3));
 }
 
 TEST(JugadorFacil, jugarEnTablero10x10) {
-  Tablero tablero (10,10);
+  Tablero tablero(10, 10);
   JugadorFacil ia("IA", amarillo);
   int columna = ia.jugar(tablero);
-  EXPECT_TRUE((columna >= 0) && (columna<= 9));
+  EXPECT_TRUE((columna >= 0) && (columna <= 9));
 }
-

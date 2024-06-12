@@ -1,7 +1,7 @@
 #ifndef IJUGADOR_HH
 #define IJUGADOR_HH
-#include <Tablero.hh>
 #include <Color.hh>
+#include <Tablero.hh>
 #include <string>
 
 using namespace std;
@@ -12,7 +12,7 @@ class IJugador {
   IJugador(string nombre, Color ficha)
       : nombre(nombre), ficha(ficha), ganes(0) {}
 
-  //destructor virtual de la clase IJugador
+  // destructor virtual de la clase IJugador
   virtual ~IJugador() {}
 
   // método para obtener el color de ficha del jugador
