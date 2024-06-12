@@ -21,7 +21,7 @@ class EstadoJuego {
   // método que regresa el número del enum que ocupe la celda.
   int estadoCelda(int fila, int columna);
 
-  // método que inserta la ficha en el tablero y devuelve la columna en la que
+  // método que inserta la ficha en el tablero y devuelve la fila en la que
   // se logró insertar.
   int insertarFicha(int columna);
 
