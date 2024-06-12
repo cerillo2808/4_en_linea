@@ -1,6 +1,7 @@
 #include <IJugador.hh>
 #include <JugadorHumano.hh>
-#include <iostream>
+#include <Tablero.hh>
+#include <Color.hh>
 
 using namespace std;
 
@@ -8,4 +9,4 @@ JugadorHumano::JugadorHumano(string nombre, Color ficha)
     : IJugador(nombre, ficha) {}
 
 
-void JugadorHumano::jugar() { cout << "humano" << endl; }
+int JugadorHumano ::jugar(Tablero tablero) { return 0; }

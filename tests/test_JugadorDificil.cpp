@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <Color.hh>
 #include <JugadorDificil.hh>
 #include <Tablero.hh>
 #include <algorithm>

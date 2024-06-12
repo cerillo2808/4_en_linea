@@ -1,3 +1,4 @@
+#include <Color.hh>
 #include <EstadoJuego.hh>
 #include <IJugador.hh>
 #include <JugadorDificil.hh>

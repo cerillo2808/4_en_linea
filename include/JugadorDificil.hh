@@ -1,5 +1,6 @@
 #ifndef JUGADORDIFICIL_HH
 #define JUGADORDIFICIL_HH
+#include <Color.hh>
 #include <IJugador.hh>
 #include <Tablero.hh>
 #include <iostream>
@@ -11,7 +12,7 @@ using namespace std;
 class JugadorDificil : public IJugador {
  public:
   JugadorDificil(string nombre, Color ficha);
-  void jugar() override;
+  int jugar(Tablero tablero) override;
 
   vector<int> minimax(std::chrono::time_point<std::chrono::system_clock> tiempoInicio, double timepoLimite, Tablero tablero, int profundidad, int alfa, int beta,
                       Color jugador);

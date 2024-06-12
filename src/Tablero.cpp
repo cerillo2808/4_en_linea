@@ -1,3 +1,4 @@
+#include <Color.hh>
 #include <IJugador.hh>
 #include <Tablero.hh>
 #include <iostream>

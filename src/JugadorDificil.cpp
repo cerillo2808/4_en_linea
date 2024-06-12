@@ -1,3 +1,4 @@
+#include <Color.hh>
 #include <IJugador.hh>
 #include <JugadorDificil.hh>
 #include <Tablero.hh>
@@ -5,6 +6,7 @@
 #include <climits>
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 using namespace std;
 
@@ -224,4 +226,9 @@ int JugadorDificil ::valorJugada(Color fichaJugador, Color fichaTablero) {
   return INT_MIN;
 }
 
-void JugadorDificil::jugar() {}
+int JugadorDificil::jugar(Tablero tablero) {
+  auto tiempoInicio = std :: chrono :: time_point_cast<std :: chrono :: seconds>(std :: chrono :: system_clock::now());
+  //se elige hasa el momento una profundidad de tres hasta el momento
+  //la IA tiene un tiempo máximo de procesamiento de 0.9s
+  return minimax(tiempoInicio,0.9, tablero, 3, INT_MIN, INT_MAX, ficha)[0];
+}

@@ -1,5 +1,6 @@
 #ifndef TABLERO_HH
 #define TABLERO_HH
+#include <Color.hh>
 #include <IJugador.hh>
 #include <iostream>
 #include <vector>

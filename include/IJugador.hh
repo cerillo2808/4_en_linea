@@ -1,10 +1,12 @@
 #ifndef IJUGADOR_HH
 #define IJUGADOR_HH
 #include <iostream>
+#include <Tablero.hh>
+#include <Color.hh>
 
 using namespace std;
 
-enum Color {
+/*enum Color {
   amarillo = 1,
   // amarillo será jugador 1
   rojo = 2,
@@ -12,7 +14,7 @@ enum Color {
   non_color = 0
   // el non_color es 0 porque es el default
 
-};
+};*/
 
 class IJugador {
  public:
@@ -20,11 +22,14 @@ class IJugador {
   IJugador(string nombre, Color ficha)
       : nombre(nombre), ficha(ficha), ganes(0) {}
 
+  //destructor virtual de la clase IJugador
+  virtual ~IJugador() {}
+
   // método para obtener el color de ficha del jugador
   Color getColor() { return ficha; }
 
   // método abstracto:
-  virtual void jugar() = 0;
+  virtual int jugar(Tablero tablero);
 
   // método para setear los ganes
   void setGanes() { ganes++; }

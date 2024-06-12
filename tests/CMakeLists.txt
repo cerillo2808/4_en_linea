@@ -15,6 +15,7 @@ add_executable(unit_tests
     test_Tablero.cpp
     test_Estados.cpp
     test_JugadorDificil.cpp
+    test_JugadorFacil.cpp
 # TODO: Añadan acá el código fuente de su proyecto. Por ejemplo:
     ../src/Tablero.cpp
 
