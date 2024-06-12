@@ -43,6 +43,7 @@ DialogoEmpate::DialogoEmpate(VistaJuego* ventanaVista, string nombreJugador)
 void DialogoEmpate::continuar(wxCommandEvent& event) {
   ventanaVista->estadoActual->clearTablero();
   ventanaVista->Refresh();
+  this->Close();
 }
 
 void DialogoEmpate::salir(wxCommandEvent& event) {
