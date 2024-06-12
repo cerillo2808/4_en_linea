@@ -10,11 +10,11 @@
 #include <memory>
 
 VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
-                       unique_ptr<EstadoJuego> estado)
+                       std::shared_ptr<EstadoJuego> estado)
     : wxFrame(confNuevoJuego, wxID_ANY, title, wxDefaultPosition,
               wxDefaultSize),
       confNuevoJuego(confNuevoJuego),
-      estadoActual(move(estado)),
+      estadoActual(estado),
       espacioTablero(new wxPanel(this)),
       turno(new wxStaticText(this, wxID_ANY, "Turno: Jugador 1")) {
   espacioTablero->Bind(wxEVT_PAINT, &VistaJuego::onPaint, this);
@@ -90,9 +90,7 @@ void VistaJuego::llamarJugarIAs() {
   // ocupamos el lamba para pasar el argumento de columna
   wxTheApp->CallAfter([this, columna]() { 
     //verificamos que la ventana actual siga existiendo 
-    if (this) {
             insertarFichaGUI(columna); 
-        } 
         
   });
 }

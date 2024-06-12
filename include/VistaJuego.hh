@@ -13,9 +13,9 @@ enviarle los inputs del usuario a controlar,
 class VistaJuego : public wxFrame {
  public:
   VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
-             unique_ptr<EstadoJuego> estado);
-  unique_ptr<EstadoJuego> estadoActual;
-
+             std::shared_ptr<EstadoJuego> estado);
+             
+  std::shared_ptr<EstadoJuego> estadoActual;
   wxStaticText* puntajeJugadorUno;
   wxStaticText* puntajeJugadorDos;
  private:

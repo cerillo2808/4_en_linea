@@ -155,9 +155,9 @@ void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
 
 void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
 
-  auto estado = make_unique<EstadoJuego>(numFilasTablero, numColumnasTablero,
-                                         tipoJugadorUno, tipoJugadorDos);
-  VistaJuego* juego = new VistaJuego(this, "4 en linea", move(estado));
+  std::shared_ptr<EstadoJuego> estado = std::make_shared<EstadoJuego>(numFilasTablero, numColumnasTablero, tipoJugadorUno, tipoJugadorDos);
+  VistaJuego* juego = new VistaJuego(nullptr, "4 en línea", estado);
+  
   juego->Show(true);
   this->Hide();
 }
