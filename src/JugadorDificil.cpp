@@ -212,4 +212,6 @@ int JugadorDificil ::valorJugada(Color fichaJugador, Color fichaTablero) {
   return INT_MIN;
 }
 
-void JugadorDificil::jugar() {}
+int JugadorDificil::jugar(Tablero tablero) {
+  
+}

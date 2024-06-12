@@ -10,7 +10,7 @@ using namespace std;
 class JugadorDificil : public IJugador {
  public:
   JugadorDificil(string nombre, Color ficha);
-  void jugar() override;
+  int jugar(Tablero tablero) override;
 
   vector<int> minimax(Tablero tablero, int profundidad, int alfa, int beta,
                       Color jugador);

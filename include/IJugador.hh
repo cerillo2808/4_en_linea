@@ -1,6 +1,7 @@
 #ifndef IJUGADOR_HH
 #define IJUGADOR_HH
 #include <iostream>
+#include <Tablero.hh>
 
 using namespace std;
 
@@ -24,7 +25,7 @@ class IJugador {
   Color getColor() { return ficha; }
 
   // método abstracto:
-  virtual void jugar() = 0;
+  virtual int jugar(Tablero tablero);
 
   // método para setear los ganes
   void setGanes() { ganes++; }
