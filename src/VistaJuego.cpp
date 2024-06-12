@@ -82,15 +82,19 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
 
 // método que trabaja en un hilo distinto
 void VistaJuego::llamarJugarIAs() {
-  // TO-DO: corregir que jugar devuelva una columna
-  int columna = 0;
-  // columna= estadoActual->jugadorActual->jugar();
+  int columna= estadoActual->jugar();
 
   // Las actualizaciones de la GUI tiene que realizarse en el hilo principal
   //  con wxTheApp->CallAfter hacemos que insertarFichaGUI se ejecute en el hilo
   //  principal
   // ocupamos el lamba para pasar el argumento de columna
-  wxTheApp->CallAfter([this, columna]() { insertarFichaGUI(columna); });
+  wxTheApp->CallAfter([this, columna]() { 
+    //verificamos que la ventana actual siga existiendo 
+    if (this) {
+            insertarFichaGUI(columna); 
+        } 
+        
+  });
 }
 
 /*Este es el método que va controlando los turnos
@@ -186,10 +190,10 @@ void VistaJuego::insertarFichaGUI(int columna) {
     actualizarEstado();
     Refresh();
   } else {
-    // TO-DO: Manajear caso donde no se logró insertar
-    wxMessageBox("La columna está llena, selecciona otra columna.");
+    wxMessageDialog* mensajeError=new wxMessageDialog (this, "La columna está llena, selecciona otra columna", "Error", wxOK|wxCENTRE, wxDefaultPosition);
+    mensajeError->ShowModal();
+    }
   }
-}
 
 void VistaJuego::onClick(wxMouseEvent& event) {
   // verificamos que se ejecute solo cuando es un humano quien juega}
@@ -253,4 +257,5 @@ void VistaJuego::onClose(wxCloseEvent& event) {
   event.Skip();
 }
 
-void VistaJuego::onBotonSalir(wxCommandEvent& event) { Close(true); }
+void VistaJuego::onBotonSalir(wxCommandEvent& event) 
+{ Close(true); }
