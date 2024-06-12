@@ -7,10 +7,9 @@
 #include <Tablero.hh>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
-
-#include <stdexcept>
 
 using namespace std;
 
@@ -21,9 +20,7 @@ EstadoJuego::EstadoJuego(int filas, int columnas, int tipoJugador1,
       tablero(filas, columnas),
       tipoJugador1(tipoJugador1),
       tipoJugador2(tipoJugador2) {
-    
-    Tablero tablero = Tablero(filas, columnas);
-      
+  Tablero tablero = Tablero(filas, columnas);
 
   jugadorUno = instanciarJugador(tipoJugador1, amarillo, "1");
   jugadorDos = instanciarJugador(tipoJugador2, rojo, "2");
@@ -49,14 +46,19 @@ std::shared_ptr<IJugador> EstadoJuego::instanciarJugador(int tipoJugador,
 }
 
 int EstadoJuego::estadoCelda(int fila, int columna) {
-  
   if (fila < 0 || fila >= tablero.getFilas()) {
-    throw std::out_of_range("Fila fuera de rango: Fila pedida: " + std::to_string(fila) + ", Total de filas según programa: " + std::to_string(tablero.getFilas()));
-}
+    throw std::out_of_range(
+        "Fila fuera de rango: Fila pedida: " + std::to_string(fila) +
+        ", Total de filas según programa: " +
+        std::to_string(tablero.getFilas()));
+  }
 
-if (columna < 0 || columna >= tablero.getColumnas()) {
-    throw std::out_of_range("Columna fuera de rango: Columna pedida: " + std::to_string(columna) + ", Total de columnas según programa: " + std::to_string(tablero.getColumnas()));
-}
+  if (columna < 0 || columna >= tablero.getColumnas()) {
+    throw std::out_of_range(
+        "Columna fuera de rango: Columna pedida: " + std::to_string(columna) +
+        ", Total de columnas según programa: " +
+        std::to_string(tablero.getColumnas()));
+  }
 
   return tablero.getTablero()[fila][columna];
 }
@@ -137,4 +139,10 @@ bool EstadoJuego::esHumano() {
   }
 
   return false;
+}
+
+int EstadoJuego::jugar() {
+  int columna = jugadorActual->jugar(tablero);
+  insertarFicha(columna);
+  return columna;
 }

@@ -51,6 +51,9 @@ class EstadoJuego {
   // devuelve verdadero si jugadorActual es humano.
   bool esHumano();
 
+  // devuelve la columna en la que la IA metió la ficha.
+  int jugar();
+
   // atributos
   shared_ptr<IJugador> jugadorActual;
   shared_ptr<IJugador> jugadorUno;

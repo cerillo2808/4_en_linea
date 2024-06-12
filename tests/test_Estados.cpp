@@ -338,3 +338,37 @@ TEST(EstadoTest, getJugadorNoHumano2) {
   bool jugador2 = juego.esHumano();
   EXPECT_FALSE(jugador2);
 }
+
+TEST(EstadoTest, jugarFacil) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 1);
+
+  juego.cambiarTurno();
+  int columna = juego.jugar();
+
+  EXPECT_EQ(juego.estadoCelda(1, columna), 2);
+}
+
+TEST(EstadoTest, jugarDificil) {
+  EstadoJuego juego = EstadoJuego(2, 2, 0, 2);
+
+  juego.cambiarTurno();
+  int columna = juego.jugar();
+
+  EXPECT_EQ(juego.estadoCelda(1, columna), 2);
+}
+
+TEST(EstadoTest, jugarFacilPrimerTurno) {
+  EstadoJuego juego = EstadoJuego(2, 2, 1, 0);
+
+  int columna = juego.jugar();
+
+  EXPECT_EQ(juego.estadoCelda(1, columna), 1);
+}
+
+TEST(EstadoTest, jugarDificilPrimerTurno) {
+  EstadoJuego juego = EstadoJuego(2, 2, 2, 0);
+
+  int columna = juego.jugar();
+
+  EXPECT_EQ(juego.estadoCelda(1, columna), 1);
+}
