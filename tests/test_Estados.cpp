@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <Color.hh>
 #include <EstadoJuego.hh>
 #include <Tablero.hh>
 

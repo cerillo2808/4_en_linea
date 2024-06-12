@@ -1,14 +1,15 @@
 #ifndef JUGADORHUMANO_HH
 #define JUGADORHUMANO_HH
+#include <Color.hh>
 #include <IJugador.hh>
-#include <iostream>
+#include <Tablero.hh>
 
 using namespace std;
 
 class JugadorHumano : public IJugador {
  public:
   JugadorHumano(string nombre, Color ficha);
-  void jugar() override;
+  int jugar(Tablero tablero) override;
 };
 
 #endif

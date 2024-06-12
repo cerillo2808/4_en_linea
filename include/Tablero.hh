@@ -1,7 +1,7 @@
 #ifndef TABLERO_HH
 #define TABLERO_HH
-#include <IJugador.hh>
-#include <iostream>
+#include <Color.hh>
+#include <string>
 #include <vector>
 
 using namespace std;

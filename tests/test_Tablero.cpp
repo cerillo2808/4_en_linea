@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <Color.hh>
 #include <Tablero.hh>
 
 TEST(TableroTest, ConstructorTablero) {

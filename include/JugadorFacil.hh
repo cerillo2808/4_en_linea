@@ -1,14 +1,17 @@
 #ifndef JUGADORFACIL_HH
 #define JUGADORFACIL_HH
+#include <Color.hh>
 #include <IJugador.hh>
-#include <iostream>
+#include <Tablero.hh>
+#include <random>
+#include <vector>
 
 using namespace std;
 
 class JugadorFacil : public IJugador {
  public:
   JugadorFacil(string nombre, Color ficha);
-  void jugar() override;
+  int jugar(Tablero tablero) override;
 };
 
 #endif
