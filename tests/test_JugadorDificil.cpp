@@ -7,29 +7,29 @@
 #include <climits>
 #include <chrono>
 
-TEST(JugadorDificlInstancia, ConstructorJugador) {
+TEST(JugadorDificil, ConstructorJugador) {
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.getColor(), amarillo);
 }
 
-TEST(funcionesGeneralesIJugador1, obtenerNombre) {
+TEST(JugadorDificil, obtenerNombre) {
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.getNombre(), "IA");
 }
 
-TEST(funcionesGeneralesIJugador2, obtenerGanes) {
+TEST(JugadorDificil, obtenerGanes) {
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.getGanes(), 0);
 }
 
-TEST(funcionesGeneralesIJugador3, modificarGane) {
+TEST(JugadorDificil, modificarGane) {
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.getGanes(), 0);
   ia.setGanes();
   EXPECT_EQ(ia.getGanes(), 1);
 }
 
-TEST(funcionesGeneralesIJugador4, modificarGaneVariasVeces) {
+TEST(JugadorDificil, modificarGaneVariasVeces) {
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.getGanes(), 0);
   ia.setGanes();
@@ -39,28 +39,28 @@ TEST(funcionesGeneralesIJugador4, modificarGaneVariasVeces) {
   EXPECT_EQ(ia.getGanes(), 4);
 }
 
-TEST(ValorJugadaIA, mismoColorDeIA) {
+TEST(JugadorDificil, mismoColorDeIA) {
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.valorJugada(amarillo, amarillo), 2);
 }
 
-TEST(ValorJugadaVacia, espacioVacio) {
+TEST(JugadorDificil, espacioVacio) {
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.valorJugada(amarillo, non_color), 1);
 }
 
-TEST(ValorJugadaOponente, colorOponente) {
+TEST(JugadorDificil, colorOponente) {
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.valorJugada(amarillo, rojo), INT_MIN);
 }
 
-TEST(PuntajeTableroVacio, Vacio) {
+TEST(JugadorDificil, Vacio) {
   Tablero tablero(4, 4);
   JugadorDificil ia("IA", amarillo);
   EXPECT_EQ(ia.puntajeTablero(tablero), 0);
 }
 
-TEST(PuntajeJugadas, JugadaIA1) {
+TEST(JugadorDificil, JugadaIA1) {
   Tablero tablero(4, 4);
 
   JugadorDificil ia("IA", amarillo);
@@ -77,7 +77,7 @@ TEST(PuntajeJugadas, JugadaIA1) {
   EXPECT_EQ(ia.puntajeTablero(tablero), 46);
 }
 
-TEST(PuntajeJugadas, JugadaIA2) {
+TEST(JugadorDificil, JugadaIA2) {
   Tablero tablero(4, 4);
 
   JugadorDificil ia("IA", amarillo);
@@ -94,7 +94,7 @@ TEST(PuntajeJugadas, JugadaIA2) {
   EXPECT_EQ(ia.puntajeTablero(tablero), 46);
 }
 
-TEST(PuntajeJugadasVerticalesOponente, JugadaOponente) {
+TEST(JugadorDificil, JugadaOponente) {
   Tablero tablero(4, 4);
 
   JugadorDificil ia("IA", amarillo);
@@ -108,7 +108,7 @@ TEST(PuntajeJugadasVerticalesOponente, JugadaOponente) {
   EXPECT_EQ(ia.puntajeTablero(tablero), -46);
 }
 
-TEST(RestaPuntaje1, dosFilasVerticales) {
+TEST(JugadorDificil, dosFilasVerticales) {
   Tablero tablero(4, 4);
 
   JugadorDificil ia("IA", amarillo);
@@ -127,7 +127,7 @@ TEST(RestaPuntaje1, dosFilasVerticales) {
   EXPECT_EQ(ia.puntajeTablero(tablero), 0);
 }
 
-TEST(RestaPuntaje2, dosFilasHorizontales) {
+TEST(JugadorDificil, dosFilasHorizontales) {
   Tablero tablero(4, 4);
 
   JugadorDificil ia("IA", amarillo);
@@ -146,7 +146,7 @@ TEST(RestaPuntaje2, dosFilasHorizontales) {
   EXPECT_EQ(ia.puntajeTablero(tablero), 0);
 }
 
-TEST(RestaPuntaje3, dosFichasDistribuidas) {
+TEST(JugadorDificil, dosFichasDistribuidas) {
   Tablero tablero(4, 4);
 
   JugadorDificil ia("IA", amarillo);
@@ -159,7 +159,7 @@ TEST(RestaPuntaje3, dosFichasDistribuidas) {
   EXPECT_EQ(ia.puntajeTablero(tablero), 5);
 }
 
-TEST(Minimax1, IAIniciaLaPartida) {
+TEST(JugadorDificil, IAIniciaLaPartida) {
   Tablero tablero(4, 4);
 
   JugadorDificil ia("IA", amarillo);
@@ -169,7 +169,7 @@ TEST(Minimax1, IAIniciaLaPartida) {
   EXPECT_EQ(ia.minimax(tiempoInicio,3600.0, tablero, 1, INT_MIN, INT_MAX, amarillo)[0], 0);
 }
 
-TEST(Minimax2, IAEscogeMejorMovimiento) {
+TEST(JugadorDificil, IAEscogeMejorMovimiento) {
   Tablero tablero(4, 4);
 
   tablero.insertarFicha(amarillo, 0);
@@ -182,7 +182,7 @@ TEST(Minimax2, IAEscogeMejorMovimiento) {
   EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 3);
 }
 
-TEST(Minimax3, IAMovimientoGanador) {
+TEST(JugadorDificil, IAMovimientoGanador) {
   Tablero tablero(4, 4);
 
   tablero.insertarFicha(amarillo, 0);
@@ -199,7 +199,7 @@ TEST(Minimax3, IAMovimientoGanador) {
   EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 0);
 }
 
-TEST(Minimax4, OponenteMovimientoGanador) {
+TEST(JugadorDificil, OponenteMovimientoGanador) {
   Tablero tablero(4, 4);
 
   tablero.insertarFicha(amarillo, 0);
@@ -215,7 +215,7 @@ TEST(Minimax4, OponenteMovimientoGanador) {
   EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX, amarillo)[0], 1);
 }
 
-TEST(Minimax5, Empate) {
+TEST(JugadorDificil, Empate) {
   Tablero tablero(4, 4);
 
   tablero.insertarFicha(amarillo, 3);
