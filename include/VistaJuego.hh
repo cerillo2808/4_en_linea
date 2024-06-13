@@ -28,7 +28,6 @@ class VistaJuego : public wxFrame {
   void insertarFichaGUI(int columna);
   void llamarJugarIAs();
   void actualizarEstado();
-  int obtenerCoordY(int filaObjetivo);
 
   // atributos
   wxPanel* espacioTablero;

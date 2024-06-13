@@ -143,6 +143,5 @@ bool EstadoJuego::esHumano() {
 
 int EstadoJuego::jugar() {
   int columna = jugadorActual->jugar(tablero);
-  insertarFicha(columna);
   return columna;
 }
