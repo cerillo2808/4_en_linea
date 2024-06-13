@@ -2,6 +2,7 @@
 #define VISTAJUEGO_HH
 #include <wx/timer.h>
 #include <wx/wx.h>
+
 #include <ConfNuevoJuego.hh>
 #include <EstadoJuego.hh>
 #include <memory>
@@ -18,6 +19,7 @@ class VistaJuego : public wxFrame {
 
   wxStaticText* puntajeJugadorUno;
   wxStaticText* puntajeJugadorDos;
+
  private:
   // métodos
   void onPaint(wxPaintEvent& event);
@@ -33,8 +35,6 @@ class VistaJuego : public wxFrame {
   wxPanel* espacioTablero;
   wxStaticText* turno;
   ConfNuevoJuego* confNuevoJuego;
- 
-
 };
 
 #endif

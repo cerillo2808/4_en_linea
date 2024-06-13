@@ -154,7 +154,6 @@ void ConfNuevoJuego::columnasTablero(wxCommandEvent& event) {
 void ConfNuevoJuego::botonRegresar(wxCommandEvent& event) { Close(true); }
 
 void ConfNuevoJuego::botonIniciar(wxCommandEvent& event) {
-
   auto estado = make_unique<EstadoJuego>(numFilasTablero, numColumnasTablero,
                                          tipoJugadorUno, tipoJugadorDos);
   VistaJuego* juego = new VistaJuego(this, "4 en linea", move(estado));

@@ -82,7 +82,7 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
 
 // método que trabaja en un hilo distinto
 void VistaJuego::llamarJugarIAs() {
-  int columna= estadoActual->jugar();
+  int columna = estadoActual->jugar();
 
   // Las actualizaciones de la GUI tiene que realizarse en el hilo principal
   //  con wxTheApp->CallAfter hacemos que insertarFichaGUI se ejecute en el hilo
@@ -98,7 +98,6 @@ void VistaJuego::controladorTurnos() {
   // obtenemos nombre del jugador
   wxString nombreActual = estadoActual->jugadorActual->getNombre();
   turno->SetLabel("Turno: " + nombreActual);
-  // TODO:método de si es humano para saber si habilitar o no el onclick
   if (estadoActual->esHumano()) {
     // si es true no hace nada porque onclick se encarga
   } else {
@@ -195,12 +194,9 @@ void VistaJuego::onClick(wxMouseEvent& event) {
     return;
   }
 
-
   int anchoPanel = espacioTablero->GetClientSize().GetWidth();
 
-
   int anchoCelda = anchoPanel / estadoActual->columnas;
-
 
   // obtenemos la coordenada del eje X del evento del click, coordenada relativa
   // al tamaño de espacioTablero
@@ -208,7 +204,6 @@ void VistaJuego::onClick(wxMouseEvent& event) {
 
   // covertimos coordenada en columna
   int columnaClick = coordX / anchoCelda;
-
 
   // llamamos a método común para insertar una ficha
   insertarFichaGUI(columnaClick);
