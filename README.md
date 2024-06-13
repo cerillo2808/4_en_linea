@@ -112,10 +112,78 @@ El método se encarga de manejar el evento de cierre de la ventana del juego. Pr
     
 El método maneja el evento de clic en el botón "Salir". Simplemente llama al método Close(true) para cerrar la ventana de juego con confirmación.
 
+##  DialogoEmpate
 
-    
+La clase DialogoEmpate representa un cuadro de diálogo que se muestra cuando se produce un empate en el juego. Este cuadro de diálogo pregunta al jugador si desea continuar o salir del juego. El constructor de la clase crea la interfaz gráfica del cuadro de diálogo, que incluye un mensaje de empate, una pregunta al jugador y botones para continuar o salir del juego.
 
-  ## # Errores conocidos en la Interfaz Gráfica
+El método DialogoEmpate::continuar(wxCommandEvent& event) se llama cuando el jugador decide continuar después de un empate. Este método reinicia el tablero del juego y actualiza la interfaz gráfica para reflejar el reinicio. Luego, cierra el cuadro de diálogo.
+
+El método DialogoEmpate::salir(wxCommandEvent& event) se llama cuando el jugador decide salir después de un empate. Este método verifica que la ventana principal del juego (ventanaVista) no sea un puntero nulo y, si no lo es, cierra la ventana principal. Luego, cierra el cuadro de diálogo.
+
+##  DialogoGanador
+
+La clase DialogoGanador representa un cuadro de diálogo que se muestra cuando un jugador gana el juego. Este cuadro de diálogo felicita al jugador ganador e indica si desea continuar o salir del juego. El constructor de la clase crea la interfaz gráfica del cuadro de diálogo, que incluye un mensaje de victoria, una pregunta al jugador y botones para continuar o salir del juego.
+
+El método DialogoGanador::continuar(wxCommandEvent& event) se llama cuando el jugador decide continuar después de ganar. Este método reinicia el tablero del juego, actualiza el puntaje de los jugadores en la interfaz gráfica y cierra el cuadro de diálogo.
+
+El método DialogoGanador::salir(wxCommandEvent& event) se llama cuando el jugador decide salir después de ganar. Este método verifica que la ventana principal del juego (ventanaVista) no sea un puntero nulo y, si no lo es, cierra la ventana principal. Luego, cierra el cuadro de diálogo.
+
+ ## Errores conocidos en la Interfaz Gráfica
+
+En algunas situaciones, especialmente al interactuar con la inteligencia artificial (IA) y jugadores humanos, se ha observado un comportamiento indefinido en la aplicación. Este comportamiento suele manifestarse al presionar los botones de salida en los cuadros de diálogo de empate o victoria, lo que puede resultar en fallos de segmentación (segmentation faults). 
+
+Este problema parece ser más frecuente cuando dos IAs están jugando entre sí, ya sean de dificultad fácil o difícil. En algunos casos, el juego puede funcionar sin problemas durante algunas jugadas, pero luego de cierto punto, al intentar salir del juego, se produce el fallo de segmentación. Esto sugiere que hay problemas en la gestión de memoria o inclusive en la lógica del juego que se manifiesta en ciertas condiciones específicas durante la interacción con las IAs.
+
+Para abordar el comportamiento indefinido observado en la aplicación al interactuar con la inteligencia artificial (IA) y jugadores humanos, se utilizó GDB para depurar y analizar los fallos de segmentación (segmentation faults). Se ejecutaron pruebas específicas para reproducir los problemas y obtener información detallada sobre los fallos.
+
+### Escenario: IA fácil contra IA fácil
+
+Al enfrentar dos IA fáciles, se reprodujo el problema y se obtuvo el siguiente backtrace en GDB:
+
+`Thread 1 "4_en_linea" received signal SIGSEGV, Segmentation fault.
+0x000055555557e828 in std::__shared_ptr<IJugador, (__gnu_cxx::_Lock_policy)2>::get (this=0x0) at /usr/include/c++/11/bits/shared_ptr_base.h:1296
+1296          { return _M_ptr; }
+(gdb) bt
+#0  0x000055555557e828 in std::__shared_ptr<IJugador, (__gnu_cxx::_Lock_policy)2>::get (this=0x0)
+at /usr/include/c++/11/bits/shared_ptr_base.h:1296
+#1  0x000055555557e19b in std::operator==<IJugador, IJugador> (
+__a=<error reading variable: Cannot access memory at address 0x8>, 
+__b=<error reading variable: Cannot access memory at address 0x18>)
+at /usr/include/c++/11/bits/shared_ptr.h:438
+#2  0x000055555557d39f in EstadoJuego::cambiarTurno (this=0x0)
+at /home/melany/proyecto2Progra/4_en_linea/src/EstadoJuego.cpp:95
+#3  0x0000555555581e84 in VistaJuego::actualizarEstado (this=0x555555a422f0)
+at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:122
+#4  0x0000555555582334 in VistaJuego::insertarFichaGUI (this=0x555555a422f0, columna=3)
+at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:184
+#5  0x0000555555581ab4 in operator() (__closure=0x7fffdc003ea8)
+`
+
+### Escenario: IA difícil contra IA difícil
+
+Al enfrentar dos IA difíciles, se observó un fallo de segmentación en momentos específicos. El backtrace obtenido fue el siguiente
+
+
+`Thread 1 "4_en_linea" received signal SIGSEGV, Segmentation fault.
+0x000055555557e828 in std::__shared_ptr<IJugador, (__gnu_cxx::_Lock_policy)2>::get (this=0x0) at /usr/include/c++/11/bits/shared_ptr_base.h:1296
+1296          { return _M_ptr; }
+(gdb) bt
+#0  0x000055555557e828 in std::__shared_ptr<IJugador, (__gnu_cxx::_Lock_policy)2>::get (this=0x0)
+at /usr/include/c++/11/bits/shared_ptr_base.h:1296
+#1  0x000055555557e19b in std::operator==<IJugador, IJugador> (
+__a=<error reading variable: Cannot access memory at address 0x8>, 
+__b=<error reading variable: Cannot access memory at address 0x18>)
+at /usr/include/c++/11/bits/shared_ptr.h:438
+#2  0x000055555557d39f in EstadoJuego::cambiarTurno (this=0x0)
+at /home/melany/proyecto2Progra/4_en_linea/src/EstadoJuego.cpp:95
+#3  0x0000555555581e84 in VistaJuego::actualizarEstado (this=0x555555a6c400)
+at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:122
+#4  0x0000555555582334 in VistaJuego::insertarFichaGUI (this=0x555555a6c400, columna=3)
+at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:184
+#5  0x0000555555581ab4 in operator() (__closure=0x7fffe8002de8)`
+
+Cabe resaltar que, como ya se mencionó, son comportamientos indefinidos, por lo que pueden suceder otras cosas además de los casos mencionados.Por ejemplo al enfrentar dos IAs difíciles, se observó un comportamiento diferente. En lugar de mostrar un fallo de segmentación, a veces el juego mostraba un mensaje indicando que se estaba intentando ingresar fichas en una columna ya llena. Este mensaje aparecía estando ya en la ventana del MainFrame.
+
 
 A nivel interno, los diferentes tipos de jugador se le asigna un número.
 
