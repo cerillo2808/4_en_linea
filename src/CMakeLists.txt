@@ -53,6 +53,19 @@ endif()
 target_include_directories(${TARGET_NAME} PUBLIC ${INCLUDE_DIR})
 target_link_libraries(${TARGET_NAME} ${wxWidgets_LIBRARIES})
 
+set(SECOND_TARGET_NAME consola)
+set(SECOND_SRCS 
+    Tablero.cpp 
+    EstadoJuego.cpp 
+    JugadorDificil.cpp 
+    JugadorFacil.cpp 
+    JugadorHumano.cpp 
+    MainConsola.cpp
+)
+
+add_executable(${SECOND_TARGET_NAME} ${SECOND_SRCS})
+target_include_directories(${SECOND_TARGET_NAME} PUBLIC ${INCLUDE_DIR})
+
 # Si quisieran generar otro ejecutable, con otro nombre, simplemente repitan el proceso:
 # add_executable(NOMBRE_EJECUTABLE archivo1.cpp archivo2.cpp ...)
 # target_include_directories(NOMBRE_EJECUTABLE PUBLIC ${INCLUDE_DIR})
