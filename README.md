@@ -37,10 +37,20 @@ Para ejecutar el juego en consola, ingrese a la carpeta `build/tests`, y ejecute
 - tiene dos constructores, uno para crear el tablero de juego, y otro para copias.
 
 - tiene varios métodos internos que llevan a un método de verificar si hay ganador. 
-
+  La lógica consiste en que tras cada jugada se evalua a partir de la última ficha
+  insertada si esta pertenece a algún movimiento ganador, para ello busca la ficha
+  más a la izquierda, inferior o diagonal inferior-izquierda y busca si hay cuatro
+  en línea hacia la derecha, arriba o diagonal superior-derecha respectivamente.
+  Como esto se hace tras cada inserción se puede asegurar que se va a hallar la juga-
+  da ganadora.
+   
 - tiene un método para verificar si el tablero está lleno (si hay empate).
 
 - método para insertarle fichas al tablero.
+
+- tiene un método que retorna las columnas disponibles para realizar una jugada
+
+- tiene un método que retorna la cantidad de columnas del tablero, y también la cantidad de filas
 
 ### Jugadores
 
@@ -48,10 +58,19 @@ Para ejecutar el juego en consola, ingrese a la carpeta `build/tests`, y ejecute
 Juega a partir de la interfaz. Es una interacción con el usuario.
 
 #### Fácil
-Selecciona la columna en donde meterá la ficha de manera pseudo-random.
+Selecciona la columna en donde meterá la ficha de manera pseudo-random, para ello
+solicita las columnas disponibles al tablero, escoge al azar un indice del vector de
+columnas disponibles, luego indexa la columna correspondiente a dicho indice, y la re-
+torna como "movimiento" de juego.
 
 #### Difícil
-Selecciona la columna con minimax.
+Jugador Difícil selecciona una columna a partir del algoritmo minimax, para ello se adecua 
+a un tiempo de 0.9s. Además, el análisis de posibles movimientos se realiza por profundidad, 
+en el presente caso una profundidad de 1. La función heurística que se utilizó para darle
+puntaje a cada jugada, consiste en contar a apartir de una ficha todas las posibles jugadas del juga-
+dor y su oponenete, al final estos se restan para generar el puntaje. Cabe destacar que en 
+caso de que hayan varias fichas del mismo jugador en línea, estos reciben puntos extra, pa-
+ra así darle prioridad a jugar tal jugada (jugador) o bloquearla (si es del oponente). 
 
 ### Estado Juego
 - el constructor inicializa el tablero y declara a los jugadores.
@@ -93,3 +112,11 @@ A nivel interno, los diferentes tipos de jugador se le asigna un número.
 - Jugador 0 = Jugador Humano
 - Jugador 1 = Jugador IA Fácil
 - Jugador 2 = Jugador IA Difícil
+
+### Errores conocidos en la IA
+
+Dado que se tiene un límite de tiempo de 0.9s y se realiza el análisis por profundidad, la IA no tiene suficiente tiempo para evaluar todas las jugadas de las columnas disponibles,
+por lo que se aprecia que la IA juega solamente en el lado izquierdo del tablero (ya que ahí inician las primeras jugadas). Así las cosas, para el oponente es muy sencillo concentrarse
+en el lado derecho del tablero para ganar. 
+
+
