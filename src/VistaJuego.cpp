@@ -82,9 +82,7 @@ VistaJuego::VistaJuego(ConfNuevoJuego* confNuevoJuego, const wxString title,
 
 // método que trabaja en un hilo distinto
 void VistaJuego::llamarJugarIAs() {
-  // TO-DO: corregir que jugar devuelva una columna
-  int columna = 0;
-  // columna= estadoActual->jugadorActual->jugar();
+  int columna = estadoActual->jugar();
 
   // Las actualizaciones de la GUI tiene que realizarse en el hilo principal
   //  con wxTheApp->CallAfter hacemos que insertarFichaGUI se ejecute en el hilo
@@ -100,7 +98,6 @@ void VistaJuego::controladorTurnos() {
   // obtenemos nombre del jugador
   wxString nombreActual = estadoActual->jugadorActual->getNombre();
   turno->SetLabel("Turno: " + nombreActual);
-  // TODO:método de si es humano para saber si habilitar o no el onclick
   if (estadoActual->esHumano()) {
     // si es true no hace nada porque onclick se encarga
   } else {
@@ -186,8 +183,7 @@ void VistaJuego::insertarFichaGUI(int columna) {
     actualizarEstado();
     Refresh();
   } else {
-    // TO-DO: Manajear caso donde no se logró insertar
-    wxMessageBox("La columna está llena, selecciona otra columna.");
+    wxMessageBox("La columna esta llena, selecciona otra columna");
   }
 }
 
@@ -198,41 +194,16 @@ void VistaJuego::onClick(wxMouseEvent& event) {
     return;
   }
 
-  if (!estadoActual) {
-    return;
-  }
-
-  if (!espacioTablero) {
-    return;
-  }
-
   int anchoPanel = espacioTablero->GetClientSize().GetWidth();
 
-  if (anchoPanel <= 0) {
-    return;
-  }
-
   int anchoCelda = anchoPanel / estadoActual->columnas;
-
-  if (anchoCelda <= 0) {
-    return;
-  }
 
   // obtenemos la coordenada del eje X del evento del click, coordenada relativa
   // al tamaño de espacioTablero
   int coordX = event.GetX();
 
-  // Verificar si coordX es válida
-  if (coordX < 0) {
-    return;
-  }
   // covertimos coordenada en columna
   int columnaClick = coordX / anchoCelda;
-
-  // Verificar si columnaClick es válida
-  if (columnaClick < 0 || columnaClick >= estadoActual->columnas) {
-    return;
-  }
 
   // llamamos a método común para insertar una ficha
   insertarFichaGUI(columnaClick);

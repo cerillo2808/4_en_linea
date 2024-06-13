@@ -45,15 +45,17 @@ DialogoGanador::DialogoGanador(VistaJuego* ventanaVista,
 }
 
 void DialogoGanador::continuar(wxCommandEvent& event) {
-  //primero limpiamos tablero
+  // primero limpiamos tablero
   ventanaVista->estadoActual->clearTablero();
-  //obtenemos los ganes actuales de cada ganador
+  // obtenemos los ganes actuales de cada ganador
   int ganesJugadorUno = ventanaVista->estadoActual->getGanes("1");
   int ganesJugadorDos = ventanaVista->estadoActual->getGanes("2");
-  //actualizar ganes en la tabla
-  ventanaVista->puntajeJugadorUno->SetLabel(wxString::Format("%d", ganesJugadorUno));
-  ventanaVista->puntajeJugadorDos->SetLabel(wxString::Format("%d", ganesJugadorDos));
-  //encolar un refresh para onpaint
+  // actualizar ganes en la tabla
+  ventanaVista->puntajeJugadorUno->SetLabel(
+      wxString::Format("%d", ganesJugadorUno));
+  ventanaVista->puntajeJugadorDos->SetLabel(
+      wxString::Format("%d", ganesJugadorDos));
+  // encolar un refresh para onpaint
   ventanaVista->Refresh();
   this->Close();
 }
@@ -66,5 +68,5 @@ void DialogoGanador::salir(wxCommandEvent& event) {
     ventanaVista = nullptr;
   }
   // cerramos el dialogo
-  EndModal(wxID_CANCEL);
+  this->Close();
 }

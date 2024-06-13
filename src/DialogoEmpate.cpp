@@ -54,5 +54,5 @@ void DialogoEmpate::salir(wxCommandEvent& event) {
     ventanaVista = nullptr;
   }
   // cerramos el dialogo
-  EndModal(wxID_CANCEL);
+  this->Close();
 }

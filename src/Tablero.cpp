@@ -153,7 +153,6 @@ bool Tablero ::recorridoVertical(Color ficha, int contador, int fila,
 bool Tablero ::recorridoHorizontalDer(Color ficha, int contador, int fila,
                                       int columna) {
   contador++;
-  cout << contador << endl;
   if (contador < 4) {
     // se verifica que existe una ficha del mismo color a la derecha de la fila
     // de interes
