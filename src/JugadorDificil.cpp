@@ -19,7 +19,7 @@ void JugadorDificil ::setColorOponente(Color fichaOponente) {
 
 vector<int> JugadorDificil ::minimax(
     std::chrono::time_point<std::chrono::system_clock> tiempoInicio,
-    double tiempoLimite, Tablero tablero, int profundidad, int alfa, int beta,
+    std::chrono::nanoseconds tiempoLimite, Tablero tablero, int profundidad, int alfa, int beta,
     Color jugador) {
   int column;
   if (profundidad == 0) {
@@ -43,19 +43,22 @@ vector<int> JugadorDificil ::minimax(
         const auto actual = std::chrono::system_clock::now();
         std::chrono::duration<double> tiempoTranscurrido =
             actual - tiempoInicio;
-        if (tiempoTranscurrido.count() < tiempoLimite) {
-          int nuevoPuntaje = minimax(tiempoInicio, tiempoLimite, copiaTablero,
-                                     profundidad - 1, alfa, beta, oponente)[1];
-          if (nuevoPuntaje > puntajeCaso) {
-            puntajeCaso = nuevoPuntaje;
-            column = columna;
-          }
-          alfa = max(alfa, puntajeCaso);
-          if (alfa >= beta) {
-            break;
-          }
-        } else {
+
+        if (tiempoTranscurrido > tiempoLimite) {
           return {columna, puntajeTablero(copiaTablero)};
+        }
+
+        const auto tiempoDisponible = (tiempoLimite - tiempoTranscurrido) / (columnasDisponibles.size() - i);
+
+        int nuevoPuntaje = minimax(actual, std::chrono::duration_cast<std::chrono::nanoseconds>(tiempoDisponible), copiaTablero,
+                                    profundidad - 1, alfa, beta, oponente)[1];
+        if (nuevoPuntaje > puntajeCaso) {
+          puntajeCaso = nuevoPuntaje;
+          column = columna;
+        }
+        alfa = max(alfa, puntajeCaso);
+        if (alfa >= beta) {
+          break;
         }
       }
     }
@@ -75,19 +78,22 @@ vector<int> JugadorDificil ::minimax(
         const auto actual = std::chrono::system_clock::now();
         std::chrono::duration<double> tiempoTranscurrido =
             actual - tiempoInicio;
-        if (tiempoTranscurrido.count() < tiempoLimite) {
-          int nuevoPuntaje = minimax(tiempoInicio, tiempoLimite, copiaTablero,
-                                     profundidad - 1, alfa, beta, ficha)[1];
-          if (nuevoPuntaje < puntajeCaso) {
-            puntajeCaso = nuevoPuntaje;
-            column = columna;
-          }
-          beta = min(beta, puntajeCaso);
-          if (alfa >= beta) {
-            break;
-          }
-        } else {
+
+        if (tiempoTranscurrido > tiempoLimite) {
           return {columna, puntajeTablero(copiaTablero)};
+        }
+
+        const auto tiempoDisponible = (tiempoLimite - tiempoTranscurrido) / (columnasDisponibles.size() - i);
+
+        int nuevoPuntaje = minimax(actual, std::chrono::duration_cast<std::chrono::nanoseconds>(tiempoDisponible), copiaTablero,
+                                    profundidad - 1, alfa, beta, ficha)[1];
+        if (nuevoPuntaje < puntajeCaso) {
+          puntajeCaso = nuevoPuntaje;
+          column = columna;
+        }
+        beta = min(beta, puntajeCaso);
+        if (alfa >= beta) {
+          break;
         }
       }
     }
@@ -234,5 +240,5 @@ int JugadorDificil::jugar(Tablero tablero) {
       std ::chrono ::system_clock::now());
   // se elige hasa el momento una profundidad de tres hasta el momento
   // la IA tiene un tiempo máximo de procesamiento de 0.9s
-  return minimax(tiempoInicio, 0.9, tablero, 3, INT_MIN, INT_MAX, ficha)[0];
+  return minimax(tiempoInicio, std::chrono::seconds(1), tablero, 3, INT_MIN, INT_MAX, ficha)[0];
 }

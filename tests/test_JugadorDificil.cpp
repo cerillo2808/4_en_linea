@@ -167,7 +167,8 @@ TEST(JugadorDificil, IAIniciaLaPartida) {
 
   auto tiempoInicio = std ::chrono ::time_point_cast<std ::chrono ::seconds>(
       std ::chrono ::system_clock::now());
-  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 1, INT_MIN, INT_MAX,
+  const auto tiempoLimite = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(3600));
+  EXPECT_EQ(ia.minimax(tiempoInicio, tiempoLimite, tablero, 1, INT_MIN, INT_MAX,
                        amarillo)[0],
             0);
 }
@@ -183,7 +184,8 @@ TEST(JugadorDificil, IAEscogeMejorMovimiento) {
 
   auto tiempoInicio = std ::chrono ::time_point_cast<std ::chrono ::seconds>(
       std ::chrono ::system_clock::now());
-  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX,
+  const auto tiempoLimite = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(3600));
+  EXPECT_EQ(ia.minimax(tiempoInicio, tiempoLimite, tablero, 2, INT_MIN, INT_MAX,
                        amarillo)[0],
             3);
 }
@@ -203,7 +205,8 @@ TEST(JugadorDificil, IAMovimientoGanador) {
 
   auto tiempoInicio = std ::chrono ::time_point_cast<std ::chrono ::seconds>(
       std ::chrono ::system_clock::now());
-  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX,
+  const auto tiempoLimite = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(3600));
+  EXPECT_EQ(ia.minimax(tiempoInicio, tiempoLimite, tablero, 2, INT_MIN, INT_MAX,
                        amarillo)[0],
             0);
 }
@@ -222,7 +225,8 @@ TEST(JugadorDificil, OponenteMovimientoGanador) {
 
   auto tiempoInicio = std ::chrono ::time_point_cast<std ::chrono ::seconds>(
       std ::chrono ::system_clock::now());
-  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX,
+  const auto tiempoLimite = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(3600));
+  EXPECT_EQ(ia.minimax(tiempoInicio, tiempoLimite, tablero, 2, INT_MIN, INT_MAX,
                        amarillo)[0],
             1);
 }
@@ -250,7 +254,8 @@ TEST(JugadorDificil, Empate) {
 
   auto tiempoInicio = std ::chrono ::time_point_cast<std ::chrono ::seconds>(
       std ::chrono ::system_clock::now());
-  EXPECT_EQ(ia.minimax(tiempoInicio, 3600.0, tablero, 2, INT_MIN, INT_MAX,
+  const auto tiempoLimite = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(3600));
+  EXPECT_EQ(ia.minimax(tiempoInicio, tiempoLimite, tablero, 2, INT_MIN, INT_MAX,
                        amarillo)[0],
             0);
 }

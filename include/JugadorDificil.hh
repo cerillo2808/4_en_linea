@@ -16,7 +16,7 @@ class JugadorDificil : public IJugador {
 
   vector<int> minimax(
       std::chrono::time_point<std::chrono::system_clock> tiempoInicio,
-      double timepoLimite, Tablero tablero, int profundidad, int alfa, int beta,
+      std::chrono::nanoseconds timepoLimite, Tablero tablero, int profundidad, int alfa, int beta,
       Color jugador);
 
   void setColorOponente(Color ficha);
