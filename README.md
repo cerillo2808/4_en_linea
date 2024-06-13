@@ -31,6 +31,12 @@ Para ejecutar el juego en consola, ingrese a la carpeta `build/tests`, y ejecute
 
 - Jugador Actual de Estado Juego empieza siempre en jugadorUno.
 
+A nivel interno, los diferentes tipos de jugador se le asigna un número.
+
+- Jugador 0 = Jugador Humano
+- Jugador 1 = Jugador IA Fácil
+- Jugador 2 = Jugador IA Difícil
+
 ## Funcionalidad
 
 ### Tablero
@@ -261,14 +267,6 @@ A continuación se muestran algunas de las advertencias Gtk-WARNING que se han r
 ```
 
 Estas advertencias pueden estar relacionadas con la configuración de tamaño y diseño de ciertos elementos de la interfaz gráfica, como botones y controles de entrada, y podrían requerir ajustes en el código de la interfaz gráfica para corregirse completamente. Sin embargo, cabe destacar que el profesor nos indicó que podemos ignorar estas advertencias, ya que no afectan directamente el funcionamiento del juego y no representan un riesgo para la estabilidad del sistema.
-
-
-
-A nivel interno, los diferentes tipos de jugador se le asigna un número.
-
-- Jugador 0 = Jugador Humano
-- Jugador 1 = Jugador IA Fácil
-- Jugador 2 = Jugador IA Difícil
 
 ### Errores conocidos en la IA
 
