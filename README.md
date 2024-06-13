@@ -140,8 +140,8 @@ Para abordar el comportamiento indefinido observado en la aplicación al interac
 
 Al enfrentar dos IA fáciles, se reprodujo el problema y se obtuvo el siguiente backtrace en GDB:
 
-```console
-`Thread 1 "4_en_linea" received signal SIGSEGV, Segmentation fault.
+```c++
+Thread 1 "4_en_linea" received signal SIGSEGV, Segmentation fault.
 0x000055555557e828 in std::__shared_ptr<IJugador, (__gnu_cxx::_Lock_policy)2>::get (this=0x0) at /usr/include/c++/11/bits/shared_ptr_base.h:1296
 1296          { return _M_ptr; }
 (gdb) bt
@@ -158,8 +158,8 @@ at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:122
 #4  0x0000555555582334 in VistaJuego::insertarFichaGUI (this=0x555555a422f0, columna=3)
 at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:184
 #5  0x0000555555581ab4 in operator() (__closure=0x7fffdc003ea8)
-`
 ```
+
 
 ### Escenario: IA difícil contra IA difícil
 
@@ -167,7 +167,7 @@ Al enfrentar dos IA difíciles,el backtrace obtenido fue el siguiente
 
 
 ```console
-`Thread 1 "4_en_linea" received signal SIGSEGV, Segmentation fault.
+Thread 1 "4_en_linea" received signal SIGSEGV, Segmentation fault.
 0x000055555557e828 in std::__shared_ptr<IJugador, (__gnu_cxx::_Lock_policy)2>::get (this=0x0) at /usr/include/c++/11/bits/shared_ptr_base.h:1296
 1296          { return _M_ptr; }
 (gdb) bt
@@ -183,7 +183,7 @@ at /home/melany/proyecto2Progra/4_en_linea/src/EstadoJuego.cpp:95
 at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:122
 #4  0x0000555555582334 in VistaJuego::insertarFichaGUI (this=0x555555a6c400, columna=3)
 at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:184
-#5  0x0000555555581ab4 in operator() (__closure=0x7fffe8002de8)`
+#5  0x0000555555581ab4 in operator() (__closure=0x7fffe8002de8)
 ```
 
 Cabe resaltar que, como ya se mencionó, son comportamientos indefinidos, por lo que pueden suceder otras cosas además de los casos mencionados.Por ejemplo al enfrentar dos IAs difíciles, se observó un comportamiento diferente. En lugar de mostrar un fallo de segmentación, a veces el juego mostraba un mensaje indicando que se estaba intentando ingresar fichas en una columna ya llena. Este mensaje aparecía estando ya en la ventana del MainFrame.
