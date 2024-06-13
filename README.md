@@ -128,7 +128,9 @@ El método DialogoGanador::continuar(wxCommandEvent& event) se llama cuando el j
 
 El método DialogoGanador::salir(wxCommandEvent& event) se llama cuando el jugador decide salir después de ganar. Este método verifica que la ventana principal del juego (ventanaVista) no sea un puntero nulo y, si no lo es, cierra la ventana principal. Luego, cierra el cuadro de diálogo.
 
- ## Errores conocidos en la Interfaz Gráfica
+# Errores conocidos en la Interfaz Gráfica
+
+### Segmentation fault
 
 En algunas situaciones, especialmente al interactuar con la inteligencia artificial (IA) y jugadores humanos, se ha observado un comportamiento indefinido en la aplicación. Este comportamiento suele manifestarse al presionar los botones de salida en los cuadros de diálogo de empate o victoria, lo que puede resultar en fallos de segmentación (segmentation faults). 
 
@@ -187,6 +189,37 @@ at /home/melany/proyecto2Progra/4_en_linea/src/VistaJuego.cpp:184
 
 
 Cabe resaltar que, como ya se mencionó, son comportamientos indefinidos, por lo que pueden suceder otras cosas además de los casos mencionados.Por ejemplo al enfrentar dos IAs difíciles, se observó un comportamiento diferente. En lugar de mostrar un fallo de segmentación, a veces el juego mostraba un mensaje indicando que se estaba intentando ingresar fichas en una columna ya llena. Este mensaje aparecía estando ya en la ventana del MainFrame.
+
+### Gtk-WARNING 
+
+Además de los problemas mencionados anteriormente, se han observado algunas advertencias Gtk-WARNING en la interfaz gráfica de la aplicación. Estas advertencias pueden aparecer en la consola de salida y están relacionadas con el diseño y la asignación de espacio de los elementos gráficos de la interfaz de usuario. 
+
+A continuación se muestran algunas de las advertencias Gtk-WARNING que se han registrado:
+
+```c++
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.884: Negative content height -9 (allocation 1, extents 5x5) while allocating gadget (node button, owner GtkButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.884: Negative content height -9 (allocation 1, extents 5x5) while allocating gadget (node button, owner GtkButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.898: Negative content height -1 (allocation 1, extents 1x1) while allocating gadget (node spinbutton, owner GtkSpinButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.898: for_size smaller than min-size (0 < 32) while measuring gadget (node entry, owner GtkSpinButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.898: for_size smaller than min-size (0 < 16) while measuring gadget (node button, owner GtkSpinButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.898: for_size smaller than min-size (0 < 16) while measuring gadget (node button, owner GtkSpinButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.898: Negative content height -9 (allocation 1, extents 5x5) while allocating gadget (node button, owner GtkButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.898: Negative content height -9 (allocation 1, extents 5x5) while allocating gadget (node button, owner GtkButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.923: Negative content height -1 (allocation 1, extents 1x1) while allocating gadget (node spinbutton, owner GtkSpinButton)
+
+(4_en_linea:171282): Gtk-WARNING **: 19:59:20.923: for_size smaller than min-size (0 < 32) while measuring gadget (node entry, owner GtkSpinButton)
+```
+
+Estas advertencias pueden estar relacionadas con la configuración de tamaño y diseño de ciertos elementos de la interfaz gráfica, como botones y controles de entrada, y podrían requerir ajustes en el código de la interfaz gráfica para corregirse completamente. Sin embargo, cabe destacar que el profesor nos indicó que podemos ignorar estas advertencias, ya que no afectan directamente el funcionamiento del juego y no representan un riesgo para la estabilidad del sistema.
+
 
 
 A nivel interno, los diferentes tipos de jugador se le asigna un número.
