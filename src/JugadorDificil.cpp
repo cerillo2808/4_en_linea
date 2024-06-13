@@ -234,5 +234,5 @@ int JugadorDificil::jugar(Tablero tablero) {
       std ::chrono ::system_clock::now());
   // se elige hasa el momento una profundidad de tres hasta el momento
   // la IA tiene un tiempo máximo de procesamiento de 0.9s
-  return minimax(tiempoInicio, 0.9, tablero, 3, INT_MIN, INT_MAX, ficha)[0];
+  return minimax(tiempoInicio, 0.9, tablero, 1, INT_MIN, INT_MAX, ficha)[0];
 }
