@@ -92,7 +92,8 @@ int main() {
         } else {
           cout << "Turno de IA Difícil" << endl;
         }
-        juego.jugar();
+        int columna_IA = juego.jugar();
+        juego.insertarFicha(columna_IA);
       }
 
       imprimirTablero(juego, filas, columnas);

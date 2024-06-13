@@ -344,6 +344,7 @@ TEST(EstadoTest, jugarFacil) {
 
   juego.cambiarTurno();
   int columna = juego.jugar();
+  juego.insertarFicha(columna);
 
   EXPECT_EQ(juego.estadoCelda(1, columna), 2);
 }
@@ -353,6 +354,7 @@ TEST(EstadoTest, jugarDificil) {
 
   juego.cambiarTurno();
   int columna = juego.jugar();
+  juego.insertarFicha(columna);
 
   EXPECT_EQ(juego.estadoCelda(1, columna), 2);
 }
@@ -361,6 +363,7 @@ TEST(EstadoTest, jugarFacilPrimerTurno) {
   EstadoJuego juego = EstadoJuego(2, 2, 1, 0);
 
   int columna = juego.jugar();
+  juego.insertarFicha(columna);
 
   EXPECT_EQ(juego.estadoCelda(1, columna), 1);
 }
@@ -369,6 +372,7 @@ TEST(EstadoTest, jugarDificilPrimerTurno) {
   EstadoJuego juego = EstadoJuego(2, 2, 2, 0);
 
   int columna = juego.jugar();
+  juego.insertarFicha(columna);
 
   EXPECT_EQ(juego.estadoCelda(1, columna), 1);
 }
